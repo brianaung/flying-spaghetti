@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "express": "^4.18.1",
+    "firebase": "^9.9.3",
+    "firebase-tools": "^11.8.0"
+  },
+  "name": "flying-spaghetti",
+  "description": "Image hosting web app",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brianaung/flying-spaghetti.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brianaung/flying-spaghetti/issues"
+  },
+  "homepage": "https://github.com/brianaung/flying-spaghetti#readme"
+}
