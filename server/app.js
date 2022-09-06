@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
+app.use(cors());
+
+/********* TODO: move routes ************/
 app.get('/', (req, res) => { 
     res.send('Our demo app is working!') 
 });
@@ -11,7 +15,6 @@ app.get('/about', (req, res) => {
 
 app.get('/user:id', (req, res) => { 
     res.send("<p>this is user" + req.params.id + "page!"+"</p>")
-     
 });
 
 app.get('/login', (req, res) => { 
@@ -29,10 +32,11 @@ app.get('/upload', (req, res) => {
 app.get('/photo', (req, res) => { 
     res.send('this is photo page') 
 });
+/****************************************/
 
-
-
-
-app.listen(3000, () => { 
-    console.log('Demo app is listening on port 3000!') 
-});
+const server = app.listen(process.env.PORT || 9000, () => {
+  console.log(
+    'our app is listening on port %d', 
+    server.address().port
+  )
+})
