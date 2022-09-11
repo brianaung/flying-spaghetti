@@ -9,7 +9,16 @@ app.use(cors());
 /********* TODO: move routes ************/
 
 
-const routers = req
+const userRouter = require('./routes/userRoutes');
+const sampleRouter = require("./routes/sampleRouter");
+
+app.use((req,res,next) => {
+    console.log('message arrived: ' + req.method + ' ' + req.path)
+    next()
+})
+
+app.use('/user', sampleRouter)
+
 app.get('/', (req, res) => { 
     res.send('Our demo app is working!') 
 });
@@ -18,9 +27,6 @@ app.get('/about', (req, res) => {
     res.send('this is about page') 
 });
 
-app.get('/user:id', (req, res) => { 
-    res.send("<p>this is user" + req.params.id + "page!"+"</p>")
-});
 
 app.get('/login', (req, res) => { 
     res.send('this is login page') 
