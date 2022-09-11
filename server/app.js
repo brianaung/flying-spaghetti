@@ -7,6 +7,9 @@ const cors = require("cors");
 app.use(cors());
 
 /********* TODO: move routes ************/
+
+
+const routers = req
 app.get('/', (req, res) => { 
     res.send('Our demo app is working!') 
 });
