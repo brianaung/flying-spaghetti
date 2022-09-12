@@ -1,5 +1,15 @@
-// link to model
-const sampleData = require('../models/sampleModel')
+const firebase = require('../config/config.js')
+const firestore = firebase.firestore;
+const storage = firebase.storage;
+
+const sampleData = require('../models/sampleModel');
+const User = require('../models/user');
+const Photo = require('../models/photo');
+const Folder = require('../models/folder');
+const Comment = require('../models/comment');
+
+// Add this to all classes
+// this.dateCreated = firestore.Timestamp.fromDate(new Date());
 
 // const getPhotos = (folder) => {
 //     if (folder.folder ) 
@@ -40,4 +50,7 @@ const getUserByID = (req, res) => {
     
 }
 
-module.exports = {getUserfolder, getUserByID}
+module.exports = {
+    getUserfolder,
+    getUserByID
+}

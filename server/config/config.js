@@ -20,11 +20,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const imageStorage = getStorage(app);
+const firestore = getFirestore(app);
+const storage = getStorage(app);
 // const analytics = getAnalytics(db);
 
 module.exports = {
-  db,
-  imageStorage
+  firestore,
+  storage
 };
