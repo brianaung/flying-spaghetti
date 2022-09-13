@@ -1,13 +1,13 @@
 import firebase from '../config/firebase.js';
 
-const { firestore } = firebase;
-const { storage } = firebase;
-
-//import sampleData, { find } from '../models/SampleModel.js';
+// import sampleData, { find } from '../models/SampleModel.js';
 import User from '../models/User.js';
 import Photo from '../models/Photo.js';
 import Folder from '../models/Folder.js';
 import Comment from '../models/Comment.js';
+
+const { firestore } = firebase;
+const { storage } = firebase;
 
 // Add this to all classes
 // this.dateCreated = firestore.Timestamp.fromDate(new Date());
