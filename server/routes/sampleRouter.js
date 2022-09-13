@@ -1,14 +1,13 @@
-const { application } = require('express')
-const express = require('express')
+import { application, Router } from 'express';
 
 // create our Router object
-const sampleRouter = express.Router()
+const sampleRouter = Router();
 
-//controller
-const sampleController = require('../controllers/sampleController')
+// controller
+import sampleController from '../controllers/sampleController.js';
 
-sampleRouter.get('/', sampleController.getUserfolder)
+sampleRouter.get('/', sampleController.getUserfolder);
 
-sampleRouter.get('/get:id', sampleController.getUserByID)
+sampleRouter.get('/get:id', sampleController.getUserByID);
 
-module.exports = sampleRouter
+export default sampleRouter;
