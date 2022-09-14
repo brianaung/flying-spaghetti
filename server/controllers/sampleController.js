@@ -1,6 +1,6 @@
 import firebase from '../config/firebase.js';
 
-// import sampleData, { find } from '../models/SampleModel.js';
+import sampleData from '../models/SampleModel.js';
 import User from '../models/User.js';
 import Photo from '../models/Photo.js';
 import Folder from '../models/Folder.js';
@@ -23,11 +23,25 @@ const getUserfolder = (req, res) => {
     // for (let user of userData) {
     //     for (let folder of user.folders) {
     //         for (let photo of ) {
-
     //         }
     //     }
     // }
     res.send(sampleData[0].folders); // send all folders from all users
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+const getAllImage = (req, res) => {
+  try {
+    const userData = sampleData;
+    const photos = [];
+    for (const user of userData) {
+      for (const folder of user.folders) {
+        photos.push(folder.photos);
+      }
+    }
+    res.send(photos); // send all photos from all users
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -50,5 +64,6 @@ const getUserByID = (req, res) => {
 
 export default {
   getUserfolder,
-  getUserByID
+  getUserByID,
+  getAllImage
 };

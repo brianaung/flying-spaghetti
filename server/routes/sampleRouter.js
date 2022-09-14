@@ -6,7 +6,7 @@ import sampleController from '../controllers/sampleController.js';
 // create our Router object
 const sampleRouter = Router();
 
-sampleRouter.get('/', sampleController.getUserfolder);
+sampleRouter.get('/', sampleController.getAllImage);
 
 sampleRouter.get('/get:id', sampleController.getUserByID);
 
