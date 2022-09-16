@@ -29,8 +29,8 @@ app.get('/login', (req, res) => {
   res.send('this is login page');
 });
 
-app.get('/register', (req, res) => {
-  res.send('this is register page!');
+app.get('/signup', (req, res) => {
+  res.send('this is signup page!');
 });
 
 app.get('/upload', (req, res) => {
