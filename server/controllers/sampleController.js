@@ -62,6 +62,16 @@ const getUserByID = (req, res) => {
   }
 };
 
+//get comment
+
+
+//get no. likes
+
+//get folder
+
+//get photos
+
+
 export default {
   getUserfolder,
   getUserByID,
