@@ -24,7 +24,7 @@ const Navbar = () => {
         </Stack>
         {/* <Typography variant="h6">Photos</Typography> */}
         <Search>
-          <InputBase placeholder="search" />
+          <InputBase placeholder="search" fullWidth />
         </Search>
         <Typography variant="h6">Menu</Typography>
       </StyledToolbar>
