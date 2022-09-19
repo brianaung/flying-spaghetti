@@ -4,8 +4,8 @@ import React from 'react';
 // import { Box, Stack } from '@mui/material';
 // import Navbar from './components/Dashboard/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
-import Login from './components/Login';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
 
 //import { Route, Routes } from 'react-router-dom';
 
