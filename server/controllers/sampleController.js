@@ -6,8 +6,8 @@ import Photo from '../models/Photo.js';
 import Folder from '../models/Folder.js';
 import Comment from '../models/Comment.js';
 
-const { firestore } = firebase;
-const { storage } = firebase;
+const { firestore } = firebase.firestore;
+const { storage } = firebase.storage;
 
 // Add this to all classes
 // this.dateCreated = firestore.Timestamp.fromDate(new Date());
@@ -15,6 +15,19 @@ const { storage } = firebase;
 // const getPhotos = (folder) => {
 //     if (folder.folder )
 // }
+
+// Testing firestore
+const getUserFolders = async (req, res, next) => {
+  try {
+    const user = req.user.toJSON();
+    const folderRefs = firestore.collection('user').doc(user.username);
+    for (let ref of folderRefs) {
+      
+    }
+  } catch (err) {
+    next(err);
+  }
+}
 
 const getUserfolder = (req, res) => {
   try {

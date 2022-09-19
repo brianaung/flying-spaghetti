@@ -7,7 +7,7 @@ export default class User {
     this.role = role; // admin, user, banned
     this.dob = dob;
     this.capacity = capacity;
-    // this.folders = [];
+    this.folders = [];
     this.images = [];
     this.liked = [];
   }

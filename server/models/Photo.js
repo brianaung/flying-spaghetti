@@ -7,5 +7,6 @@ export default class Photo {
     this.isPrivate = isPrivate;
     this.folder = folder;
     this.comments = [];
+    this.likes = [];
   }
 }
