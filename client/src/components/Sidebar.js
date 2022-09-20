@@ -5,8 +5,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import React from 'react';
 import { Stack } from '@mui/system';
+import { useState } from 'react';
+import { storage } from '../config/firebase';
+import { ref, uploadBytes } from 'firebase/storage';
+import { v4 } from 'uuid';
 
 const Sidebar = () => {
+  const [imageUpload, setImageUpload] = useState(null);
+  const uploadImage = () => {
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then(() => {
+      alert('Image upload');
+    });
+  };
   return (
     <>
       <Box bgcolor="white" p={2} flex={2} justifyContent="center">
@@ -49,7 +61,17 @@ const Sidebar = () => {
           justifyContent="center"
           padding="100px 0">
           <Box width="90%" height="10px" border={2} bgcolor="white" borderRadius={2}></Box>
-          <Button color="secondary" variant="contained" justifyContent="center">
+          <input
+            type="file"
+            onChange={(event) => {
+              setImageUpload(event.target.files[0]);
+            }}
+          />
+          <Button
+            onClick={uploadImage}
+            color="secondary"
+            variant="contained"
+            justifyContent="center">
             Upload
           </Button>
         </Stack>
