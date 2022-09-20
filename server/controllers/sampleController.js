@@ -45,6 +45,17 @@ const getUserfolder = (req, res) => {
   }
 };
 
+const getFolderByID = (req, res) => {
+
+    try {
+        const userfolder = sampleData[0].folders
+        const target = userfolder.find((folder) => folder.id === req.params.id)
+        res.send(target.photos); 
+      } catch (error) {
+        res.status(400).send(error.message);
+      }
+}
+
 const getAllImage = (req, res) => {
   try {
     const userData = sampleData;
@@ -62,7 +73,7 @@ const getAllImage = (req, res) => {
 
 const getUserByID = (req, res) => {
   try {
-    const user = find((user) => user.id === req.params.id);
+    const user = sampleData.find((user) => user.id === req.params.id);
     if (user) {
       res.send(user);
     } else {
@@ -88,5 +99,6 @@ const getUserByID = (req, res) => {
 export default {
   getUserfolder,
   getUserByID,
-  getAllImage
+  getAllImage,
+  getFolderByID
 };

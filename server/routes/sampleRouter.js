@@ -9,6 +9,8 @@ const sampleRouter = Router();
 
 sampleRouter.get('/', sampleController.getAllImage);
 
-sampleRouter.get('/get:id', sampleController.getUserByID);
+sampleRouter.get('/getID:id', sampleController.getUserByID);
 //sampleRouter.get('/login', login.login);
+
+sampleRouter.get('/getFolder:id', sampleController.getFolderByID);
 export default sampleRouter;
