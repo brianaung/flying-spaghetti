@@ -12,18 +12,80 @@ const { storage } = firebase.storage;
 // Add this to all classes
 // this.dateCreated = firestore.Timestamp.fromDate(new Date());
 
-// const getPhotos = (folder) => {
-//     if (folder.folder )
-// }
+// User controllers
+const createUser = async (req, res, next) => {
+  try {
+    const userInfo = new User(
+      req.body.firstname,
+      req.body.lastname,
+      req.body.role,
+      req.body.capacity
+    );
+    
+    // Add a new user in collection
+    const user = await firestore.collection('users').doc(req.body.username).set(userInfo);
+    // Do something else with user?
+  } catch (err) {
+    next(err);
+  }
+}
 
-// Testing firestore
+const banUser = async (req, res, next) => {
+  try {
+    const user = await firestore.collection('users').doc(req.params.username).update({
+      role: 'banned'
+    });
+    // Inform user they got banned and for what reason?
+  } catch (err) {
+    next(err);
+  }
+}
+
+// Photos and folders
+const getRecentPhotos = async (req, res, next) => {
+  try {
+    const photos = []
+    const snapshot = firestore.collection('photos').orderBy('dateCreated','desc').get();
+    snapshot.docs.forEach(doc => {
+      photos.push(doc.data().id);
+    });
+    res.send(photos);
+  } catch (err) {
+    next(err);
+  }
+}
+
+const getLikedPhotos = async (req, res, next) => {
+  try {
+    const user = req.user.toJSON();
+    const userRef = firestore.collection('users').doc(user.username);
+    if (!user.exists) {
+      res.sendStatus(404);
+    }
+    const liked = userRef.data().liked;
+    res.send(liked);
+  } catch (err) {
+    next(err);
+  }
+}
+
 const getUserFolders = async (req, res, next) => {
   try {
     const user = req.user.toJSON();
-    const folderRefs = firestore.collection('user').doc(user.username);
-    for (let ref of folderRefs) {
-      
+    const userRef = firestore.collection('users').doc(user.username);
+    if (!user.exists) {
+      res.sendStatus(404);
     }
+    const folders = userRef.data().folders;
+    res.send(folders);
+  } catch (err) {
+    next(err);
+  }
+}
+
+const uploadPhoto = async (req, res, next) => {
+  try {
+
   } catch (err) {
     next(err);
   }
