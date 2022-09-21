@@ -21,7 +21,7 @@ const Sidebar = () => {
   };
   return (
     <>
-      <Box bgcolor="white" p={2} flex={2} justifyContent="center">
+      <Box p={2} flex={2} justifyContent="center" borderRight={1}>
         <Box display="flex" alignItems="center" justifyContent="center" padding="50px">
           <Typography variant="h5">Gday John</Typography>
         </Box>

@@ -6,6 +6,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import PhotoPage from './pages/PhotoPage';
 
 //import { Route, Routes } from 'react-router-dom';
 
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Dashboard />} />
           <Route path="/login" exact element={<Login />} />
+          <Route path="/photo" exact element={<PhotoPage />} />
         </Routes>
       </BrowserRouter>
     </>
