@@ -47,7 +47,7 @@ const getRecentPhotos = async (req, res, next) => {
     const photos = []
     const snapshot = firestore.collection('photos').orderBy('dateCreated','desc').get();
     snapshot.docs.forEach(doc => {
-      photos.push(doc.data().id);
+      photos.push(doc.data());
     });
     res.send(photos);
   } catch (err) {
@@ -85,7 +85,10 @@ const getUserFolders = async (req, res, next) => {
 
 const uploadPhoto = async (req, res, next) => {
   try {
-
+    const photo = new Photo(
+      req.user.username,
+      req.body.caption
+    )
   } catch (err) {
     next(err);
   }
