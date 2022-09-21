@@ -9,7 +9,12 @@ const StyledButton = styled(Button)(({ theme }) => ({
   color: 'black',
   width: '30%',
   margin: 'auto',
-  border: 'solid 2px'
+  border: 'solid 2px black',
+  '&:hover': {
+    backgroundColor: theme.palette.primary.main,
+    border: 'solid 2px black',
+    color: 'white'
+  }
 }));
 
 export default function SubmitBtn(props) {
