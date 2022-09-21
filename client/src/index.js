@@ -5,6 +5,7 @@ import './config/firebase.js';
 // import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './theme';
+import './general.css';
 
 ReactDOM.render(
   <React.StrictMode>
