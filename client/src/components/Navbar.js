@@ -22,9 +22,8 @@ const Navbar = () => {
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
           <Typography variant="h6">Name</Typography>
         </Stack>
-        {/* <Typography variant="h6">Photos</Typography> */}
         <Search>
-          <InputBase placeholder="search" fullWidth />
+          <InputBase placeholder="search" fullWidth value={'hello'} />
         </Search>
         <Typography variant="h6">Menu</Typography>
       </StyledToolbar>
