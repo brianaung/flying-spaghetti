@@ -25,15 +25,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
 export const storage = getStorage(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+export const auth = getAuth(app);
+export const provider = new GoogleAuthProvider();
 //const analytics = analytics();
 //const analytics = getAnalytics(db);
 
 export default {
-  firestore,
+  firestore
   //storage,
-  auth,
-  provider
+  //auth,
+  //provider
   //analytics
 };
