@@ -4,7 +4,7 @@ import cors from 'cors';
 /** ******* TODO: move routes *********** */
 
 // import userRouter from './routes/userRouter.js';
-import sampleRouter from './routes/sampleRouter.js';
+import userRouter from './routes/userRouter.js';
 
 const app = express();
 //const [isAuth, setIsAuth] = userState(false);
@@ -15,7 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/user', sampleRouter);
+app.use('/user', userRouter);
 
 app.get('/', (req, res) => {
   res.send('Our demo app is working!');
