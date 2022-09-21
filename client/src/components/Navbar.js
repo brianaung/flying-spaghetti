@@ -1,34 +1,52 @@
-import { AppBar, InputBase, styled, Toolbar, Typography, Avatar } from '@mui/material';
-import { Stack } from '@mui/system';
 import React from 'react';
+import Button from '@mui/material/Button';
+import AppBar from '@mui/material/AppBar';
+import InputBase from '@mui/material/InputBase';
+import Toolbar from '@mui/material/Toolbar';
+import Avatar from '@mui/material/Avatar';
+import { styled } from '@mui/system';
 
 const StyledToolbar = styled(Toolbar)({
   display: 'flex',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  gap: '50px'
 });
 
 const Search = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
-  padding: '0 10px',
   borderRadius: theme.shape.borderRadius,
-  width: '20%'
+  width: '150px',
+  marginRight: 'auto',
+  padding: '0 10px'
 }));
 
-const Navbar = () => {
+const MenuBtn = styled(Button)({
+  color: 'white'
+});
+
+const User = styled(Button)({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '15px',
+  color: 'white'
+});
+
+// TODO: replace username with prop.username
+export default function Navbar() {
   return (
-    <AppBar position="sticky">
+    <AppBar position="static">
       <StyledToolbar>
-        <Stack direction="row" spacing={2}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-          <Typography variant="h6">Name</Typography>
-        </Stack>
+        <User>
+          <Avatar />
+          Username
+        </User>
+
         <Search>
-          <InputBase placeholder="search" fullWidth value={'hello'} />
+          <InputBase placeholder="SEARCH" />
         </Search>
-        <Typography variant="h6">Menu</Typography>
+
+        <MenuBtn>Menu</MenuBtn>
       </StyledToolbar>
     </AppBar>
   );
-};
-
-export default Navbar;
+}
