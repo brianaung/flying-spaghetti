@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // mui components
 import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
@@ -26,7 +27,7 @@ const User = styled(Button)({
 });
 
 // TODO: replace username with prop.username
-export default function Navbar() {
+export default function Navbar({ query, setQuery }) {
   return (
     <AppBar position="static">
       <StyledToolbar>
@@ -35,10 +36,15 @@ export default function Navbar() {
           Username
         </User>
 
-        <Searchbar />
+        <Searchbar query={query} setQuery={setQuery} />
 
         <MenuBtn>Menu</MenuBtn>
       </StyledToolbar>
     </AppBar>
   );
 }
+
+Navbar.propTypes = {
+  query: PropTypes.string,
+  setQuery: PropTypes.func
+};

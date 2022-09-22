@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import Photo from './Photo';
 
-function Photos({ photos }) {
+function Photos({ photos, query }) {
   return (
     <>
       <Typography variant="h6">Photos</Typography>
@@ -14,16 +14,19 @@ function Photos({ photos }) {
           flexDirection: 'row',
           flexWrap: 'wrap'
         }}>
-        {photos.map((aPhoto) => {
-          return <Photo key={aPhoto.id} aPhoto={aPhoto}></Photo>;
-        })}
+        {photos
+          .filter((photo) => photo.name.toLowerCase().includes(query))
+          .map((aPhoto) => {
+            return <Photo key={aPhoto.id} aPhoto={aPhoto}></Photo>;
+          })}
       </Box>
     </>
   );
 }
 
 Photos.propTypes = {
-  photos: PropTypes.object
+  photos: PropTypes.object,
+  query: PropTypes.string
 };
 
 export default Photos;

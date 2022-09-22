@@ -1,5 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import Folders from '../components/Folders';
 import Photos from '../components/Photos';
@@ -7,10 +8,7 @@ import Photos from '../components/Photos';
 import { Photo101 } from '../data/photo-data';
 // import { Users } from '../data/photo-data';
 
-const Feed = () => {
-  useEffect(() => {
-    console.log(Photo101);
-  });
+const Feed = ({ query }) => {
   return (
     <Stack flex={8} padding="20px" spacing={3}>
       <Box>
@@ -18,10 +16,14 @@ const Feed = () => {
       </Box>
       <Stack>
         <Folders></Folders>
-        <Photos photos={Photo101}></Photos>
+        <Photos photos={Photo101} query={query}></Photos>
       </Stack>
     </Stack>
   );
+};
+
+Feed.propTypes = {
+  query: PropTypes.string
 };
 
 export default Feed;
