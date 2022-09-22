@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
-
+// mui components
+import { styled, Box, Stack } from '@mui/material';
+// my components
 import Sidebar from '../components/Sidebar';
 import Feed from '../components/Feed';
-import { Box, Stack } from '@mui/material';
 import Navbar from '../components/Navbar';
+
+const Container = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100vh'
+});
+
+const StyledStack = styled(Stack)({
+  flexGrow: '1'
+});
 
 const Dashboard = () => {
   const [query, setQuery] = useState('');
 
   return (
-    <Box>
-      <Navbar query={query} setQuery={setQuery}></Navbar>
-      <Stack direction="row" spacing={2}>
-        <Sidebar></Sidebar>
-        <Feed query={query}></Feed>
-      </Stack>
-    </Box>
+    <Container container>
+      <Navbar query={query} setQuery={setQuery} />
+      <StyledStack direction="row">
+        <Sidebar />
+        <Feed query={query} />
+      </StyledStack>
+    </Container>
   );
 };
 
