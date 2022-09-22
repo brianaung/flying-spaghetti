@@ -23,13 +23,8 @@ const Dashboard = () => {
     <Container container>
       <Navbar query={query} setQuery={setQuery} />
       <StyledStack direction="row">
-<<<<<<< HEAD
-        <Sidebar />
-        <Feed query={query} />
-=======
         <Sidebar usage="90" />
-        <Feed />
->>>>>>> nth here
+        <Feed query={query} />
       </StyledStack>
     </Container>
   );
