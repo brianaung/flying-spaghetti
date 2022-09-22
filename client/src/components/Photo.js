@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
+import { styled } from '@mui/system';
+
+const PhotoFrame = styled('div')({
+  paddingRight: '50px',
+  paddingTop: '30px',
+  position: 'relative',
+  overflow: 'auto'
+});
 
 function Photo({ aPhoto }) {
   const [isShown, setIsShown] = useState(false);
 
   return (
-    <div
-      style={{
-        paddingRight: '50px',
-        paddingTop: '50px',
-        position: 'relative',
-        overflow: 'auto'
-      }}>
+    <PhotoFrame>
       <img
         src={aPhoto.photo}
         alt={aPhoto.name}
@@ -36,7 +38,7 @@ function Photo({ aPhoto }) {
           </Typography>
         </>
       )}
-    </div>
+    </PhotoFrame>
   );
 }
 
