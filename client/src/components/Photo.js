@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
-import styled from '@emotion/styled';
+import { styled } from '@mui/system';
+import ImageListItem from '@mui/material/ImageListItem';
 
-const PhotoFrame = styled('div')({
-  paddingRight: '50px',
-  paddingTop: '30px',
-  position: 'relative',
-  overflow: 'auto'
+const StyledImgListItem = styled(ImageListItem)({
+  border: 'solid 2px black',
+  width: '250px',
+  overflow: 'hidden',
+  aspectRatio: '1/1'
 });
 
 function Photo({ aPhoto }) {
   const [isShown, setIsShown] = useState(false);
 
   return (
-    <PhotoFrame>
+    <StyledImgListItem>
       <img
         src={aPhoto.photo}
         alt={aPhoto.name}
-        width="200px"
-        height="200px"
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
         style={{ opacity: isShown && '0.2' }}
@@ -38,7 +37,7 @@ function Photo({ aPhoto }) {
           </Typography>
         </>
       )}
-    </PhotoFrame>
+    </StyledImgListItem>
   );
 }
 

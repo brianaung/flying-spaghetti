@@ -1,12 +1,10 @@
 import { Typography } from '@mui/material';
 import React from 'react';
 
-function Folders() {
+export default function FolderFrame() {
   return (
     <>
-      <Typography variant="h6">Folders</Typography>
+      <Typography variant="h3">Folders</Typography>
     </>
   );
 }
-
-export default Folders;

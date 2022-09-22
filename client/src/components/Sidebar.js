@@ -19,7 +19,7 @@ const WelcomeMsg = styled(Typography)({
 const SidebarContainer = styled(Box)({
   flexDirection: 'column',
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-start',
   width: '20%',
   // TODO: toggle off sidebar in mobile view
   minWidth: '250px',
