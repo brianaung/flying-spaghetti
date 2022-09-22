@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
-import { styled } from '@mui/system';
+import styled from '@emotion/styled';
 
 const PhotoFrame = styled('div')({
   paddingRight: '50px',
