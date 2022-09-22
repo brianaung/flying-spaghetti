@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -7,47 +8,53 @@ import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 // my components
-import SubmitBtn from './SubmitBtn';
+import Progressbar from './Progressbar';
 
 const WelcomeMsg = styled(Typography)({
   textAlign: 'center',
-  padding: '20px'
+  fontWeight: '600',
+  padding: '20px 20px 40px 20px'
 });
 
 const SidebarContainer = styled(Box)({
   flexDirection: 'column',
   display: 'flex',
   justifyContent: 'space-between',
-  height: '100%',
   width: '20%',
-  padding: '20px',
-  borderRight: 'solid 2px'
+  // TODO: toggle off sidebar in mobile view
+  minWidth: '250px',
+  borderRight: 'solid 1px lightgrey',
+  padding: '20px'
 });
 
 // TODO: replace username with prop.username
-export default function Sidebar() {
+export default function Sidebar(props) {
   return (
     <SidebarContainer>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
-        <ListItemButton component="a" href="#simple-list">
+        <ListItemButton component="a" href="#">
           <ListItemText primary="My Photos" />
         </ListItemButton>
-        <ListItemButton component="a" href="#simple-list">
+        <ListItemButton component="a" href="#">
           <ListItemText primary="Shared With Me" />
         </ListItemButton>
-        <ListItemButton component="a" href="#simple-list">
+        <ListItemButton component="a" href="#">
           <ListItemText primary="Recent" />
         </ListItemButton>
-        <ListItemButton component="a" href="#simple-list">
+        <ListItemButton component="a" href="#">
           <ListItemText primary="Liked" />
         </ListItemButton>
-        <ListItemButton component="a" href="#simple-list">
+        <ListItemButton component="a" href="#">
           <ListItemText primary="Trash" />
         </ListItemButton>
       </Stack>
 
-      <SubmitBtn content="upload" />
+      <Progressbar value={props.usage} />
     </SidebarContainer>
   );
 }
+
+Sidebar.propTypes = {
+  usage: PropTypes.number.isRequired
+};

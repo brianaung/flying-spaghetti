@@ -7,6 +7,9 @@ export const theme = createTheme({
     },
     secondary: {
       main: '#E8DB7D'
+    },
+    success: {
+      main: '#499f68'
     }
   },
   typography: {
@@ -31,5 +34,6 @@ export const theme = createTheme({
     button: {
       fontWeight: '600'
     }
-  }
+  },
+  shadows: ['none']
 });
