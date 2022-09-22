@@ -27,7 +27,7 @@ const User = styled(Button)({
 });
 
 // TODO: replace username with prop.username
-export default function Navbar({ query, setQuery }) {
+export default function Navbar(props) {
   return (
     <AppBar position="static">
       <StyledToolbar>
@@ -36,7 +36,7 @@ export default function Navbar({ query, setQuery }) {
           Username
         </User>
 
-        <Searchbar query={query} setQuery={setQuery} />
+        <Searchbar query={props.query} setQuery={props.setQuery} />
 
         <MenuBtn>Menu</MenuBtn>
       </StyledToolbar>

@@ -8,7 +8,7 @@ import Photos from '../components/Photos';
 import { Photo101 } from '../data/photo-data';
 // import { Users } from '../data/photo-data';
 
-const Feed = ({ query }) => {
+const Feed = (props) => {
   return (
     <Stack flex={8} padding="20px" spacing={3}>
       <Box>
@@ -16,7 +16,7 @@ const Feed = ({ query }) => {
       </Box>
       <Stack>
         <Folders></Folders>
-        <Photos photos={Photo101} query={query}></Photos>
+        <Photos photos={Photo101} query={props.query}></Photos>
       </Stack>
     </Stack>
   );

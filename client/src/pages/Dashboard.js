@@ -16,7 +16,7 @@ const StyledStack = styled(Stack)({
   flexGrow: '1'
 });
 
-const Dashboard = () => {
+export default function Dashboard() {
   const [query, setQuery] = useState('');
 
   return (
@@ -28,6 +28,4 @@ const Dashboard = () => {
       </StyledStack>
     </Container>
   );
-};
-
-export default Dashboard;
+}

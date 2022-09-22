@@ -12,10 +12,14 @@ const Search = styled('div')(({ theme }) => ({
   padding: '0 10px'
 }));
 
-export default function SearchBar({ query, setQuery }) {
+export default function SearchBar(props) {
   return (
     <Search>
-      <InputBase value={query} placeholder="SEARCH" onChange={(e) => setQuery(e.target.value)} />
+      <InputBase
+        value={props.query}
+        placeholder="SEARCH"
+        onChange={(e) => props.setQuery(e.target.value)}
+      />
     </Search>
   );
 }
