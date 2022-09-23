@@ -10,6 +10,7 @@ import FolderFrame from '../components/FolderFrame';
 import PhotoFrame from '../components/PhotoFrame';
 //import { Photofolders } from '../data/photo-data';
 import { Photo101 } from '../data/photo-data';
+import { Box, Modal, TextField } from '@mui/material';
 // import { Users } from '../data/photo-data';
 
 const FeedContainer = styled(Stack)({
@@ -19,13 +20,54 @@ const FeedContainer = styled(Stack)({
   padding: '30px'
 });
 
+const SubmitBox = styled(Box)({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  backgroundColor: 'white',
+  border: '1px solid #000',
+  boxShadow: 24,
+  p: 4,
+  padding: '20px'
+});
+
 // TODO: add current directory
 export default function Feed(props) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <FeedContainer>
-      <Fab sx={{ border: 'solid 2px' }} color="secondary" size="medium" aria-label="add">
+      <Fab
+        sx={{ border: 'solid 2px' }}
+        color="secondary"
+        size="medium"
+        aria-label="add"
+        onClick={handleOpen}>
         <AddIcon />
       </Fab>
+
+      <div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description">
+          <SubmitBox>
+            <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <TextField name="creator" variant="outlined" label="Creator" fullWidth></TextField>
+              <TextField
+                name="description"
+                variant="outlined"
+                label="Description"
+                fullWidth></TextField>
+            </form>
+          </SubmitBox>
+        </Modal>
+      </div>
       <FolderFrame></FolderFrame>
       <PhotoFrame photos={Photo101} query={props.query}></PhotoFrame>
     </FeedContainer>
