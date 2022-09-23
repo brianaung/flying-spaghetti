@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Typography } from '@mui/material';
+// mui components
 import { styled } from '@mui/system';
-import ImageListItem from '@mui/material/ImageListItem';
+import { Typography } from '@mui/material';
+import { Stack } from '@mui/material';
+import { Box } from '@mui/material';
+import { ImageListItem } from '@mui/material';
 
 const StyledImgListItem = styled(ImageListItem)({
   border: 'solid 2px black',
@@ -11,38 +14,48 @@ const StyledImgListItem = styled(ImageListItem)({
   aspectRatio: '1/1'
 });
 
-function Photo({ aPhoto }) {
-  const [isShown, setIsShown] = useState(false);
+const LabelContainer = styled(Stack)({
+  padding: '20px',
+  gap: '20px',
+  border: 'solid 2px black',
+  width: '250px',
+  overflow: 'scroll',
+  aspectRatio: '1/1'
+});
+
+function Label(props) {
+  return (
+    <LabelContainer>
+      <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+        {props.name}
+      </Typography>
+      <Typography>{props.caption}</Typography>
+    </LabelContainer>
+  );
+}
+
+Label.propTypes = {
+  name: PropTypes.string,
+  caption: PropTypes.string
+};
+
+export default function Photo(props) {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <StyledImgListItem>
-      <img
-        src={aPhoto.photo}
-        alt={aPhoto.name}
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
-        style={{ opacity: isShown && '0.2' }}
-      />
-      {isShown && (
-        <>
-          <Typography
-            variant="h5"
-            style={{ position: 'absolute', top: '35%', left: '10%', right: '20%' }}>
-            {aPhoto.name}
-          </Typography>
-          <Typography
-            variant="h7"
-            style={{ position: 'absolute', top: '50%', left: '10%', right: '30%' }}>
-            {aPhoto.caption.length >= 100 ? `${aPhoto.caption.slice(0, 50)}...` : aPhoto.caption}
-          </Typography>
-        </>
+    <Box onMouseOver={() => setIsHovered(true)} onMouseOut={() => setIsHovered(false)}>
+      {/* show image label (name, user, caption) on hover */}
+      {isHovered ? (
+        <Label name={props.aPhoto.name} caption={props.aPhoto.caption} />
+      ) : (
+        <StyledImgListItem>
+          <img src={props.aPhoto.photo} alt={props.aPhoto.name} />
+        </StyledImgListItem>
       )}
-    </StyledImgListItem>
+    </Box>
   );
 }
 
 Photo.propTypes = {
   aPhoto: PropTypes.object
 };
-
-export default Photo;
