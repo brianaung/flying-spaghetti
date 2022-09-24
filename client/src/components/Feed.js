@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // mui components
 import { styled } from '@mui/system';
@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import FolderFrame from '../components/FolderFrame';
 import PhotoFrame from '../components/PhotoFrame';
 import { Photo101 } from '../data/photo-data';
-import { Box, Modal, TextField } from '@mui/material';
+import { Box, Modal, TextField, Button } from '@mui/material';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
@@ -39,6 +39,15 @@ export default function Feed(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    if (selectedImage) {
+      setImageUrl(URL.createObjectURL(selectedImage));
+      console.log(selectedImage.name);
+    }
+  }, [selectedImage]);
 
   return (
     <FeedContainer>
@@ -59,12 +68,26 @@ export default function Feed(props) {
           aria-describedby="modal-modal-description">
           <SubmitForm>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <input
+                accept="image/*"
+                type="file"
+                onChange={(e) => setSelectedImage(e.target.files[0])}
+              />
+              {imageUrl && selectedImage && (
+                <Box mt={2} mb={2} textAlign="center">
+                  <img src={imageUrl} alt={selectedImage.name} height="200px" />
+                </Box>
+              )}
+
               <TextField name="name" variant="outlined" label="Name" fullWidth></TextField>
               <TextField
                 name="description"
                 variant="outlined"
                 label="Description"
                 fullWidth></TextField>
+              <Button variant="contained" color="primary" type="submit">
+                Submit
+              </Button>
             </form>
           </SubmitForm>
         </Modal>
