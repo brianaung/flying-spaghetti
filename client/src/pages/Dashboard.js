@@ -12,9 +12,12 @@ const Container = styled(Box)({
   height: '100vh'
 });
 
-const StyledStack = styled(Stack)({
-  flexGrow: '1'
-});
+const StyledStack = styled(Stack)(({ theme }) => ({
+  flexGrow: '1',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column'
+  }
+}));
 
 export default function Dashboard() {
   const [query, setQuery] = useState('');

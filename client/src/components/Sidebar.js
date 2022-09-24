@@ -16,7 +16,7 @@ const WelcomeMsg = styled(Typography)({
   padding: '20px 20px 40px 20px'
 });
 
-const SidebarContainer = styled(Box)({
+const SidebarContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   display: 'flex',
   justifyContent: 'flex-start',
@@ -24,13 +24,18 @@ const SidebarContainer = styled(Box)({
   // TODO: toggle off sidebar in mobile view
   minWidth: '250px',
   borderRight: 'solid 1px lightgrey',
-  padding: '20px'
-});
+  padding: '20px',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    borderRight: '0px',
+    borderBottom: 'solid 1px lightgrey'
+  }
+}));
 
 // TODO: replace username with prop.username
 export default function Sidebar(props) {
   return (
-    <SidebarContainer sx={{ display: { xs: 'none', sm: 'block' } }}>
+    <SidebarContainer>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
         <ListItemButton component="a" href="#">

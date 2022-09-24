@@ -14,7 +14,6 @@ import { Box, Modal, TextField } from '@mui/material';
 const FeedContainer = styled(Stack)({
   gap: '50px',
   justifyContent: 'flex-start',
-  width: '80%',
   padding: '30px'
 });
 
@@ -66,7 +65,7 @@ export default function Feed(props) {
           </SubmitForm>
         </Modal>
       </div>
-      <FolderFrame></FolderFrame>
+      <FolderFrame sx={{ width: { xs: '80%', sm: '100%' } }}></FolderFrame>
       <PhotoFrame photos={Photo101} query={props.query}></PhotoFrame>
     </FeedContainer>
   );
