@@ -1,10 +1,8 @@
 export default class Folder {
-  constructor(username, name, parentFolder) {
-    // this.id = id;
-    this.createdBy = username;
+  constructor(username, name, parentFolder, date) {
     this.name = name;
-    this.parent = parentFolder;
-    this.folders = [];
+    this.owner = username;
+    this.date = date;
     this.photos = [];
   }
 }

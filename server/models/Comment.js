@@ -1,8 +1,8 @@
 // Within photos
 export default class Comment {
-  constructor(username, text) {
-    // this.id = id;
-    this.createdBy = username;
+  constructor(username, text, date) {
+    this.owner = username;
     this.text = text;
+    this.date = date;
   }
 }
