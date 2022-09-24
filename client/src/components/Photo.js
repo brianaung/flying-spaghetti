@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
 import {
   Typography,
-  Stack,
   Box,
   ImageListItem,
   Button,
@@ -15,25 +14,15 @@ import {
 
 //mui icons
 import Favorite from '@mui/icons-material/Favorite';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import ShareIcon from '@mui/icons-material/Share';
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 
 const StyledImgListItem = styled(ImageListItem)({
-  border: 'solid 2px black',
   width: '250px',
   overflow: 'hidden',
-  aspectRatio: '1/1'
-});
-
-const LabelContainer = styled(Stack)({
-  padding: '20px',
-  gap: '20px',
-  border: 'solid 2px black',
-  width: '250px',
-  overflow: 'scroll',
   aspectRatio: '1/1'
 });
 
@@ -60,24 +49,7 @@ const ImageLink = styled(Box)({
   padding: '20px'
 });
 
-function Label(props) {
-  return (
-    <LabelContainer>
-      <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
-        {props.name}
-      </Typography>
-      <Typography>{props.caption}</Typography>
-    </LabelContainer>
-  );
-}
-
-Label.propTypes = {
-  name: PropTypes.string,
-  caption: PropTypes.string
-};
-
 export default function Photo(props) {
-  const [isHovered, setIsHovered] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -85,26 +57,34 @@ export default function Photo(props) {
 
   return (
     <div>
-      <Box onMouseOver={() => setIsHovered(true)} onMouseOut={() => setIsHovered(false)}>
-        {/* show image label (name, user, caption) on hover */}
-        {isHovered ? (
-          <Label name={props.aPhoto.name} caption={props.aPhoto.caption} />
-        ) : (
-          <StyledImgListItem>
-            <img src={props.aPhoto.photo} alt={props.aPhoto.name} />
-          </StyledImgListItem>
-        )}
-      </Box>
+      <Box sx={{ border: 'solid 2px black' }}>
+        <StyledImgListItem>
+          <img
+            src={props.aPhoto.photo}
+            alt={props.aPhoto.name}
+          />
+        </StyledImgListItem>
 
-      {/* like, comment, share buttons */}
-      <Box display="flex" justifyContent="space-between">
-        <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: 'red' }} />} />
-        <Button size="small" color="primary" onClick={() => {}}>
-          <ChatBubbleOutlineOutlinedIcon fontSize="medium" />
-        </Button>
-        <Button size="small" color="primary" onClick={handleOpen}>
-          <ShareIcon fontSize="medium" />
-        </Button>
+        <Box sx={{ padding: '10px'}}>
+          <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
+            {props.aPhoto.user}
+          </Typography>
+          <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
+            {props.aPhoto.name}
+          </Typography>
+        </Box>
+
+        {/* like, comment, share buttons */}
+        <Box display="flex" justifyContent="space-between">
+          <Checkbox size="medium" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
+          <Button sx={{ marginRight: 'auto' }} color="primary" onClick={() => {}}>
+            <ModeCommentOutlinedIcon size="small" fontSize="medium" />
+          </Button>
+          <Button size="small" color="primary" onClick={handleOpen}>
+            <ShareIcon fontSize="medium" />
+          </Button>
+        </Box>
+
       </Box>
 
       {/* image link */}

@@ -17,7 +17,7 @@ export default function PhotoFrame(props) {
   return (
     <>
       <Typography variant="h3">Photos</Typography>
-      <PhotoContainer cols={4} gap={50}>
+      <PhotoContainer gap={20}>
         {/* filter search queries */}
         {props.photos
           .filter((photo) => photo.name.toLowerCase().includes(props.query))
