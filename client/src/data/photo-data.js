@@ -3,8 +3,7 @@ export const Photo101 = [
     id: '11',
     name: 'Porsche',
     user: 'John Doe',
-    photo:
-      'https://i.pinimg.com/236x/cb/89/9e/cb899e0693d298bc3f6121c069cfc1a1.jpg',
+    photo: 'https://i.pinimg.com/236x/cb/89/9e/cb899e0693d298bc3f6121c069cfc1a1.jpg',
     caption:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque aperiam, quibusdam accusantium perferendis obcaecati reprehenderit delectus in maiores necessitatibus facilis sequi enim optio quia et debitis fugit quis dolor ipsam unde nisi earum impedit reiciendis? Reiciendis libero rerum suscipit itaque obcaecati!'
   },
@@ -34,24 +33,21 @@ export const Photo101 = [
     id: '14',
     name: 'Good day',
     user: 'John Doe',
-    photo:
-      'https://i.pinimg.com/236x/93/a7/fe/93a7feba74f4310e7a20cce84fd89719.jpg',
+    photo: 'https://i.pinimg.com/236x/93/a7/fe/93a7feba74f4310e7a20cce84fd89719.jpg',
     caption: 'saw some nice rainbow today'
   },
   {
     id: '15',
     name: 'baNaNa',
     user: 'John Doe',
-    photo:
-      'https://i.pinimg.com/236x/fc/ff/e6/fcffe653d658c17af0f53248f883504e.jpg',
+    photo: 'https://i.pinimg.com/236x/fc/ff/e6/fcffe653d658c17af0f53248f883504e.jpg',
     caption: ''
   },
   {
     id: '16',
     name: 'New kicks',
     user: 'John Doe',
-    photo:
-      'https://i.pinimg.com/236x/72/27/4a/72274a00360daf41f358e11300f0c4ca.jpg',
+    photo: 'https://i.pinimg.com/236x/72/27/4a/72274a00360daf41f358e11300f0c4ca.jpg',
     caption: ''
   }
 ];

@@ -2,15 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // mui components
 import { styled } from '@mui/system';
-import {
-  Typography,
-  Box,
-  ImageListItem,
-  Button,
-  Modal,
-  Checkbox,
-  Tooltip
-} from '@mui/material';
+import { Typography, Box, ImageListItem, Button, Modal, Checkbox, Tooltip } from '@mui/material';
 
 //mui icons
 import Favorite from '@mui/icons-material/Favorite';
@@ -59,13 +51,10 @@ export default function Photo(props) {
     <div>
       <Box sx={{ border: 'solid 2px black' }}>
         <StyledImgListItem>
-          <img
-            src={props.aPhoto.photo}
-            alt={props.aPhoto.name}
-          />
+          <img src={props.aPhoto.photo} alt={props.aPhoto.name} />
         </StyledImgListItem>
 
-        <Box sx={{ padding: '10px'}}>
+        <Box sx={{ padding: '10px' }}>
           <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
             {props.aPhoto.user}
           </Typography>
@@ -84,7 +73,6 @@ export default function Photo(props) {
             <ShareIcon fontSize="medium" />
           </Button>
         </Box>
-
       </Box>
 
       {/* image link */}
