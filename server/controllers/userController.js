@@ -31,6 +31,32 @@ const getFolderByID = async (req, res, next) => {
     }
   }
 
+  const getContentByUser = async (req, res, next) => {
+    try {
+      const user = await firestore.collection("users").doc("admin1")
+      if (!user.exists) {
+        res.sendStatus(404);
+      }
+      const photoList = []
+      var folders = user.data().folders
+      var photos = user.data().images
+      photos.forEach(photoID => {
+        const photo = firestore.collection("photos").doc(photoID);
+        photoList.push(photo);
+    })
+
+      var content = {
+        "folders": folders,
+        "photos": photoList
+      }
+      res.send(content);
+
+      // Do something else with user?
+    } catch (err) {
+      next(err);
+    }
+  }
+
   export default {
-    getFolderByID,
+    getFolderByID, getContentByUser
   };

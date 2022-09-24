@@ -9,7 +9,7 @@ const userRouter = Router();
 
 userRouter.get('/', userController.getRecentPhotos);
 
-userRouter.get('/getID:id', userController.getUserByID);
+userRouter.get('/getID:id', userController.getContentByUser);
 //sampleRouter.get('/login', login.login);
 
 userRouter.get('/getFolder:id', userController.getFolderByID);
