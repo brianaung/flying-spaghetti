@@ -8,10 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 // my components
 import FolderFrame from '../components/FolderFrame';
 import PhotoFrame from '../components/PhotoFrame';
-//import { Photofolders } from '../data/photo-data';
 import { Photo101 } from '../data/photo-data';
 import { Box, Modal, TextField } from '@mui/material';
-// import { Users } from '../data/photo-data';
 
 const FeedContainer = styled(Stack)({
   gap: '50px',

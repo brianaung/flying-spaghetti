@@ -2,10 +2,24 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // mui components
 import { styled } from '@mui/system';
-import { Typography, Stack, Box, ImageListItem, Button } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import {
+  Typography,
+  Stack,
+  Box,
+  ImageListItem,
+  Button,
+  Modal,
+  Checkbox,
+  Tooltip
+} from '@mui/material';
+
+//mui icons
+import Favorite from '@mui/icons-material/Favorite';
+import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import ShareIcon from '@mui/icons-material/Share';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 
 const StyledImgListItem = styled(ImageListItem)({
   border: 'solid 2px black',
@@ -21,6 +35,29 @@ const LabelContainer = styled(Stack)({
   width: '250px',
   overflow: 'scroll',
   aspectRatio: '1/1'
+});
+
+const LinkBox = styled(Box)({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  backgroundColor: 'white',
+  border: '1px solid #000',
+  boxShadow: 24,
+  p: 4,
+  padding: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  flexDirection: 'column'
+});
+
+const ImageLink = styled(Box)({
+  border: '1px ridge',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  padding: '20px'
 });
 
 function Label(props) {
@@ -41,6 +78,10 @@ Label.propTypes = {
 
 export default function Photo(props) {
   const [isHovered, setIsHovered] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [copied, setCopied] = useState(false);
 
   return (
     <div>
@@ -55,16 +96,38 @@ export default function Photo(props) {
         )}
       </Box>
       <Box display="flex" justifyContent="space-between">
-        <Button size="small" color="primary" onClick={() => {}}>
-          <FavoriteBorderIcon fontSize="medium" />
-        </Button>
+        <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: 'red' }} />} />
         <Button size="small" color="primary" onClick={() => {}}>
           <ChatBubbleOutlineOutlinedIcon fontSize="medium" />
         </Button>
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button size="small" color="primary" onClick={handleOpen}>
           <ShareIcon fontSize="medium" />
         </Button>
       </Box>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <LinkBox>
+          <Typography align="center">Image Link</Typography>
+          <ImageLink>
+            {props.aPhoto.photo}
+            <Box display="flex" justifyContent="flex-end" marginTop="1rem">
+              <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
+                <Checkbox
+                  onClick={() => {
+                    navigator.clipboard.writeText(props.aPhoto.photo);
+                    setCopied(!copied);
+                  }}
+                  icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
+                  checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
+                />
+              </Tooltip>
+            </Box>
+          </ImageLink>
+        </LinkBox>
+      </Modal>
     </div>
   );
 }
