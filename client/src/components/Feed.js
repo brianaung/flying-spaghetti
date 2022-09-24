@@ -86,7 +86,7 @@ export default function Feed(props) {
                 label="Description"
                 fullWidth></TextField>
               <Button variant="contained" color="primary" type="submit">
-                Submit
+                Upload
               </Button>
             </form>
           </SubmitForm>
