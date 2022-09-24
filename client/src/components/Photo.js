@@ -95,6 +95,8 @@ export default function Photo(props) {
           </StyledImgListItem>
         )}
       </Box>
+
+      {/* like, comment, share buttons */}
       <Box display="flex" justifyContent="space-between">
         <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: 'red' }} />} />
         <Button size="small" color="primary" onClick={() => {}}>
@@ -104,6 +106,8 @@ export default function Photo(props) {
           <ShareIcon fontSize="medium" />
         </Button>
       </Box>
+
+      {/* image link */}
       <Modal
         open={open}
         onClose={handleClose}

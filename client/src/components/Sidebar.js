@@ -30,7 +30,7 @@ const SidebarContainer = styled(Box)({
 // TODO: replace username with prop.username
 export default function Sidebar(props) {
   return (
-    <SidebarContainer>
+    <SidebarContainer sx={{ display: { xs: 'none', sm: 'block' } }}>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
         <ListItemButton component="a" href="#">

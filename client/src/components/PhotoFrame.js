@@ -8,7 +8,9 @@ import Typography from '@mui/material/Typography';
 import Photo from './Photo';
 
 const PhotoContainer = styled(ImageList)({
-  justifyItems: 'center'
+  justifyItems: 'center',
+  display: 'flex',
+  flexWrap: 'wrap'
 });
 
 export default function PhotoFrame(props) {
