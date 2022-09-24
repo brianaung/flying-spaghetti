@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // mui components
 import { styled } from '@mui/system';
-import { Typography } from '@mui/material';
-import { Stack } from '@mui/material';
-import { Box } from '@mui/material';
-import { ImageListItem } from '@mui/material';
+import { Typography, Stack, Box, ImageListItem, Button } from '@mui/material';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ShareIcon from '@mui/icons-material/Share';
+import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
 const StyledImgListItem = styled(ImageListItem)({
   border: 'solid 2px black',
@@ -43,16 +43,29 @@ export default function Photo(props) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Box onMouseOver={() => setIsHovered(true)} onMouseOut={() => setIsHovered(false)}>
-      {/* show image label (name, user, caption) on hover */}
-      {isHovered ? (
-        <Label name={props.aPhoto.name} caption={props.aPhoto.caption} />
-      ) : (
-        <StyledImgListItem>
-          <img src={props.aPhoto.photo} alt={props.aPhoto.name} />
-        </StyledImgListItem>
-      )}
-    </Box>
+    <div>
+      <Box onMouseOver={() => setIsHovered(true)} onMouseOut={() => setIsHovered(false)}>
+        {/* show image label (name, user, caption) on hover */}
+        {isHovered ? (
+          <Label name={props.aPhoto.name} caption={props.aPhoto.caption} />
+        ) : (
+          <StyledImgListItem>
+            <img src={props.aPhoto.photo} alt={props.aPhoto.name} />
+          </StyledImgListItem>
+        )}
+      </Box>
+      <Box display="flex" justifyContent="space-between">
+        <Button size="small" color="primary" onClick={() => {}}>
+          <FavoriteBorderIcon fontSize="medium" />
+        </Button>
+        <Button size="small" color="primary" onClick={() => {}}>
+          <ChatBubbleOutlineOutlinedIcon fontSize="medium" />
+        </Button>
+        <Button size="small" color="primary" onClick={() => {}}>
+          <ShareIcon fontSize="medium" />
+        </Button>
+      </Box>
+    </div>
   );
 }
 

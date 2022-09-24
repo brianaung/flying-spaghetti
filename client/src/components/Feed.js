@@ -20,7 +20,7 @@ const FeedContainer = styled(Stack)({
   padding: '30px'
 });
 
-const SubmitBox = styled(Box)({
+const SubmitForm = styled(Box)({
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -56,16 +56,16 @@ export default function Feed(props) {
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description">
-          <SubmitBox>
+          <SubmitForm>
             <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <TextField name="creator" variant="outlined" label="Creator" fullWidth></TextField>
+              <TextField name="name" variant="outlined" label="Name" fullWidth></TextField>
               <TextField
                 name="description"
                 variant="outlined"
                 label="Description"
                 fullWidth></TextField>
             </form>
-          </SubmitBox>
+          </SubmitForm>
         </Modal>
       </div>
       <FolderFrame></FolderFrame>
