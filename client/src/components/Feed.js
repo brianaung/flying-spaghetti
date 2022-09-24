@@ -11,11 +11,15 @@ import PhotoFrame from '../components/PhotoFrame';
 import { Photo101 } from '../data/photo-data';
 import { Box, Modal, TextField } from '@mui/material';
 
-const FeedContainer = styled(Stack)({
+const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
   justifyContent: 'flex-start',
-  padding: '30px'
-});
+  padding: '30px',
+  width: '80%',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
 
 const SubmitForm = styled(Box)({
   position: 'absolute',
@@ -65,7 +69,7 @@ export default function Feed(props) {
           </SubmitForm>
         </Modal>
       </div>
-      <FolderFrame sx={{ width: { xs: '80%', sm: '100%' } }}></FolderFrame>
+      <FolderFrame></FolderFrame>
       <PhotoFrame photos={Photo101} query={props.query}></PhotoFrame>
     </FeedContainer>
   );
