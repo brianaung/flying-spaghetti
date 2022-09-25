@@ -188,4 +188,44 @@ export const Users = [
   }
 ];
 
+export const comments = [
+  
+  {
+    username: 'john',
+    user_comment:'cute!!'
+  },
+  {
+    username: 'mary',
+    user_comment:'i like the photo'
+  },
+  {
+    username: 'susan',
+    user_comment: 'where did you take this?'
+  },
+  {
+    username: 'john',
+    user_comment:'cute!!'
+  },
+  {
+    username: 'mary',
+    user_comment:'i like the photo'
+  },
+  {
+    username: 'susan',
+    user_comment: 'where did you take this?'
+  },
+  {
+    username: 'john',
+    user_comment:'cute!!'
+  },
+  {
+    username: 'mary',
+    user_comment:'i like the photo'
+  },
+  {
+    username: 'susan',
+    user_comment: 'where did you take this?'
+  },
+]
+
 export default Users;
