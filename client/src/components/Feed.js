@@ -9,8 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import FolderFrame from '../components/FolderFrame';
 import PhotoFrame from '../components/PhotoFrame';
 import { Photo101 } from '../data/photo-data';
-import { Box, Modal, TextField } from '@mui/material';
-import SubmitBtn from './SubmitBtn';
+import { Button, Box, Modal, TextField } from '@mui/material';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
@@ -87,7 +86,9 @@ export default function Feed(props) {
             label="Description"
             fullWidth></TextField>
 
-          <SubmitBtn content="Upload" type="submit" />
+          <Button variant="contained" color="primary" type="submit">
+            Upload
+          </Button>
         </SubmitForm>
       </Modal>
 
