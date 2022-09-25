@@ -26,7 +26,6 @@ const MainSection = styled(Stack)({
 });
 
 const PhotoSection = styled(Grid)({
-  background: 'red',
   display: 'flex',
   flexDirection: 'column',
   width: '50%'
