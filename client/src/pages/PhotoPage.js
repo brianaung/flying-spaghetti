@@ -109,7 +109,7 @@ export default function OnePhoto() {
               </Button>
             </Box>
             <Stack direction="row" spacing={2}>
-              <TextField fullWidth></TextField>
+              <TextField fullWidth name='comment' label="Add a comment"></TextField>
               <Button>Post</Button>
             </Stack>
           </StyledBox>
