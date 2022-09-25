@@ -59,9 +59,9 @@ export default function OnePhoto() {
   return (
     <>
       <Navbar />
-      <Stack direction='row'>
+      <Stack direction="row">
         <Sidebar />
-        <MainSection >
+        <MainSection>
           <PhotoSection>
             <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`} ref={container1}></Box>
             <img
@@ -75,15 +75,13 @@ export default function OnePhoto() {
             <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`}></Box>
           </PhotoSection>
 
-          <CommentSection sx={{ overflowY: 'scroll', maxHeight: '40rem' }}>
-            <StyledBox overflowY="hidden">
+          <CommentSection >
+            <StyledBox sx={{ overflowY: 'scroll', height: '30rem' }}>
               <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
                 Shiba inu
               </Typography>
               <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Similique voluptates sit
-                rem non maxime? Eius magnam nemo, a ipsum omnis odit similique officiis deleniti
-                delectus repudiandae repellat, accusamus sed quod?
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae cum delectus repellendus asperiores quidem excepturi sapiente, illum tenetur nisi ducimus distinctio modi repudiandae laborum maiores adipisci cupiditate vero minus laudantium ex. Incidunt corporis excepturi maiores soluta porro, impedit rerum, in sint quos voluptatem asperiores, totam modi. Veritatis, minima! Dolorum cupiditate dolore ad expedita dicta aperiam laboriosam optio, pariatur repellendus molestias unde, facere consectetur in tenetur at fuga ratione reiciendis esse iusto eligendi! Adipisci accusantium nam fugit laudantium dolor. Quam animi autem omnis cupiditate aspernatur, natus doloremque, voluptas id fugiat illo consequuntur aliquid modi blanditiis, iure dolorum suscipit vero. Nisi, distinctio!
               </Typography>
             </StyledBox>
 
