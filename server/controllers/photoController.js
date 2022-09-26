@@ -4,9 +4,13 @@ import User from '../models/User.js';
 import Photo from '../models/Photo.js';
 import Folder from '../models/Folder.js';
 import Comment from '../models/Comment.js';
+import { storage } from '../config/firebase.js';
+import { ref, uploadBytes } from 'firebase/storage';
+import { v4 } from 'uuid';
+
 
 // const { firestore } = firebase.firestore;
-// const { storage } = firebase.storage;
+//const { storage } = firebase.storage;
 
 const getRecentPhotos = async (req, res, next) => {
     try {
@@ -58,6 +62,14 @@ const getUserFolders = async (req, res, next) => {
         req.user.username,
         req.body.caption
       )
+      
+      const uploadImage = () => {
+        if (req.pohto == null) return;
+        const imageRef = ref(storage, `images/${req.photo.name + v4()}`);
+        uploadBytes(imageRef, photo).then(() => {
+            alert('Image upload');
+        });
+      }
     } catch (err) {
       next(err);
     }

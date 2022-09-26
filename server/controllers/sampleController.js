@@ -71,6 +71,35 @@ const getUserByID = (req, res) => {
   }
 };
 
+
+const uploadPhoto = (req, res) => {
+  const [imageUpload, setImageUpload] = useState(null);
+  const uploadImage = () => {
+    if (imageUpload == null) return;
+    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    uploadBytes(imageRef, imageUpload).then(() => {
+      alert('Image upload');
+    });
+    return (
+    <>
+      <input
+            type="file"
+            onChange={(event) => {
+              setImageUpload(event.target.files[0]);
+            }}
+          />
+          <Button
+            onClick={uploadImage}
+            color="secondary"
+            variant="contained"
+            justifyContent="center">
+            Upload
+          </Button>
+    </>  
+    
+    )
+  };
+}
 //get comment
 
 
@@ -85,5 +114,6 @@ export default {
   getUserfolder,
   getUserByID,
   getAllImage,
-  getFolderByID
+  getFolderByID,
+  uploadPhoto
 };

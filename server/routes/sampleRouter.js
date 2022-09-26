@@ -9,6 +9,9 @@ const sampleRouter = Router();
 
 sampleRouter.get('/', sampleController.getAllImage);
 
+sampleRouter.get('/', sampleController.uploadPhoto);
+
+
 sampleRouter.get('/getID:id', sampleController.getUserByID);
 //sampleRouter.get('/login', login.login);
 
