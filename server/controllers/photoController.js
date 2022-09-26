@@ -1,4 +1,4 @@
-import { doc, getDoc, collection, query, orderBy } from "firebase/firestore"
+import { doc, addDoc, collection, arrayUnion, query, orderBy } from "firebase/firestore"
 import { db } from '../config/firebase.js';
 import User from '../models/User.js';
 import Photo from '../models/Photo.js';
@@ -56,32 +56,48 @@ const getUserFolders = async (req, res, next) => {
     }
 }
   
-  const uploadPhoto = async (req, res, next) => {
+const uploadPhoto = async (req, res, next) => {
     try {
         const imageRef = ref(storage, `images/${req.body.upload-form.selectedImage.name + v4()}`);
         uploadBytes(imageRef, photo).then(() => {
             alert('Image upload');
         });
         
-        await setDoc(doc(db, "photos", req.body.username), {
+
+        //photo object
+        const docRef  = await addDoc(collection(db, "photos", req.body.photoName), {
             caption: req.body.caption,
             owner: req.body.owner,
             isPrivate: req.body.isPrivate,
-            capacity: req.body.capacity,
+            //capacity: req.body.capacity,
             date: Timestamp.fromDate(new Date()),
             folder: req.body.folder,
             link: imageRef,
             likes: []
         });
+
         
-        // const photo = new Photo(
+        
+        //update users. 
+        await updateDoc(doc(db, "users", req.params.username), {
+            images: arrayUnion(docRef.id)
+            //update capcity
+
+          });
+
+        //update folder
+        await updateDoc(doc(db, "folders", req.params.folderName), {
+            photos: arrayUnion(docRef.id) 
+        
+        });
+            // const photo = new Photo(
         // req.user.username,
         // req.body.caption
         
       //)
       
       
-    if (photo == null) return;
+    //if (photo == null) return;
     
       
     } catch (err) {
