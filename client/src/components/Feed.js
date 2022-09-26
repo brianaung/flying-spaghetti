@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import FormData from 'form-data';
@@ -45,6 +47,7 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (selectedImage) {
