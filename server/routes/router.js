@@ -6,7 +6,7 @@ import contentController from '../controllers/contentController.js';
 // import login from '../login.js';
 
 import multer from 'multer';
-const upload = multer({ dest: './public/data/uploads/' })
+const upload = multer({ dest: './public/data/uploads/' });
 
 // create our Router object
 const router = Router();
@@ -28,6 +28,10 @@ router.get('/getLiked', contentController.getLikedPhotos);
 router.get('/recents', contentController.getRecentPhotos);
 router.get('/getPhoto/:id', contentController.getPhotoById);
 
-router.post('/dashboard/upload_photo', upload.single('selectedImage'),contentController.uploadPhoto);
+router.post(
+  '/dashboard/upload_photo',
+  upload.single('selectedImage'),
+  contentController.uploadPhoto
+);
 
 export default router;

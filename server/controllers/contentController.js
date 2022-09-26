@@ -1,8 +1,7 @@
 import { doc, getDoc, getDocs, collection, query, orderBy } from 'firebase/firestore';
-import { db } from '../config/firebase.js';
-import { storage } from '../config/firebase.js';
+import { db, storage } from '../config/firebase.js';
 import { ref, uploadBytes } from 'firebase/storage';
-//import { v4 } from 'uuid';
+// import { v4 } from 'uuid';
 
 // const getPhotosFromIDs = async (photos) => {
 //     const photoList = [];
@@ -13,66 +12,61 @@ import { ref, uploadBytes } from 'firebase/storage';
 //     return photoList;
 // }
 
-const getPhotoById = async(req, res, next) => {
-    try {
-        const snapshot = await getDoc(doc(db, "photos", req.params.id));
-        const photosnapshot = snapshot.data();
-        
-        const userLikesID = photosnapshot.likes;
-        const userList = []
+const getPhotoById = async (req, res, next) => {
+  try {
+    const snapshot = await getDoc(doc(db, 'photos', req.params.id));
+    const photosnapshot = snapshot.data();
 
-        for (let userID of userLikesID) {
-            const userRef = await getDoc(doc(db, "users", userID));
-            const user = userRef.data();
-            var userOBJ = {
-                id: userRef.id,
-                user: user
-            };
-            userList.push(userOBJ);
-            // Check if photo in root folder
-        }
+    const userLikesID = photosnapshot.likes;
+    const userList = [];
 
-
-
-        const photo = {
-            caption: photosnapshot.caption,
-            date: photosnapshot.date,
-            folder: photosnapshot.folder,
-            isPrivate: photosnapshot.isPrivate,
-            link: photosnapshot.link,
-            owner: photosnapshot.owner,
-            likes: userList
-        }
-
-        res.send(photo);
-    } catch (err) {
-        next(err);
+    for (const userID of userLikesID) {
+      const userRef = await getDoc(doc(db, 'users', userID));
+      const user = userRef.data();
+      const userOBJ = {
+        id: userRef.id,
+        user
+      };
+      userList.push(userOBJ);
+      // Check if photo in root folder
     }
-}
+
+    const photo = {
+      caption: photosnapshot.caption,
+      date: photosnapshot.date,
+      folder: photosnapshot.folder,
+      isPrivate: photosnapshot.isPrivate,
+      link: photosnapshot.link,
+      owner: photosnapshot.owner,
+      likes: userList
+    };
+
+    res.send(photo);
+  } catch (err) {
+    next(err);
+  }
+};
 
 const getAllComments = async (req, res, next) => {
-    try {
-        // const userID = req.params.id;
-        const userSnap = await query(collection(db, "photos", "2iGpNGwey6sItnF3o5uR", "comments"));
-        if (!userSnap.exists) {
-        res.sendStatus(404);
-        }
-        const commentIDs = userSnap;
-        
-
-
-    
-        var comments = [];
-        for (var comment in commentIDs) {
-            var commentOBJ = getDoc(doc(db, "photos", "2iGpNGwey6sItnF3o5uR", "comments", comment))
-            comments.push((await commentOBJ).data());
-        }
-
-        res.send(comments);
-    } catch (err) {
-        next(err);
+  try {
+    // const userID = req.params.id;
+    const userSnap = await query(collection(db, 'photos', '2iGpNGwey6sItnF3o5uR', 'comments'));
+    if (!userSnap.exists) {
+      res.sendStatus(404);
     }
+    const commentIDs = userSnap;
+
+    const comments = [];
+    for (const comment in commentIDs) {
+      const commentOBJ = getDoc(doc(db, 'photos', '2iGpNGwey6sItnF3o5uR', 'comments', comment));
+      comments.push((await commentOBJ).data());
+    }
+
+    res.send(comments);
+  } catch (err) {
+    next(err);
   }
+};
 
 const getRecentPhotos = async (req, res, next) => {
   try {
@@ -135,7 +129,7 @@ const getPhotosInFolder = async (req, res, next) => {
     const photos = [];
     for (const photoID of photoIDs) {
       const photoSnap = await getDoc(doc(db, 'photos', photoID));
-      var photo = {
+      const photo = {
         id: photoSnap.id,
         data: photoSnap.data()
       };
@@ -178,11 +172,11 @@ const getContentByUser = async (req, res, next) => {
 
 // incomplete
 const uploadPhoto = async (req, res, next) => {
-    try {
-      console.log(req.body.name);
-      console.log(req.body.description);
-      console.log(req.file);
-        /*
+  try {
+    console.log(req.body.name);
+    console.log(req.body.description);
+    console.log(req.file);
+    /*
         const imageRef = ref(storage, `images/${req.body.upload-form.selectedImage.name + v4()}`);
         uploadBytes(imageRef, photo).then(() => {
             alert('Image upload');
@@ -208,21 +202,18 @@ const uploadPhoto = async (req, res, next) => {
       
     if (photo == null) return;
       */
-    
-      
-    } catch (err) {
-      next(err);
-    }
+  } catch (err) {
+    next(err);
   }
-
+};
 
 export default {
-    getRecentPhotos,
-    getLikedPhotos,
-    getUserFolders,
-    getPhotosInFolder,
-    getContentByUser,
-    getAllComments,
-    uploadPhoto,
-    getPhotoById
-}
+  getRecentPhotos,
+  getLikedPhotos,
+  getUserFolders,
+  getPhotosInFolder,
+  getContentByUser,
+  getAllComments,
+  uploadPhoto,
+  getPhotoById
+};

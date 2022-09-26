@@ -5,15 +5,15 @@ import { db } from '../config/firebase.js';
 const getUser = async (req, res, next) => {
   try {
     const userID = req.params.id;
-    const userSnap = await getDoc(doc(db, "users", userID));
+    const userSnap = await getDoc(doc(db, 'users', userID));
     if (!userSnap.exists) {
       res.sendStatus(404);
     }
     res.send(userSnap.data());
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
 const sampleUser = async (req, res, next) => {
   try {
