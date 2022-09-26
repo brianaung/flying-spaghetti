@@ -3,7 +3,7 @@ import { application, Router } from 'express';
 // controller
 import adminController from '../controllers/adminController.js';
 import contentController from '../controllers/contentController.js';
-//import login from '../login.js';
+// import login from '../login.js';
 
 // create our Router object
 const router = Router();

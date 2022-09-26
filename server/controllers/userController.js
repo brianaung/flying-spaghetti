@@ -1,5 +1,5 @@
 // import * as fs from "firebase/firestore";
-import {getDoc, setDoc, updateDoc, doc, Timestamp } from "firebase/firestore"
+import { getDoc, setDoc, updateDoc, doc, Timestamp } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 import User from '../models/User.js';
 import Photo from '../models/Photo.js';
@@ -11,10 +11,10 @@ import Comment from '../models/Comment.js';
 
 const sampleUser = async (req, res, next) => {
   try {
-    await setDoc(doc(db, "users", "user1"), {
-      firstName: "Tom",
-      lastName: "Hanks",
-      role: "user",
+    await setDoc(doc(db, 'users', 'user1'), {
+      firstName: 'Tom',
+      lastName: 'Hanks',
+      role: 'user',
       capacity: 3,
       date: Timestamp.fromDate(new Date()),
       folders: [],
@@ -26,11 +26,11 @@ const sampleUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-}
+};
 
 const createUser = async (req, res, next) => {
   try {
-    await setDoc(doc(db, "users", req.body.username), {
+    await setDoc(doc(db, 'users', req.body.username), {
       firstName: req.body.firstname,
       lastName: req.body.lastname,
       role: req.body.role,
@@ -44,12 +44,12 @@ const createUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-}
+};
 
 const banUser = async (req, res, next) => {
   try {
-    await updateDoc(doc(db, "users", req.params.username), {
-      role: "banned"
+    await updateDoc(doc(db, 'users', req.params.username), {
+      role: 'banned'
     });
     // await firestore.collection('users').doc(req.params.username).update({
     //   role: 'banned'
@@ -58,69 +58,69 @@ const banUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-}
+};
 
 const getUser = async (req, res, next) => {
   try {
     const userID = req.params.id;
-    const userSnap = await getDoc(doc(db, "users", userID));
+    const userSnap = await getDoc(doc(db, 'users', userID));
     if (!userSnap.exists) {
       res.sendStatus(404);
     }
     res.send(userSnap.data());
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
 // get all photos in a specific folder
 const getFolderByID = async (req, res, next) => {
   try {
-      const photos = [];
-      const id = req.params.id;
-      const targetFolder = await firestore.collection("folders").doc(id)
+    const photos = [];
+    const id = req.params.id;
+    const targetFolder = await firestore.collection('folders').doc(id);
 
-      if (!targetFolder.exists) {
-          res.sendStatus(404);
-        }
-      const folder = targetFolder.data().photos;
-      folder.forEach(photoID => {
-          const photo = firestore.collection("photos").doc(photoID);
-          photos.push(photo);
-      })
-      res.send(photos);
+    if (!targetFolder.exists) {
+      res.sendStatus(404);
+    }
+    const folder = targetFolder.data().photos;
+    folder.forEach((photoID) => {
+      const photo = firestore.collection('photos').doc(photoID);
+      photos.push(photo);
+    });
+    res.send(photos);
 
     // Do something else with user?
   } catch (err) {
     next(err);
   }
-}
+};
 
-  const getContentByUser = async (req, res, next) => {
-    try {
-      const user = await firestore.collection("users").doc("admin1")
-      if (!user.exists) {
-        res.sendStatus(404);
-      }
-      const photoList = []
-      var folders = user.data().folders
-      var photos = user.data().images
-      photos.forEach(photoID => {
-        const photo = firestore.collection("photos").doc(photoID);
-        photoList.push(photo);
-    })
-
-      var content = {
-        "folders": folders,
-        "photos": photoList
-      }
-      res.send(content);
-
-      // Do something else with user?
-    } catch (err) {
-      next(err);
+const getContentByUser = async (req, res, next) => {
+  try {
+    const user = await firestore.collection('users').doc('admin1');
+    if (!user.exists) {
+      res.sendStatus(404);
     }
+    const photoList = [];
+    const folders = user.data().folders;
+    const photos = user.data().images;
+    photos.forEach((photoID) => {
+      const photo = firestore.collection('photos').doc(photoID);
+      photoList.push(photo);
+    });
+
+    const content = {
+      folders,
+      photos: photoList
+    };
+    res.send(content);
+
+    // Do something else with user?
+  } catch (err) {
+    next(err);
   }
+};
 
 export default {
   createUser,
@@ -130,4 +130,3 @@ export default {
   sampleUser,
   getUser
 };
-
