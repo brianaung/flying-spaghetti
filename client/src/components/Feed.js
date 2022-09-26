@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -47,7 +46,6 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (selectedImage) {
@@ -77,7 +75,7 @@ export default function Feed(props) {
 
     // printing form data entries
     for (var pair of formData.entries()) {
-      console.log('formdata entries:' + pair[0]+ ', ' + pair[1]); 
+      console.log('formdata entries:' + pair[0] + ', ' + pair[1]);
     }
   };
 

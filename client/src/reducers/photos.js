@@ -1,6 +1,4 @@
-import {
-  FETCH_ALL,
-} from '../constants/actionTypes';
+import { FETCH_ALL } from '../constants/actionTypes';
 export default (photos = [], action) => {
   switch (action.type) {
     case FETCH_ALL:
