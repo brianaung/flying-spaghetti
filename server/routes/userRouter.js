@@ -8,7 +8,7 @@ import photoController from '../controllers/photoController.js';
 // create our Router object
 const userRouter = Router();
 
-// userRouter.get('/', userController.getRecentPhotos);
+//userRouter.get('/', userController.getRecentPhotos);
 
 userRouter.get('/getID:id', userController.getContentByUser);
 //sampleRouter.get('/login', login.login);
@@ -16,5 +16,7 @@ userRouter.get('/getID:id', userController.getContentByUser);
 userRouter.get('/getFolder:id', userController.getFolderByID);
 
 userRouter.get('/sampleUser', userController.sampleUser);
+
+userRouter.post('/dashboard', photoController.uploadPhoto);
 
 export default userRouter;

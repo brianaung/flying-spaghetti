@@ -58,18 +58,32 @@ const getUserFolders = async (req, res, next) => {
   
   const uploadPhoto = async (req, res, next) => {
     try {
-      const photo = new Photo(
-        req.user.username,
-        req.body.caption
-      )
-      
-      const uploadImage = () => {
-        if (req.pohto == null) return;
-        const imageRef = ref(storage, `images/${req.photo.name + v4()}`);
+        const imageRef = ref(storage, `images/${req.body.upload-form.selectedImage.name + v4()}`);
         uploadBytes(imageRef, photo).then(() => {
             alert('Image upload');
         });
-      }
+        
+        await setDoc(doc(db, "photos", req.body.username), {
+            caption: req.body.caption,
+            owner: req.body.owner,
+            isPrivate: req.body.isPrivate,
+            capacity: req.body.capacity,
+            date: Timestamp.fromDate(new Date()),
+            folder: req.body.folder,
+            link: imageRef,
+            likes: []
+        });
+        
+        // const photo = new Photo(
+        // req.user.username,
+        // req.body.caption
+        
+      //)
+      
+      
+    if (photo == null) return;
+    
+      
     } catch (err) {
       next(err);
     }
