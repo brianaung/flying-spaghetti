@@ -179,6 +179,10 @@ const getContentByUser = async (req, res, next) => {
 // incomplete
 const uploadPhoto = async (req, res, next) => {
     try {
+      console.log(req.body.name);
+      console.log(req.body.description);
+      console.log(req.file);
+        /*
         const imageRef = ref(storage, `images/${req.body.upload-form.selectedImage.name + v4()}`);
         uploadBytes(imageRef, photo).then(() => {
             alert('Image upload');
@@ -203,6 +207,7 @@ const uploadPhoto = async (req, res, next) => {
       
       
     if (photo == null) return;
+      */
     
       
     } catch (err) {

@@ -10,6 +10,9 @@ const app = express();
 // const [isAuth, setIsAuth] = userState(false);
 app.use(cors());
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use((req, res, next) => {
   console.log(`message arrived: ${req.method} ${req.path}`);
   next();

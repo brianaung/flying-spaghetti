@@ -75,6 +75,7 @@ export default function Feed(props) {
         console.log(err);
       });
 
+    // printing form data entries
     for (var pair of formData.entries()) {
       console.log('formdata entries:' + pair[0]+ ', ' + pair[1]); 
     }
@@ -96,7 +97,7 @@ export default function Feed(props) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <SubmitForm id="upload-form" onSubmit={handleSubmit}>
+        <SubmitForm id="upload-form" onSubmit={handleSubmit} enctype="multipart/form-data">
           <input
             accept="image/*"
             type="file"
