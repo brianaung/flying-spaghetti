@@ -7,7 +7,7 @@ import cors from 'cors';
 import router from './routes/router.js';
 
 const app = express();
-//const [isAuth, setIsAuth] = userState(false);
+// const [isAuth, setIsAuth] = userState(false);
 app.use(cors());
 
 app.use((req, res, next) => {
@@ -27,7 +27,6 @@ app.get('/about', (req, res) => {
 
 app.get('/login', (req, res) => {
   res.send('this is login page');
-  
 });
 
 app.get('/signup', (req, res) => {

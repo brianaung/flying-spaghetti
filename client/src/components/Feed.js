@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import FormData from 'form-data';
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -51,6 +53,30 @@ export default function Feed(props) {
     }
   }, [selectedImage]);
 
+  // var bodyFormData = new FormData();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    var formData = new FormData(e.target);
+    // formData.append("name", e.target.name.value);
+    // formData.append("description", e.target.description.value);
+    // formData.append("selectedImage", e.target.selectedImage);
+
+    axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+    axios
+      .post('http://localhost:9000/dashboard/upload_photo', formData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    for (var pair of formData.entries()) {
+      console.log('formdata entries:' + pair[0]+ ', ' + pair[1]); 
+    }
+  };
+
   return (
     <FeedContainer>
       <Fab
@@ -67,11 +93,12 @@ export default function Feed(props) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <SubmitForm id="upload-form">
+        <SubmitForm id="upload-form" onSubmit={handleSubmit}>
           <input
             accept="image/*"
             type="file"
             onChange={(e) => setSelectedImage(e.target.files[0])}
+            name="selectedImage"
           />
           {imageUrl && selectedImage && (
             <Box mt={2} mb={2} textAlign="center">

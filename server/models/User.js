@@ -9,6 +9,6 @@ export default class User {
     this.date = date;
     this.folders = [];
     this.images = [];
-    this.liked = []
+    this.liked = [];
   }
 }

@@ -31,15 +31,14 @@ const getUserfolder = (req, res) => {
 };
 
 const getFolderByID = (req, res) => {
-
-    try {
-        const userfolder = sampleData[0].folders
-        const target = userfolder.find((folder) => folder.id === req.params.id)
-        res.send(target.photos); 
-      } catch (error) {
-        res.status(400).send(error.message);
-      }
-}
+  try {
+    const userfolder = sampleData[0].folders;
+    const target = userfolder.find((folder) => folder.id === req.params.id);
+    res.send(target.photos);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
 
 const getAllImage = (req, res) => {
   try {
@@ -71,7 +70,6 @@ const getUserByID = (req, res) => {
   }
 };
 
-
 const uploadPhoto = (req, res) => {
   const [imageUpload, setImageUpload] = useState(null);
   const uploadImage = () => {
@@ -81,34 +79,27 @@ const uploadPhoto = (req, res) => {
       alert('Image upload');
     });
     return (
-    <>
-      <input
-            type="file"
-            onChange={(event) => {
-              setImageUpload(event.target.files[0]);
-            }}
-          />
-          <Button
-            onClick={uploadImage}
-            color="secondary"
-            variant="contained"
-            justifyContent="center">
-            Upload
-          </Button>
-    </>  
-    
-    )
+      <>
+        <input
+          type="file"
+          onChange={(event) => {
+            setImageUpload(event.target.files[0]);
+          }}
+        />
+        <Button onClick={uploadImage} color="secondary" variant="contained" justifyContent="center">
+          Upload
+        </Button>
+      </>
+    );
   };
-}
-//get comment
+};
+// get comment
 
+// get no. likes
 
-//get no. likes
+// get folder
 
-//get folder
-
-//get photos
-
+// get photos
 
 export default {
   getUserfolder,

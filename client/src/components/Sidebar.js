@@ -39,8 +39,8 @@ export default function Sidebar(props) {
     <SidebarContainer>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
-        <ListItemButton component={Link} to='/dashboard'>
-          <ListItemText  primary="My Photos" />
+        <ListItemButton component={Link} to="/dashboard">
+          <ListItemText primary="My Photos" />
         </ListItemButton>
         <ListItemButton component="a" href="#">
           <ListItemText primary="Shared With Me" />
