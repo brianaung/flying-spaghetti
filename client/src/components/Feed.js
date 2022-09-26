@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
-
-=======
->>>>>>> a8b6226 (get folders and photos)
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import FormData from 'form-data';
