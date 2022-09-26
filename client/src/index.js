@@ -7,21 +7,11 @@ import { ThemeProvider } from '@emotion/react';
 import { theme } from './theme';
 import './general.css';
 
-<<<<<<< HEAD
-// TODO: this part of code causing the app to not render anything
-// import { Provider } from 'react-redux';
-// import { legacy_createStore as createStore } from 'redux';
-// import { applyMiddleware, compose } from 'redux';
-// import thunk from 'redux-thunk';
-//
-// const store = createStore(reducers, compose(applyMiddleware(thunk)));
-=======
 import { Provider } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
 import { applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
->>>>>>> a8b6226 (get folders and photos)
 
 // ReactDOM.render(
 //   <React.StrictMode>

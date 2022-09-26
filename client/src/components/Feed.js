@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import FormData from 'form-data';
-
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -80,11 +79,8 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-<<<<<<< HEAD
-=======
   const data = useSelector((state) => state.photos);
   const folders = data.folders;
->>>>>>> a8b6226 (get folders and photos)
 
   useEffect(() => {
     if (selectedImage) {
