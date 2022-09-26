@@ -58,8 +58,8 @@ const getUserFolders = async (req, res, next) => {
   
 const uploadPhoto = async (req, res, next) => {
     try {
-        const imageRef = ref(storage, `images/${req.body.upload-form.selectedImage.name + v4()}`);
-        uploadBytes(imageRef, photo).then(() => {
+        const imageRef = ref(storage, `images/${req.body.selectImage.name + v4()}`);
+        uploadBytes(imageRef, file).then(() => {
             alert('Image upload');
         });
         
