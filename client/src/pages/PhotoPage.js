@@ -9,7 +9,6 @@ import Favorite from '@mui/icons-material/Favorite';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 
-
 //components
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
@@ -75,13 +74,22 @@ export default function OnePhoto() {
             <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`}></Box>
           </PhotoSection>
 
-          <CommentSection >
+          <CommentSection>
             <StyledBox sx={{ overflowY: 'scroll', height: '30rem' }}>
               <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
                 Shiba inu
               </Typography>
               <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae cum delectus repellendus asperiores quidem excepturi sapiente, illum tenetur nisi ducimus distinctio modi repudiandae laborum maiores adipisci cupiditate vero minus laudantium ex. Incidunt corporis excepturi maiores soluta porro, impedit rerum, in sint quos voluptatem asperiores, totam modi. Veritatis, minima! Dolorum cupiditate dolore ad expedita dicta aperiam laboriosam optio, pariatur repellendus molestias unde, facere consectetur in tenetur at fuga ratione reiciendis esse iusto eligendi! Adipisci accusantium nam fugit laudantium dolor. Quam animi autem omnis cupiditate aspernatur, natus doloremque, voluptas id fugiat illo consequuntur aliquid modi blanditiis, iure dolorum suscipit vero. Nisi, distinctio!
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae cum delectus
+                repellendus asperiores quidem excepturi sapiente, illum tenetur nisi ducimus
+                distinctio modi repudiandae laborum maiores adipisci cupiditate vero minus
+                laudantium ex. Incidunt corporis excepturi maiores soluta porro, impedit rerum, in
+                sint quos voluptatem asperiores, totam modi. Veritatis, minima! Dolorum cupiditate
+                dolore ad expedita dicta aperiam laboriosam optio, pariatur repellendus molestias
+                unde, facere consectetur in tenetur at fuga ratione reiciendis esse iusto eligendi!
+                Adipisci accusantium nam fugit laudantium dolor. Quam animi autem omnis cupiditate
+                aspernatur, natus doloremque, voluptas id fugiat illo consequuntur aliquid modi
+                blanditiis, iure dolorum suscipit vero. Nisi, distinctio!
               </Typography>
             </StyledBox>
 

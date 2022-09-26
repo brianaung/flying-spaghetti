@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 // mui components
 import { styled } from '@mui/system';
@@ -13,8 +13,6 @@ import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutl
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import ShareIcon from '@mui/icons-material/Share';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
-
-
 
 const StyledImgListItem = styled(ImageListItem)({
   width: '250px',
@@ -54,7 +52,7 @@ export default function Photo(props) {
   return (
     <div>
       <Box sx={{ border: 'solid 2px black' }}>
-        <StyledImgListItem component={Link} to='/photo'>
+        <StyledImgListItem component={Link} to="/photo">
           <img src={props.aPhoto.photo} alt={props.aPhoto.name} />
         </StyledImgListItem>
 

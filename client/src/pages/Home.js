@@ -66,14 +66,17 @@ export default function Home() {
             <Typography color="gray">or</Typography>
             <LoginForm id="login-form">
               <TextField name="username" variant="outlined" label="Username"></TextField>
-              <TextField name="password" variant="outlined" label="Password" type="password"></TextField>
+              <TextField
+                name="password"
+                variant="outlined"
+                label="Password"
+                type="password"></TextField>
               <Button variant="contained" color="primary" type="submit">
                 Login
               </Button>
             </LoginForm>
           </LoginBox>
         </Modal>
-
       </Stack>
     </HomeContainer>
   );
