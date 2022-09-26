@@ -25,10 +25,7 @@ router.get('/getLiked', contentController.getLikedPhotos);
 router.get('/recents', contentController.getRecentPhotos);
 router.get('/getPhoto/:id', contentController.getPhotoById);
 
-<<<<<<< HEAD
-export default router;
-=======
+
 router.post('/upload', contentController.uploadPhoto);
 
 export default router;
->>>>>>> c852d25 (Deleted redundant files)
