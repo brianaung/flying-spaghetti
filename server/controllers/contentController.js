@@ -1,6 +1,6 @@
-import { doc, getDoc, getDocs, collection, query, orderBy } from 'firebase/firestore';
+import { doc, addDoc, getDoc, getDocs, collection, query, orderBy, Timestamp } from 'firebase/firestore';
 import { db, storage } from '../config/firebase.js';
-import { ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 // import { v4 } from 'uuid';
 
 // const getPhotosFromIDs = async (photos) => {
@@ -176,21 +176,28 @@ const uploadPhoto = async (req, res, next) => {
     console.log(req.body.name);
     console.log(req.body.description);
     console.log(req.file);
-    /*
-        const imageRef = ref(storage, `images/${req.body.upload-form.selectedImage.name + v4()}`);
-        uploadBytes(imageRef, photo).then(() => {
-            alert('Image upload');
+    
+        const imageRef = ref(storage, `images/${req.body.name}`);
+        //console.log(getDownloadURL(imageRef));
+        const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+        uploadBytes(imageRef, req.file.buffer, metatype).then(() => {
+            res.send('Image upload');
         });
         
-        await setDoc(doc(db, "photos", req.body.username), {
-            caption: req.body.caption,
-            owner: req.body.owner,
-            isPrivate: req.body.isPrivate,
-            capacity: req.body.capacity,
-            date: Timestamp.fromDate(new Date()),
-            folder: req.body.folder,
-            link: imageRef,
-            likes: []
+        const docRef = await addDoc(collection(db, 'photos'), {
+          caption: req.body.description,
+          date: Timestamp.fromDate(new Date()),
+          folder: "coffee",
+          
+          isPrivate: false,
+          
+          likes: [],
+          link: `gs://flying-spaghetti-60893.appspot.com/images/${req.body.name}`,
+          //link: `https://firebasestorage.googleapis.com/v0/b/${item._location.bucket}/o/${item._location.path_}?alt=media`,
+          owner: "admin1",
+          
+          
+          
         });
         
         // const photo = new Photo(
@@ -200,8 +207,8 @@ const uploadPhoto = async (req, res, next) => {
       //)
       
       
-    if (photo == null) return;
-      */
+    //if (photo == null) return;
+    
   } catch (err) {
     next(err);
   }

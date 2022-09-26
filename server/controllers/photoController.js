@@ -74,13 +74,13 @@ const uploadPhoto = async (req, res, next) => {
     });
 
     // update users.
-    await updateDoc(doc(db, 'users', req.params.username), {
+    await updateDoc(doc(db, 'users', "admin1"), {
       images: arrayUnion(docRef.id)
       // update capcity
     });
 
     // update folder
-    await updateDoc(doc(db, 'folders', req.params.folderName), {
+    await updateDoc(doc(db, 'folders', req.params.folder), {
       photos: arrayUnion(docRef.id)
     });
     // const photo = new Photo(
