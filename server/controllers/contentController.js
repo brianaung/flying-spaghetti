@@ -1,5 +1,8 @@
 import { doc, getDoc, getDocs, collection, query, orderBy } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
+import { storage } from '../config/firebase.js';
+import { ref, uploadBytes } from 'firebase/storage';
+//import { v4 } from 'uuid';
 
 // const getPhotosFromIDs = async (photos) => {
 //     const photoList = [];
@@ -110,21 +113,58 @@ const getContentByUser = async (req, res, next) => {
 
 // incomplete
 const uploadPhoto = async (req, res, next) => {
-  try {
-    //   const photo = new Photo(
-    //     req.user.username,
-    //     req.body.caption
-    //   )
-  } catch (err) {
-    next(err);
+    try {
+        const imageRef = ref(storage, `images/${req.body.upload-form.selectedImage.name + v4()}`);
+        uploadBytes(imageRef, photo).then(() => {
+            alert('Image upload');
+        });
+        
+        await setDoc(doc(db, "photos", req.body.username), {
+            caption: req.body.caption,
+            owner: req.body.owner,
+            isPrivate: req.body.isPrivate,
+            capacity: req.body.capacity,
+            date: Timestamp.fromDate(new Date()),
+            folder: req.body.folder,
+            link: imageRef,
+            likes: []
+        });
+        
+        // const photo = new Photo(
+        // req.user.username,
+        // req.body.caption
+        
+      //)
+      
+      
+    if (photo == null) return;
+    
+      
+    } catch (err) {
+      next(err);
+    }
   }
-};
+
+  const getAllComments = async (req, res, next) => {
+    try {
+        const userID = req.params.id;
+        const userSnap = getDoc(doc(db, "users", userID));
+        const commentIDs = userSnap.doc().Comment;
+        var comments = [];
+        for (var comment in commentIDs) {
+            var commentOBJ = getDoc(doc(db, ))
+        }
+    } catch (err) {
+        next(err);
+    }
+  }
 
 export default {
-  getRecentPhotos,
-  getLikedPhotos,
-  getUserFolders,
-  getPhotosInFolder,
-  getContentByUser,
-  uploadPhoto
-};
+    getRecentPhotos,
+    getLikedPhotos,
+    getUserFolders,
+    getPhotosInFolder,
+    getContentByUser,
+    getAllComments,
+    uploadPhoto
+}

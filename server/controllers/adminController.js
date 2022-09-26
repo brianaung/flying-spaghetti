@@ -2,6 +2,19 @@
 import { setDoc, updateDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 
+const getUser = async (req, res, next) => {
+  try {
+    const userID = req.params.id;
+    const userSnap = await getDoc(doc(db, "users", userID));
+    if (!userSnap.exists) {
+      res.sendStatus(404);
+    }
+    res.send(userSnap.data());
+  } catch (err) {
+    next(err)
+  }
+}
+
 const sampleUser = async (req, res, next) => {
   try {
     await setDoc(doc(db, 'users', 'user1'), {
@@ -49,6 +62,7 @@ const banUser = async (req, res, next) => {
 };
 
 export default {
+  getUser,
   createUser,
   banUser,
   sampleUser

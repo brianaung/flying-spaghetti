@@ -11,6 +11,9 @@ const router = Router();
 // Add sample user to firestore
 router.get('/sampleUser', adminController.sampleUser);
 
+// Get user object by ID
+router.get('/user/:id', adminController.getUser);
+
 router.get('/', contentController.getContentByUser);
 
 router.get('/folder/:id', contentController.getPhotosInFolder);
@@ -21,4 +24,10 @@ router.get('/getLiked', contentController.getLikedPhotos);
 
 router.get('/recents', contentController.getRecentPhotos);
 
+<<<<<<< HEAD
 export default router;
+=======
+router.post('/upload', contentController.uploadPhoto);
+
+export default router;
+>>>>>>> c852d25 (Deleted redundant files)
