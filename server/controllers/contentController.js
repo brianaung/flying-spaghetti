@@ -135,7 +135,11 @@ const getPhotosInFolder = async (req, res, next) => {
     const photos = [];
     for (const photoID of photoIDs) {
       const photoSnap = await getDoc(doc(db, 'photos', photoID));
-      photos.push(photoSnap.data());
+      var photo = {
+        id: photoSnap.id,
+        data: photoSnap.data()
+      };
+      photos.push(photo);
     }
     res.send(photos);
   } catch (err) {
