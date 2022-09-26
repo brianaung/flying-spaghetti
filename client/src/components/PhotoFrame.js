@@ -14,17 +14,22 @@ const PhotoContainer = styled(ImageList)({
 });
 
 export default function PhotoFrame(props) {
+
   return (
     <>
       <Typography variant="h3">Photos</Typography>
-      <PhotoContainer gap={20}>
-        {/* filter search queries */}
-        {props.photos
-          .filter((photo) => photo.name.toLowerCase().includes(props.query))
-          .map((aPhoto) => {
-            return <Photo key={aPhoto.id} aPhoto={aPhoto}></Photo>;
-          })}
-      </PhotoContainer>
+      {props.photos && (
+        <PhotoContainer gap={20}>
+          {/* filter search queries */}
+
+          {/* implement later */}
+          {props.photos
+            .filter((photo) => photo.caption.toLowerCase().includes(props.query))
+            .map((aPhoto, id) => {
+              return <Photo key={id} aPhoto={aPhoto}></Photo>;
+            })}
+        </PhotoContainer>
+      )}
     </>
   );
 }

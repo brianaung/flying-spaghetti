@@ -53,15 +53,15 @@ export default function Photo(props) {
     <div>
       <Box sx={{ border: 'solid 2px black' }}>
         <StyledImgListItem component={Link} to="/photo">
-          <img src={props.aPhoto.photo} alt={props.aPhoto.name} />
+          <img src={props.aPhoto.link} alt={props.aPhoto.name} />
         </StyledImgListItem>
 
         <Box sx={{ padding: '10px' }}>
           <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
-            {props.aPhoto.user}
+            {props.aPhoto.owner}
           </Typography>
           <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
-            {props.aPhoto.name}
+            {props.aPhoto.caption}
           </Typography>
         </Box>
 

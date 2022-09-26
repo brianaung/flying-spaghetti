@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
 
+=======
+>>>>>>> a8b6226 (get folders and photos)
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import FormData from 'form-data';
+
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+
+// mui icons
+import FolderIcon from '@mui/icons-material/Folder';
+
 // my components
-import FolderFrame from '../components/FolderFrame';
 import PhotoFrame from '../components/PhotoFrame';
-import { Photo101 } from '../data/photo-data';
-import { Button, Box, Modal, TextField } from '@mui/material';
+
+// import { Photo101 } from '../data/photo-data';
+import { Button, Box, Modal, TextField, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
@@ -39,6 +48,31 @@ const SubmitForm = styled('form')({
   padding: '20px'
 });
 
+const FolderFrame = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '50px'
+});
+
+const FolderContainer = styled(Stack)({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '20px',
+  flexWrap: 'wrap'
+});
+
+const Folder = styled(Box)({
+  display: 'flex',
+  flexDirection: 'row',
+  border: '2px solid',
+  width: '250px',
+  height: '50px',
+  padding: '10px',
+  gap: '20px',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap'
+});
+
 // TODO: add current directory
 export default function Feed(props) {
   const [open, setOpen] = useState(false);
@@ -46,6 +80,11 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+<<<<<<< HEAD
+=======
+  const data = useSelector((state) => state.photos);
+  const folders = data.folders;
+>>>>>>> a8b6226 (get folders and photos)
 
   useEffect(() => {
     if (selectedImage) {
@@ -120,9 +159,26 @@ export default function Feed(props) {
           </Button>
         </SubmitForm>
       </Modal>
-
-      <FolderFrame></FolderFrame>
-      <PhotoFrame photos={Photo101} query={props.query}></PhotoFrame>
+      {data && (
+        <>
+          <FolderFrame>
+            <Typography variant="h3">Folders</Typography>
+            {folders && (
+              <FolderContainer>
+                {folders.map((folder, id) => {
+                  return (
+                    <Folder key={id}>
+                      <FolderIcon />
+                      <Typography>{folder}</Typography>
+                    </Folder>
+                  );
+                })}
+              </FolderContainer>
+            )}
+          </FolderFrame>
+          <PhotoFrame photos={data.photos} query={props.query}></PhotoFrame>
+        </>
+      )}
     </FeedContainer>
   );
 }

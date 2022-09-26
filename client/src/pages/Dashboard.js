@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // mui components
 import { styled, Box, Stack } from '@mui/material';
 // my components
 import Sidebar from '../components/Sidebar';
 import Feed from '../components/Feed';
 import Navbar from '../components/Navbar';
+import { useDispatch } from 'react-redux';
+
+//actions
+import { getPhotos } from '../actions/photos';
 
 const Container = styled(Box)({
   display: 'flex',
@@ -21,6 +25,11 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 
 export default function Dashboard() {
   const [query, setQuery] = useState('');
+  const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(getPhotos());
+    }, [dispatch]);
 
   return (
     <Container container>
