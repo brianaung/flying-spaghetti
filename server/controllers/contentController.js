@@ -13,6 +13,67 @@ import { ref, uploadBytes } from 'firebase/storage';
 //     return photoList;
 // }
 
+const getPhotoById = async(req, res, next) => {
+    try {
+        const snapshot = await getDoc(doc(db, "photos", req.params.id));
+        const photosnapshot = snapshot.data();
+        
+        const userLikesID = photosnapshot.likes;
+        const userList = []
+
+        for (let userID of userLikesID) {
+            const userRef = await getDoc(doc(db, "users", userID));
+            const user = userRef.data();
+            var userOBJ = {
+                id: userRef.id,
+                user: user
+            };
+            userList.push(userOBJ);
+            // Check if photo in root folder
+        }
+
+
+
+        const photo = {
+            caption: photosnapshot.caption,
+            date: photosnapshot.date,
+            folder: photosnapshot.folder,
+            isPrivate: photosnapshot.isPrivate,
+            link: photosnapshot.link,
+            owner: photosnapshot.owner,
+            likes: userList
+        }
+
+        res.send(photo);
+    } catch (err) {
+        next(err);
+    }
+}
+
+const getAllComments = async (req, res, next) => {
+    try {
+        // const userID = req.params.id;
+        const userSnap = await query(collection(db, "photos", "2iGpNGwey6sItnF3o5uR", "comments"));
+        if (!userSnap.exists) {
+        res.sendStatus(404);
+        }
+        const commentIDs = userSnap;
+        
+
+
+    
+        var comments = [];
+        for (var comment in commentIDs) {
+            var commentOBJ = getDoc(doc(db, "photos", "2iGpNGwey6sItnF3o5uR", "comments", comment))
+            comments.push((await commentOBJ).data());
+        }
+
+        res.send(comments);
+    } catch (err) {
+        next(err);
+    }
+  }
+
 const getRecentPhotos = async (req, res, next) => {
   try {
     const photos = [];
@@ -145,19 +206,6 @@ const uploadPhoto = async (req, res, next) => {
     }
   }
 
-  const getAllComments = async (req, res, next) => {
-    try {
-        const userID = req.params.id;
-        const userSnap = getDoc(doc(db, "users", userID));
-        const commentIDs = userSnap.doc().Comment;
-        var comments = [];
-        for (var comment in commentIDs) {
-            var commentOBJ = getDoc(doc(db, ))
-        }
-    } catch (err) {
-        next(err);
-    }
-  }
 
 export default {
     getRecentPhotos,
@@ -166,5 +214,6 @@ export default {
     getPhotosInFolder,
     getContentByUser,
     getAllComments,
-    uploadPhoto
+    uploadPhoto,
+    getPhotoById
 }

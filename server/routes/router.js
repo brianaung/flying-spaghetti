@@ -23,6 +23,7 @@ router.get('/getFolders', contentController.getUserFolders);
 router.get('/getLiked', contentController.getLikedPhotos);
 
 router.get('/recents', contentController.getRecentPhotos);
+router.get('/getPhoto/:id', contentController.getPhotoById);
 
 <<<<<<< HEAD
 export default router;
