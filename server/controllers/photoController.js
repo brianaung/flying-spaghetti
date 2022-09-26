@@ -6,7 +6,7 @@ import Folder from '../models/Folder.js';
 import Comment from '../models/Comment.js';
 import { storage } from '../config/firebase.js';
 import { ref, uploadBytes } from 'firebase/storage';
-import { v4 } from 'uuid';
+//import { v4 } from 'uuid';
 
 
 // const { firestore } = firebase.firestore;
@@ -86,6 +86,20 @@ const getUserFolders = async (req, res, next) => {
       
     } catch (err) {
       next(err);
+    }
+  }
+
+  const getAllComments = async (req, res, next) => {
+    try {
+        userID = req.params.id;
+        const userSnap = getDoc(doc(db, "users", userID));
+        const commentIDs = userSnap.doc().Comment;
+        var comments = [];
+        for (var comment in commentIDs) {
+            var commentOBJ = getDoc(doc(db, ))
+        }
+    } catch (err) {
+        next(err);
     }
   }
   

@@ -1,5 +1,5 @@
 // import * as fs from "firebase/firestore";
-import { setDoc, updateDoc, doc, Timestamp } from "firebase/firestore"
+import {getDoc, setDoc, updateDoc, doc, Timestamp } from "firebase/firestore"
 import { db } from '../config/firebase.js';
 import User from '../models/User.js';
 import Photo from '../models/Photo.js';
@@ -60,6 +60,19 @@ const banUser = async (req, res, next) => {
   }
 }
 
+const getUser = async (req, res, next) => {
+  try {
+    const userID = req.params.id;
+    const userSnap = await getDoc(doc(db, "users", userID));
+    if (!userSnap.exists) {
+      res.sendStatus(404);
+    }
+    res.send(userSnap.data());
+  } catch (err) {
+    next(err)
+  }
+}
+
 // get all photos in a specific folder
 const getFolderByID = async (req, res, next) => {
   try {
@@ -114,5 +127,7 @@ export default {
   banUser,
   getFolderByID,
   getContentByUser,
-  sampleUser
+  sampleUser,
+  getUser
 };
+

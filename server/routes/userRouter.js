@@ -8,7 +8,8 @@ import photoController from '../controllers/photoController.js';
 // create our Router object
 const userRouter = Router();
 
-//userRouter.get('/', userController.getRecentPhotos);
+userRouter.get('/', userController.getRecentPhotos);
+userRouter.get('/findUser:id', userController.getUser);
 
 userRouter.get('/getID:id', userController.getContentByUser);
 //sampleRouter.get('/login', login.login);
