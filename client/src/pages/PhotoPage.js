@@ -44,11 +44,11 @@ const PhotoSection = styled(Grid)(({ theme }) => ({
   flexDirection: 'column',
   width: '50%',
   [theme.breakpoints.down('sm')]: {
-    width:'100%'
+    width: '100%'
   }
 }));
 
-const CommentSection = styled(Box)(({theme})=>({
+const CommentSection = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -78,10 +78,8 @@ export default function PhotoPage() {
     dispatch(getPhoto(id));
   }, [id]);
 
-
   const photo = useSelector((state) => state.photos);
 
-  
   useEffect(() => {
     setImgHeight(container.current.height);
   }, []);
@@ -92,68 +90,67 @@ export default function PhotoPage() {
     return (
       <>
         <Navbar />
-        
-          <FullPage>
-            <Sidebar />
-            <MainSection>
-              <PhotoSection>
-                <Box
-                  bgcolor="black"
-                  height={`calc((100% - ${imgHeight}px)/2)`}
-                  ref={container1}></Box>
-                <img
-                  ref={container}
-                  width="100%"
-                  height="auto"
-                  style={{ maxHeight: '40rem' }}
-                  src={photo.link}
-                  alt={photo.caption}
-                />
-                <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`}></Box>
-              </PhotoSection>
 
-              <CommentSection>
-                <StyledBox sx={{ overflowY: 'scroll', height: {sx:'20rem', md:'30rem'} }}>
-                  <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
-                    {photo.caption}
-                  </Typography>
-                  <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
-                    {photo.caption}
-                  </Typography>
-                </StyledBox>
+        <FullPage>
+          <Sidebar />
+          <MainSection>
+            <PhotoSection>
+              <Box
+                bgcolor="black"
+                height={`calc((100% - ${imgHeight}px)/2)`}
+                ref={container1}></Box>
+              <img
+                ref={container}
+                width="100%"
+                height="auto"
+                style={{ maxHeight: '40rem' }}
+                src={photo.link}
+                alt={photo.caption}
+              />
+              <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`}></Box>
+            </PhotoSection>
 
-                <Divider style={{ width: '80%' }}></Divider>
+            <CommentSection>
+              <StyledBox sx={{ overflowY: 'scroll', height: { sx: '20rem', md: '30rem' } }}>
+                <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
+                  {photo.caption}
+                </Typography>
+                <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
+                  {photo.caption}
+                </Typography>
+              </StyledBox>
 
-                {/* comments  */}
-                <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
-                  {comments.map((comment, id) => {
-                    return (
-                      <Stack key={id} direction="row" spacing={2}>
-                        <Typography sx={{ fontWeight: '600' }}>{comment.username}</Typography>
-                        <Typography>{comment.user_comment}</Typography>
-                      </Stack>
-                    );
-                  })}
-                </StyledBox>
+              <Divider style={{ width: '80%' }}></Divider>
 
-                {/* box to write comment */}
-                <StyledBox display="flex" flexDirection="column" marginTop="auto" fullWidth>
-                  {/* icons */}
-                  <Box display="flex" justifyContent="space-between">
-                    <Checkbox size="medium" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
-                    <Button sx={{ marginRight: 'auto' }} color="primary" onClick={() => {}}>
-                      <ShareIcon fontSize="medium" />
-                    </Button>
-                  </Box>
-                  <Stack direction="row" spacing={2}>
-                    <TextField fullWidth name="comment" label="Add a comment"></TextField>
-                    <Button type="submit">Post</Button>
-                  </Stack>
-                </StyledBox>
-              </CommentSection>
-            </MainSection>
-          </FullPage>
-        
+              {/* comments  */}
+              <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
+                {comments.map((comment, id) => {
+                  return (
+                    <Stack key={id} direction="row" spacing={2}>
+                      <Typography sx={{ fontWeight: '600' }}>{comment.username}</Typography>
+                      <Typography>{comment.user_comment}</Typography>
+                    </Stack>
+                  );
+                })}
+              </StyledBox>
+
+              {/* box to write comment */}
+              <StyledBox display="flex" flexDirection="column" marginTop="auto" fullWidth>
+                {/* icons */}
+                <Box display="flex" justifyContent="space-between">
+                  <Checkbox size="medium" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
+                  <Button sx={{ marginRight: 'auto' }} color="primary" onClick={() => {}}>
+                    <ShareIcon fontSize="medium" />
+                  </Button>
+                </Box>
+                <Stack direction="row" spacing={2}>
+                  <TextField fullWidth name="comment" label="Add a comment"></TextField>
+                  <Button type="submit">Post</Button>
+                </Stack>
+              </StyledBox>
+            </CommentSection>
+          </MainSection>
+        </FullPage>
       </>
     );
   }

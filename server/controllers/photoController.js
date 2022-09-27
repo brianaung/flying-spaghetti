@@ -74,7 +74,7 @@ const uploadPhoto = async (req, res, next) => {
     });
 
     // update users.
-    await updateDoc(doc(db, 'users', "admin1"), {
+    await updateDoc(doc(db, 'users', 'admin1'), {
       images: arrayUnion(docRef.id)
       // update capcity
     });

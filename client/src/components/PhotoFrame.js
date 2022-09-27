@@ -14,7 +14,6 @@ const PhotoContainer = styled(ImageList)({
 });
 
 export default function PhotoFrame(props) {
-
   return (
     <>
       <Typography variant="h3">Photos</Typography>

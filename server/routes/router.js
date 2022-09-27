@@ -6,11 +6,10 @@ import contentController from '../controllers/contentController.js';
 // import login from '../login.js';
 
 import multer from 'multer';
-//const upload = multer({ dest: './public/data/uploads/' });
+// const upload = multer({ dest: './public/data/uploads/' });
 // multer
 const memoStorage = multer.memoryStorage();
 const upload = multer({ memoStorage });
-
 
 // create our Router object
 const router = Router();

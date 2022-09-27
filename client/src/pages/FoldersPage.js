@@ -4,16 +4,15 @@ import styled from '@emotion/styled';
 
 import { Stack } from '@mui/system';
 
-
 //components
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 //import CircularProgress from '@mui/material/CircularProgress';
 
 const FullPage = styled(Stack)({
-  display:'flex',
+  display: 'flex',
   flexDirection: 'row'
-})
+});
 
 const MainSection = styled(Stack)({
   display: 'flex',
@@ -23,22 +22,15 @@ const MainSection = styled(Stack)({
   gap: '40px'
 });
 
-
 export default function FoldersPage() {
+  return (
+    <>
+      <Navbar />
 
- 
-    return (
-      <>
-        <Navbar />
-        
-          <FullPage>
-            <Sidebar />
-            <MainSection>
-              
-            </MainSection>
-          </FullPage>
-        
-      </>
-    );
-  }
-
+      <FullPage>
+        <Sidebar />
+        <MainSection></MainSection>
+      </FullPage>
+    </>
+  );
+}

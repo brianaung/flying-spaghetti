@@ -3,9 +3,9 @@ import { END_LOADING, FETCH_ALL, FETCH_PHOTO, START_LOADING } from '../constants
 
 export const getPhotos = () => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING});
+    dispatch({ type: START_LOADING });
     const { data } = await api.fetchPhotos();
-    
+
     dispatch({ type: FETCH_ALL, payload: data });
     dispatch({ type: END_LOADING });
   } catch (error) {
@@ -14,7 +14,7 @@ export const getPhotos = () => async (dispatch) => {
 };
 export const getPhoto = (id) => async (dispatch) => {
   try {
-    const {data} = await api.fetchPhoto(id);
+    const { data } = await api.fetchPhoto(id);
 
     dispatch({ type: FETCH_PHOTO, payload: data });
   } catch (error) {

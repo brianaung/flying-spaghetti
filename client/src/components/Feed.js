@@ -78,7 +78,7 @@ const FeedSkeleton = () => {
         <Skeleton variant="rounded" width={250} height={250} />
       </Stack>
     </Stack>
-  )
+  );
 };
 
 // TODO: add current directory
@@ -88,7 +88,6 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-  
 
   // get folders and photos
   const { data, isLoading } = useSelector((state) => state.photos);
@@ -191,7 +190,6 @@ export default function Feed(props) {
       ) : (
         <FeedSkeleton />
       )}
-
     </FeedContainer>
   );
 }

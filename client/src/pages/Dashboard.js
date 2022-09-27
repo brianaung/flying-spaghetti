@@ -27,9 +27,9 @@ export default function Dashboard() {
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
 
-    useEffect(() => {
-      dispatch(getPhotos());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(getPhotos());
+  }, [dispatch]);
 
   return (
     <Container container>

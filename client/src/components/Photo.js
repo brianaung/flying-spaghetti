@@ -51,8 +51,8 @@ export default function Photo(props) {
   const navigate = useNavigate();
 
   const openPhoto = () => {
-    navigate(`/photo/${props.aPhoto.photoID}`)
-  }
+    navigate(`/photo/${props.aPhoto.photoID}`);
+  };
 
   return (
     <div>
