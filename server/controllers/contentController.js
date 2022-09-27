@@ -1,4 +1,4 @@
-import { doc, addDoc, getDoc, getDocs, collection, query, orderBy, Timestamp } from 'firebase/firestore';
+import { doc, addDoc, getDoc, getDocs, updateDoc, arrayUnion, collection, query, orderBy, Timestamp } from 'firebase/firestore';
 import { db, storage } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 // import { v4 } from 'uuid';
@@ -170,44 +170,43 @@ const getContentByUser = async (req, res, next) => {
   }
 };
 
-// incomplete
 const uploadPhoto = async (req, res, next) => {
   try {
     console.log(req.body.name);
     console.log(req.body.description);
     console.log(req.file);
     
-        const imageRef = ref(storage, `images/${req.body.name}`);
-        //console.log(getDownloadURL(imageRef));
-        const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-        uploadBytes(imageRef, req.file.buffer, metatype).then(() => {
-            res.send('Image upload');
-        });
+    //upload photo into storage
+    const imageRef = ref(storage, `images/${req.body.name}`);
+    const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+    await uploadBytes(imageRef, req.file.buffer, metatype);
+    
+    const imageUrl = await getDownloadURL(imageRef);
         
-        const docRef = await addDoc(collection(db, 'photos'), {
-          caption: req.body.description,
-          date: Timestamp.fromDate(new Date()),
-          folder: "coffee",
-          
-          isPrivate: false,
-          
-          likes: [],
-          link: `gs://flying-spaghetti-60893.appspot.com/images/${req.body.name}`,
-          //link: `https://firebasestorage.googleapis.com/v0/b/${item._location.bucket}/o/${item._location.path_}?alt=media`,
-          owner: "admin1",
-          
-          
-          
-        });
+    //add a new photo in the photos collection of firestore
+    const docRef = await addDoc(collection(db, 'photos'), {
+      caption: req.body.description,
+      date: Timestamp.fromDate(new Date()),
+      folder: "animals",
+      isPrivate: false,
+      likes: [],
+      link: imageUrl,
+      owner: "user1",  
+    });
         
-        // const photo = new Photo(
-        // req.user.username,
-        // req.body.caption
+    // update users.
+    await updateDoc(doc(db, 'users', "user1"), {
+      photos: arrayUnion(docRef.id)
+
+      //update capacity
+
+    });
+
+    // update folder
+    await updateDoc(doc(db, 'folders', "animals"), {
+      photos: arrayUnion(docRef.id)
+    });
         
-      //)
-      
-      
-    //if (photo == null) return;
     
   } catch (err) {
     next(err);
