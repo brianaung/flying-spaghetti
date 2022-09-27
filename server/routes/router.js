@@ -29,7 +29,10 @@ router.get('/getFolders', contentController.getUserFolders);
 router.get('/getLiked', contentController.getLikedPhotos);
 
 router.get('/recents', contentController.getRecentPhotos);
+
 router.get('/getPhoto/:id', contentController.getPhotoById);
+
+router.get('/comments/:photoID', contentController.getAllComments);
 
 router.post(
   '/dashboard/upload_photo',

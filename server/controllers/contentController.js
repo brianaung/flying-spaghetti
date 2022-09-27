@@ -60,19 +60,11 @@ const getPhotoById = async (req, res, next) => {
 
 const getAllComments = async (req, res, next) => {
   try {
-    // const userID = req.params.id;
-    const userSnap = query(collection(db, 'photos', '2iGpNGwey6sItnF3o5uR', 'comments'));
-    if (!userSnap.exists) {
-      res.sendStatus(404);
-    }
-    const commentIDs = userSnap;
-
     const comments = [];
-    for (const comment in commentIDs) {
-      const commentOBJ = getDoc(doc(db, 'photos', '2iGpNGwey6sItnF3o5uR', 'comments', comment));
-      comments.push((await commentOBJ).data());
-    }
-
+    const snapshot = await getDocs(collection(db, 'photos', req.params.photoID, 'comments'));
+    snapshot.forEach((doc) => {
+      comments.push(doc.data());
+    });
     res.send(comments);
   } catch (err) {
     next(err);
