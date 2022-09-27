@@ -1,4 +1,4 @@
-import * as api from '../api/index.js';
+import * as api from '../api/photos';
 import { FETCH_ALL } from '../constants/actionTypes';
 
 export const getPhotos = () => async (dispatch) => {

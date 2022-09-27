@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // mui components
 import { styled } from '@mui/system';
@@ -48,11 +48,16 @@ export default function Photo(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
+
+  const openPhoto = () => {
+    navigate.push(``)
+  }
 
   return (
     <div>
       <Box sx={{ border: 'solid 2px black' }}>
-        <StyledImgListItem component={Link} to="/photo">
+        <StyledImgListItem onClick={openPhoto} to="/photo">
           <img src={props.aPhoto.link} alt={props.aPhoto.name} />
         </StyledImgListItem>
 

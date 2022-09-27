@@ -13,22 +13,24 @@ import { applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <ThemeProvider theme={theme}>
-//       <Provider store={store}>
-//         <App />
-//       </Provider>
-//     </ThemeProvider>
-//   </React.StrictMode>,
-//   document.getElementById('root')
-// );
+const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <ThemeProvider theme={theme}>
+//       <App />
+//     </ThemeProvider>
+//   </React.StrictMode>,
+//   document.getElementById('root')
+// );

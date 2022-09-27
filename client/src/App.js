@@ -22,7 +22,7 @@ function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/dashboard" exact element={<Dashboard />} />
           <Route path="/login" exact element={<Login />} />
-          <Route path="/photo" exact element={<PhotoPage />} />
+          <Route path="/photo/:id" exact element={<PhotoPage />} />
         </Routes>
       </BrowserRouter>
     </>
