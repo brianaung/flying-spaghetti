@@ -7,15 +7,14 @@ import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import CircularProgress from '@mui/material/CircularProgress';
 
 // mui icons
 import FolderIcon from '@mui/icons-material/Folder';
+//import CircularProgress from '@mui/material/CircularProgress';
 
 // my components
 import PhotoFrame from '../components/PhotoFrame';
 
-// import { Photo101 } from '../data/photo-data';
 import { Button, Box, Modal, TextField, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
@@ -76,9 +75,10 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  
 
   // get folders and photos
-  const { data, isLoading } = useSelector((state) => state.photos);
+  const data = useSelector((state) => state.photos);
   const folders = data.folders;
 
   useEffect(() => {
@@ -154,8 +154,8 @@ export default function Feed(props) {
           </Button>
         </SubmitForm>
       </Modal>
-      {isLoading && <CircularProgress />}
-      {data && !isLoading && (
+      {/* {isLoading && <CircularProgress/>} */}
+      {data && (
         <>
           <FolderFrame>
             <Typography variant="h3">Folders</Typography>

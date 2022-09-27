@@ -156,7 +156,7 @@ const getContentByUser = async (req, res, next) => {
       const photo = photoRef.data();
       // Check if photo in root folder
       if (photo.folder == null) {
-        photoList.push(photo);
+        photoList.push({...photo, photoID: photoID});
       }
     }
 
