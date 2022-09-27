@@ -7,6 +7,7 @@ import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // mui icons
 import FolderIcon from '@mui/icons-material/Folder';
@@ -75,7 +76,9 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-  const data = useSelector((state) => state.photos);
+
+  // get folders and photos
+  const { data, isLoading } = useSelector((state) => state.photos);
   const folders = data.folders;
 
   useEffect(() => {
@@ -151,7 +154,8 @@ export default function Feed(props) {
           </Button>
         </SubmitForm>
       </Modal>
-      {data && (
+      {isLoading && <CircularProgress />}
+      {data && !isLoading && (
         <>
           <FolderFrame>
             <Typography variant="h3">Folders</Typography>

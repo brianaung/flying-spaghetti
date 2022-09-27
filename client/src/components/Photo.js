@@ -51,13 +51,13 @@ export default function Photo(props) {
   const navigate = useNavigate();
 
   const openPhoto = () => {
-    navigate.push(``)
+    navigate(`/photo/${props.aPhoto.photoID}`)
   }
 
   return (
     <div>
       <Box sx={{ border: 'solid 2px black' }}>
-        <StyledImgListItem onClick={openPhoto} to="/photo">
+        <StyledImgListItem onClick={openPhoto}>
           <img src={props.aPhoto.link} alt={props.aPhoto.name} />
         </StyledImgListItem>
 
@@ -91,12 +91,12 @@ export default function Photo(props) {
         <LinkBox>
           <Typography align="center">Image Link</Typography>
           <ImageLink>
-            {props.aPhoto.photo}
+            {props.aPhoto.link}
             <Box display="flex" justifyContent="flex-end" marginTop="1rem">
               <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
                 <Checkbox
                   onClick={() => {
-                    navigator.clipboard.writeText(props.aPhoto.photo);
+                    navigator.clipboard.writeText(props.aPhoto.link);
                     setCopied(!copied);
                   }}
                   icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
