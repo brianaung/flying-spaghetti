@@ -20,33 +20,45 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPhoto } from '../actions/photos';
 import { useParams } from 'react-router-dom';
 
-const FullPage = styled(Stack)({
-  display:'flex',
-  flexDirection: 'row'
-})
+const FullPage = styled(Stack)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column'
+  }
+}));
 
-const MainSection = styled(Stack)({
+const MainSection = styled(Stack)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   margin: '40px',
   height: '40rem',
-  gap: '40px'
-});
+  gap: '40px',
+  [theme.breakpoints.down('sm')]: {
+    flexDirection: 'column'
+  }
+}));
 
-const PhotoSection = styled(Grid)({
+const PhotoSection = styled(Grid)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  width: '50%'
-});
+  width: '50%',
+  [theme.breakpoints.down('sm')]: {
+    width:'100%'
+  }
+}));
 
-const CommentSection = styled(Box)({
+const CommentSection = styled(Box)(({theme})=>({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   width: '50%',
   gap: '20px',
-  border: 'solid 2px black'
-});
+  border: 'solid 2px black',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%'
+  }
+}));
 
 const StyledBox = styled(Box)({
   width: '100%',
@@ -101,7 +113,7 @@ export default function PhotoPage() {
               </PhotoSection>
 
               <CommentSection>
-                <StyledBox sx={{ overflowY: 'scroll', height: '30rem' }}>
+                <StyledBox sx={{ overflowY: 'scroll', height: {sx:'20rem', md:'30rem'} }}>
                   <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
                     {photo.caption}
                   </Typography>
