@@ -1,12 +1,16 @@
 import express from 'express';
 import cors from 'cors';
-
-/** ******* TODO: move routes *********** */
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // import userRouter from './routes/userRouter.js';
-import router from './routes/router.js';
+// import router from './routes/router.js';
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // const [isAuth, setIsAuth] = userState(false);
 app.use(cors());
 
@@ -18,6 +22,21 @@ app.use((req, res, next) => {
   next();
 });
 
+// get the frontend build for deployment
+app.use(express.static(path.resolve(__dirname, "../client/build")));
+
+app.get("/api", (req, res) => {
+  res.json({ message: '👋 from Express!' });
+});
+
+// catch all requests and return the static index.html file from react frontend
+app.get("*", (req, res) => {
+  res.sendFile(
+    path.resolve(__dirname, "../client/build/index.html")
+  );
+});
+
+/*
 app.use('/', router);
 
 // app.get('/', (req, res) => {
@@ -43,6 +62,8 @@ app.get('/upload', (req, res) => {
 app.get('/photo', (req, res) => {
   res.send('this is photo page');
 });
+*/
+
 /** ************************************* */
 
 const server = app.listen(process.env.PORT || 9000, () => {
