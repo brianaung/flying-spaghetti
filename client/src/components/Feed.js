@@ -2,21 +2,15 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import FormData from 'form-data';
+import { useSelector } from 'react-redux';
 // mui components
-import { styled } from '@mui/system';
-import Stack from '@mui/material/Stack';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-
+import { styled, Stack, Fab, Skeleton } from '@mui/material';
+import { Button, Box, Modal, TextField, Typography } from '@mui/material';
 // mui icons
 import FolderIcon from '@mui/icons-material/Folder';
-//import CircularProgress from '@mui/material/CircularProgress';
-
+import AddIcon from '@mui/icons-material/Add';
 // my components
 import PhotoFrame from '../components/PhotoFrame';
-
-import { Button, Box, Modal, TextField, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
@@ -68,6 +62,25 @@ const Folder = styled(Box)({
   whiteSpace: 'nowrap'
 });
 
+const FeedSkeleton = () => {
+  return (
+    <Stack spacing={3}>
+      <Skeleton variant="text" width={250} sx={{ fontSize: '1rem' }} />
+      <Stack direction="row" gap={20}>
+        <Skeleton variant="rounded" width={250} height={70} />
+        <Skeleton variant="rounded" width={250} height={70} />
+        <Skeleton variant="rounded" width={250} height={70} />
+      </Stack>
+      <Skeleton variant="text" width={250} sx={{ fontSize: '1rem' }} />
+      <Stack direction="row" gap={20}>
+        <Skeleton variant="rounded" width={250} height={250} />
+        <Skeleton variant="rounded" width={250} height={250} />
+        <Skeleton variant="rounded" width={250} height={250} />
+      </Stack>
+    </Stack>
+  )
+};
+
 // TODO: add current directory
 export default function Feed(props) {
   const [open, setOpen] = useState(false);
@@ -78,7 +91,7 @@ export default function Feed(props) {
   
 
   // get folders and photos
-  const data = useSelector((state) => state.photos);
+  const { data, isLoading } = useSelector((state) => state.photos);
   const folders = data.folders;
 
   useEffect(() => {
@@ -154,8 +167,8 @@ export default function Feed(props) {
           </Button>
         </SubmitForm>
       </Modal>
-      {/* {isLoading && <CircularProgress/>} */}
-      {data && (
+
+      {!isLoading ? (
         <>
           <FolderFrame>
             <Typography variant="h3">Folders</Typography>
@@ -172,9 +185,13 @@ export default function Feed(props) {
               </FolderContainer>
             )}
           </FolderFrame>
+
           <PhotoFrame photos={data.photos} query={props.query}></PhotoFrame>
         </>
+      ) : (
+        <FeedSkeleton />
       )}
+
     </FeedContainer>
   );
 }
