@@ -12,6 +12,11 @@ import AddIcon from '@mui/icons-material/Add';
 // my components
 import PhotoFrame from '../components/PhotoFrame';
 
+import { Button, Box, Modal, TextField, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
   justifyContent: 'flex-start',
@@ -88,6 +93,8 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  const navigate = useNavigate()
+ 
 
   // get folders and photos
   const { data, isLoading } = useSelector((state) => state.photos);
@@ -173,9 +180,9 @@ export default function Feed(props) {
             <Typography variant="h3">Folders</Typography>
             {folders && (
               <FolderContainer>
-                {folders.map((folder, id) => {
+                {folders.map((folder) => {
                   return (
-                    <Folder key={id}>
+                    <Folder key={folder} onClick={() => navigate(`/folder/${folders}`)}>
                       <FolderIcon />
                       <Typography>{folder}</Typography>
                     </Folder>
@@ -184,7 +191,7 @@ export default function Feed(props) {
               </FolderContainer>
             )}
           </FolderFrame>
-
+          <Typography variant="h3">Photos</Typography>
           <PhotoFrame photos={data.photos} query={props.query}></PhotoFrame>
         </>
       ) : (

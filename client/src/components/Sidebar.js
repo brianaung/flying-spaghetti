@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -35,12 +35,13 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
 
 // TODO: replace username with prop.username
 export default function Sidebar(props) {
+  const navigate = useNavigate()
   return (
     <SidebarContainer>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
         <ListItemButton component={Link} to="/dashboard">
-          <ListItemText primary="My Photos" />
+          <ListItemText primary="My Photos" onClick={()=>navigate('/dashboard')}/>
         </ListItemButton>
         <ListItemButton component="a" href="#">
           <ListItemText primary="Shared With Me" />

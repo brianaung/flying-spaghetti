@@ -24,7 +24,7 @@ function App() {
           <Route path="/dashboard" exact element={<Dashboard />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/photo/:id" exact element={<PhotoPage />} />
-          <Route path="/folder" exact element={<FoldersPage />} />
+          <Route path="/folder/:id" exact element={<FoldersPage />} />
         </Routes>
       </BrowserRouter>
     </>
