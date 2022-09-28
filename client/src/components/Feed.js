@@ -3,19 +3,24 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import FormData from 'form-data';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // mui components
-import { styled, Stack, Fab, Skeleton } from '@mui/material';
-import { Button, Box, Modal, TextField, Typography } from '@mui/material';
+import {
+  styled,
+  Button,
+  Box,
+  Modal,
+  TextField,
+  Typography,
+  Stack,
+  Fab,
+  Skeleton
+} from '@mui/material';
 // mui icons
 import FolderIcon from '@mui/icons-material/Folder';
 import AddIcon from '@mui/icons-material/Add';
 // my components
 import PhotoFrame from '../components/PhotoFrame';
-
-import { Button, Box, Modal, TextField, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
@@ -93,8 +98,7 @@ export default function Feed(props) {
   const handleClose = () => setOpen(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-  const navigate = useNavigate()
- 
+  const navigate = useNavigate();
 
   // get folders and photos
   const { data, isLoading } = useSelector((state) => state.photos);

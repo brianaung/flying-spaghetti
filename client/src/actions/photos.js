@@ -1,5 +1,11 @@
 import * as api from '../api/photos';
-import { FETCH_ALL, FETCH_PHOTO, FETCH_PHOTOS_IN_FOLDERS } from '../constants/actionTypes';
+import {
+  END_LOADING,
+  FETCH_ALL,
+  FETCH_PHOTO,
+  FETCH_PHOTOS_IN_FOLDERS,
+  START_LOADING
+} from '../constants/actionTypes';
 
 export const getPhotos = () => async (dispatch) => {
   try {
@@ -14,7 +20,7 @@ export const getPhotos = () => async (dispatch) => {
 };
 export const getPhoto = (id) => async (dispatch) => {
   try {
-    const {  data  } = await api.fetchPhoto(id);
+    const { data } = await api.fetchPhoto(id);
 
     dispatch({ type: FETCH_PHOTO, payload: data });
   } catch (error) {

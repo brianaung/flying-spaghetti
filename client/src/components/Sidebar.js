@@ -35,13 +35,13 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
 
 // TODO: replace username with prop.username
 export default function Sidebar(props) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <SidebarContainer>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
         <ListItemButton component={Link} to="/dashboard">
-          <ListItemText primary="My Photos" onClick={()=>navigate('/dashboard')}/>
+          <ListItemText primary="My Photos" onClick={() => navigate('/dashboard')} />
         </ListItemButton>
         <ListItemButton component="a" href="#">
           <ListItemText primary="Shared With Me" />

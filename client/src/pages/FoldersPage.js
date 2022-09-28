@@ -47,7 +47,6 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 export default function FoldersPage() {
   const [query, setQuery] = useState('');
 
-
   const { id } = useParams();
 
   const dispatch = useDispatch();
@@ -71,7 +70,6 @@ export default function FoldersPage() {
             </Fab>
             <Typography variant="h3">Folders</Typography>
             <PhotoFrame photos={data} query={query}></PhotoFrame>
-            
           </FeedContainer>
         </StyledStack>
       </Container>
