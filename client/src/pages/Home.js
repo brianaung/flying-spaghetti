@@ -61,9 +61,9 @@ export default function Home() {
 
         <Modal open={open} onClose={handleClose}>
           <LoginBox gap={2}>
-            {/* TODO: add option to signup here */}
 
             <Typography color="gray">or</Typography>
+            <Typography color="red">dev message: click on login to access dashboard</Typography>
             <LoginForm id="login-form">
               <TextField name="username" variant="outlined" label="Username"></TextField>
               <TextField
@@ -77,6 +77,7 @@ export default function Home() {
             </LoginForm>
           </LoginBox>
         </Modal>
+
       </Stack>
     </HomeContainer>
   );
