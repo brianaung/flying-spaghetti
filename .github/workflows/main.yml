@@ -11,13 +11,26 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - name: Deploy to Heroku
+      - name: Deploy to Heroku (Server)
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "flyingspaghetti-server" #Must be unique in Heroku
           heroku_email: "soekhantaung16@gmail.com"
           appdir: "server" # <- This will point to the api folder in your project
+          
+  deploy-client:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - name: Deploy to Heroku (Client)
+        uses: AkhileshNS/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "flyingspaghetti-client" #Must be unique in Heroku
+          heroku_email: "soekhantaung16@gmail.com"
+          appdir: "client" # <- This will point to the api folder in your project
   
             
       
