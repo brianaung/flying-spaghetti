@@ -12,7 +12,7 @@ export default (state = { isLoading: true, data: [] }, action) => {
     case END_LOADING:
       return { ...state, isLoading: false };
     case FETCH_ALL:
-      return { ...state, data: action.payload };
+      return action.payload;
     case FETCH_PHOTO:
       return action.payload;
     case FETCH_PHOTOS_IN_FOLDERS:

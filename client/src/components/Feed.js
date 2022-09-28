@@ -13,8 +13,8 @@ import {
   TextField,
   Typography,
   Stack,
-  Fab,
-  Skeleton
+  // Skeleton,
+  Fab
 } from '@mui/material';
 // mui icons
 import FolderIcon from '@mui/icons-material/Folder';
@@ -72,6 +72,7 @@ const Folder = styled(Box)({
   whiteSpace: 'nowrap'
 });
 
+/*
 const FeedSkeleton = () => {
   return (
     <Stack spacing={3}>
@@ -90,6 +91,7 @@ const FeedSkeleton = () => {
     </Stack>
   );
 };
+*/
 
 // TODO: add current directory
 export default function Feed(props) {
@@ -101,7 +103,8 @@ export default function Feed(props) {
   const navigate = useNavigate();
 
   // get folders and photos
-  const { data, isLoading } = useSelector((state) => state.photos);
+  // const { data, isLoading } = useSelector((state) => state.photos);
+  const data = useSelector((state) => state.photos);
   const folders = data.folders;
 
   useEffect(() => {
@@ -180,29 +183,26 @@ export default function Feed(props) {
         </SubmitForm>
       </Modal>
 
-      {!isLoading ? (
-        <>
-          <FolderFrame>
-            <Typography variant="h3">Folders</Typography>
-            {folders && (
-              <FolderContainer>
-                {folders.map((folder) => {
-                  return (
-                    <Folder key={folder} onClick={() => navigate(`/folder/${folders}`)}>
-                      <FolderIcon />
-                      <Typography>{folder}</Typography>
-                    </Folder>
-                  );
-                })}
-              </FolderContainer>
-            )}
-          </FolderFrame>
-          <Typography variant="h3">Photos</Typography>
-          <PhotoFrame photos={data.photos} query={props.query}></PhotoFrame>
-        </>
-      ) : (
-        <FeedSkeleton />
-      )}
+      <>
+        <FolderFrame>
+          <Typography variant="h3">Folders</Typography>
+          {folders && (
+            <FolderContainer>
+              {folders.map((folder) => {
+                return (
+                  <Folder key={folder} onClick={() => navigate(`/folder/${folders}`)}>
+                    <FolderIcon />
+                    <Typography>{folder}</Typography>
+                  </Folder>
+                );
+              })}
+            </FolderContainer>
+          )}
+        </FolderFrame>
+        <Typography variant="h3">Photos</Typography>
+        <PhotoFrame photos={data.photos} query={props.query}></PhotoFrame>
+      </>
+
     </FeedContainer>
   );
 }
