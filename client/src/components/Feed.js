@@ -120,9 +120,11 @@ export default function Feed(props) {
     // formData.append("description", e.target.description.value);
     // formData.append("selectedImage", e.target.selectedImage);
 
+    const API = process.env.NODE_ENV === 'production' ? 'https://flyingspaghetti-server.herokuapp.com/dashboard/upload_photo' : 'http://localhost:9000/dashboard/upload_photo';
+
     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     axios
-      .post('http://localhost:9000/dashboard/upload_photo', formData)
+      .post(API, formData)
       .then((res) => {
         console.log(res);
       })
