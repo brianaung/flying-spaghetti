@@ -79,7 +79,6 @@ export default function Home() {
             </LoginForm>
           </LoginBox>
         </Modal>
-
       </Stack>
     </HomeContainer>
   );

@@ -14,7 +14,6 @@ import FoldersPage from './pages/FoldersPage';
 
 // import components here
 
-
 function App() {
   return (
     <>
