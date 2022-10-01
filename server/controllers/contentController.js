@@ -190,22 +190,22 @@ const uploadPhoto = async (req, res, next) => {
     const docRef = await addDoc(collection(db, 'photos'), {
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
-      folder: 'animals',
+      folder: req.params.id,
       isPrivate: false,
       likes: [],
       link: imageUrl,
-      owner: 'user1'
+      owner: 'admin1'
     });
 
     // update users.
-    await updateDoc(doc(db, 'users', 'user1'), {
+    await updateDoc(doc(db, 'users', 'admin1'), {
       photos: arrayUnion(docRef.id)
 
       // update capacity
     });
 
     // update folder
-    await updateDoc(doc(db, 'folders', 'animals'), {
+    await updateDoc(doc(db, 'folders', req.params.id), {
       photos: arrayUnion(docRef.id)
     });
   } catch (err) {
@@ -225,7 +225,7 @@ const deletePhoto = async (req, res, next) => {
     
     //delete poto information in firestore.
       // 1. update folder
-    const folderRef = doc(db, 'folders', 'animals');
+    const folderRef = doc(db, 'folders', req.params.folder);
     
     await updateDoc(folderRef, {
       photos: arrayRemove(req.params.id)

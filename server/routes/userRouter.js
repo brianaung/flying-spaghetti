@@ -18,7 +18,8 @@ userRouter.get('/getFolder:id', userController.getFolderByID);
 
 userRouter.get('/sampleUser', userController.sampleUser);
 
-userRouter.post('/dashboard', photoController.uploadPhoto);
+userRouter.post('/dashboard:folder', photoController.uploadPhoto);
+userRouter.post
 userRouter.get('/comment', photoController.getAllComments);
 
 export default userRouter;
