@@ -8,10 +8,13 @@ import {
   collection,
   query,
   orderBy,
-  Timestamp
+  Timestamp,
+  deleteField,
+  arrayRemove,
+  deleteDoc
 } from 'firebase/firestore';
 import { db, storage } from '../config/firebase.js';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 // import { v4 } from 'uuid';
 
 // const getPhotosFromIDs = async (photos) => {
@@ -210,6 +213,38 @@ const uploadPhoto = async (req, res, next) => {
   }
 };
 
+const deletePhoto = async (req, res, next) => {
+  try{
+    //delete photo in storage.
+    const imageRef = ref(storage, `images/${req.body.name}`);
+    deleteObject(imageRef).then(()=> {
+      console.log("Photo deleted successfully");
+    }).catch((err)=>{
+      console.log("There is an error, cannot delete photo");
+    }); 
+    
+    //delete poto information in firestore.
+      // 1. update folder
+    const folderRef = doc(db, 'folders', 'animals');
+    
+    await updateDoc(folderRef, {
+      photos: arrayRemove(req.params.id)
+    });
+      // 2. update photos
+    const photosRef = doc(db, 'photos', req.params.id);
+    await deleteDoc(photosRef);
+      // 3. update users
+    const usersRef = doc(db, 'users', 'admin1');
+    await updateDoc(usersRef, {
+      photos: arrayRemove(req.params.id)
+    })
+
+
+  } catch (err) {
+    next(err);
+  }
+}
+
 export default {
   getRecentPhotos,
   getLikedPhotos,
@@ -218,5 +253,6 @@ export default {
   getContentByUser,
   getAllComments,
   uploadPhoto,
-  getPhotoById
+  getPhotoById,
+  deletePhoto
 };
