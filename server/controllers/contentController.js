@@ -15,6 +15,7 @@ import {
 } from 'firebase/firestore';
 import { db, storage } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 // import { v4 } from 'uuid';
 
 // const getPhotosFromIDs = async (photos) => {
@@ -240,6 +241,20 @@ const deletePhoto = async (req, res, next) => {
     })
 
 
+  } catch (err) {
+    next(err);
+  }
+}
+
+//creat a new account
+const regester = async(req, res, next) => {
+  try {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
+    .then((userCredential)=> {
+        const user = userCredential.user;
+      }
+    )
   } catch (err) {
     next(err);
   }

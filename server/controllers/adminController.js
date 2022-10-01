@@ -1,6 +1,8 @@
 // import * as fs from "firebase/firestore";
 import { setDoc, updateDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { async } from '@firebase/util';
 
 const getUser = async (req, res, next) => {
   try {
@@ -61,9 +63,60 @@ const banUser = async (req, res, next) => {
   }
 };
 
+//creat a new account
+const regester = async(req, res, next) => {
+  try {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
+    .then((userCredential)=> {
+        const user = userCredential.user;
+        //call create user
+      })
+      .catch((error)=> {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  } catch (err) {
+    next(err);
+  }
+}
+
+//sign in
+const signIn = async(req, res, next) => {
+  try {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, req.email, req.password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+    })
+    .catch((error)=> {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+const signOut = async(req, res, next) => {
+  try {
+    const auth = getAuth()
+    signOut(auth).then(()=> {
+
+    }).catch((error) => {
+
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export default {
   getUser,
   createUser,
   banUser,
-  sampleUser
+  sampleUser,
+  regester,
+  signIn,
+  signOut
 };
