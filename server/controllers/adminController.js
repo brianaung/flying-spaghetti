@@ -82,7 +82,7 @@ const regester = async(req, res, next) => {
 }
 
 //sign in
-const signIn = async(req, res, next) => {
+const signInController = async(req, res, next) => {
   try {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, req.email, req.password)
@@ -98,7 +98,7 @@ const signIn = async(req, res, next) => {
   }
 }
 
-const signOut = async(req, res, next) => {
+const signOutController = async(req, res, next) => {
   try {
     const auth = getAuth()
     signOut(auth).then(()=> {
@@ -117,6 +117,6 @@ export default {
   banUser,
   sampleUser,
   regester,
-  signIn,
-  signOut
+  signInController,
+  signOutController
 };
