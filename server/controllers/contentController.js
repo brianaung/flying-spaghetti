@@ -188,6 +188,7 @@ const uploadPhoto = async (req, res, next) => {
     const imageUrl = await getDownloadURL(imageRef);
 
     // add a new photo in the photos collection of firestore
+
     const photo = {
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
@@ -199,10 +200,8 @@ const uploadPhoto = async (req, res, next) => {
     };
 
     const docRef = await addDoc(collection(db, 'photos'), photo);
-
-    //photoSnapshot = docRef.data()
-
     if (docRef) {
+      //console.log(photo);
       res.send(photo);
       console.log('sending docRef');
     }

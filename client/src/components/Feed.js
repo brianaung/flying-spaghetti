@@ -97,7 +97,12 @@ const FeedSkeleton = () => {
 export default function Feed(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setImageUrl(null)
+    setSelectedImage(null)
+  }
+    
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
