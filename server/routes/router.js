@@ -34,7 +34,7 @@ router.get('/getPhoto/:id', contentController.getPhotoById);
 
 router.get('/comments/:photoID', contentController.getAllComments);
 
-router.get('/dashboard/:id/:folder', contentController.deletePhoto);
+router.delete('/:folder/:id', contentController.deletePhoto);
 
 router.post(
   '/dashboard/upload_photo',

@@ -70,7 +70,7 @@ const regester = async(req, res, next) => {
     createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
     .then((userCredential)=> {
         const user = userCredential.user;
-        //call create user
+        console.log(user);
       })
       .catch((error)=> {
         const errorCode = error.code;
@@ -88,6 +88,7 @@ const signInController = async(req, res, next) => {
     signInWithEmailAndPassword(auth, req.email, req.password)
     .then((userCredential) => {
       const user = userCredential.user;
+      console.log(user);
     })
     .catch((error)=> {
       const errorCode = error.code;

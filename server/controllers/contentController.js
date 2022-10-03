@@ -181,17 +181,17 @@ const uploadPhoto = async (req, res, next) => {
     console.log(req.file);
 
     // upload photo into storage
-    const imageRef = ref(storage, `images/${req.body.name}`);
-    const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-    await uploadBytes(imageRef, req.file.buffer, metatype);
+    // const imageRef = ref(storage, `images/${req.body.name}`);
+    // const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+    // await uploadBytes(imageRef, req.file.buffer, metatype);
 
-    const imageUrl = await getDownloadURL(imageRef);
+    // const imageUrl = await getDownloadURL(imageRef);
 
     // add a new photo in the photos collection of firestore
     const docRef = await addDoc(collection(db, 'photos'), {
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
-      folder: req.params.id,
+      folder: 'animals',
       isPrivate: false,
       likes: [],
       link: imageUrl,
@@ -206,7 +206,7 @@ const uploadPhoto = async (req, res, next) => {
     });
 
     // update folder
-    await updateDoc(doc(db, 'folders', req.params.id), {
+    await updateDoc(doc(db, 'folders', 'animals'), {
       photos: arrayUnion(docRef.id)
     });
   } catch (err) {
@@ -246,19 +246,6 @@ const deletePhoto = async (req, res, next) => {
   }
 }
 
-//creat a new account
-const regester = async(req, res, next) => {
-  try {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
-    .then((userCredential)=> {
-        const user = userCredential.user;
-      }
-    )
-  } catch (err) {
-    next(err);
-  }
-}
 
 export default {
   getRecentPhotos,
