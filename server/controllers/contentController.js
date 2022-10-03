@@ -181,14 +181,14 @@ const uploadPhoto = async (req, res, next) => {
     console.log(req.file);
 
     // upload photo into storage
-    // const imageRef = ref(storage, `images/${req.body.name}`);
-    // const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-    // await uploadBytes(imageRef, req.file.buffer, metatype);
+    const imageRef = ref(storage, `images/${req.body.name}`);
+    const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+    await uploadBytes(imageRef, req.file.buffer, metatype);
 
-    // const imageUrl = await getDownloadURL(imageRef);
+    const imageUrl = await getDownloadURL(imageRef);
 
     // add a new photo in the photos collection of firestore
-    const docRef = await addDoc(collection(db, 'photos'), {
+    const photo = {
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
       folder: 'animals',
@@ -196,7 +196,17 @@ const uploadPhoto = async (req, res, next) => {
       likes: [],
       link: imageUrl,
       owner: 'admin1'
-    });
+  };
+    
+    const docRef = await addDoc(collection(db, 'photos'), photo);
+
+    //photoSnapshot = docRef.data()
+
+    if (docRef) {
+      res.send(photo);
+      console.log("sending docRef");
+    }
+    
 
     // update users.
     await updateDoc(doc(db, 'users', 'admin1'), {
@@ -206,9 +216,12 @@ const uploadPhoto = async (req, res, next) => {
     });
 
     // update folder
-    await updateDoc(doc(db, 'folders', 'animals'), {
-      photos: arrayUnion(docRef.id)
-    });
+    if (req.params.folder != null) {
+      await updateDoc(doc(db, 'folders', 'animals'), {
+        photos: arrayUnion(docRef.id)
+      });
+    }
+    
   } catch (err) {
     next(err);
   }
@@ -217,16 +230,16 @@ const uploadPhoto = async (req, res, next) => {
 const deletePhoto = async (req, res, next) => {
   try{
     //delete photo in storage.
-    const imageRef = ref(storage, `images/${req.body.name}`);
-    deleteObject(imageRef).then(()=> {
-      console.log("Photo deleted successfully");
-    }).catch((err)=>{
-      console.log("There is an error, cannot delete photo");
-    }); 
+    // const imageRef = ref(storage, `images/${req.body.name}`);
+    // deleteObject(imageRef).then(()=> {
+    //   console.log("Photo deleted successfully");
+    // }).catch((err)=>{
+    //   console.log("There is an error, cannot delete photo");
+    // }); 
     
-    //delete poto information in firestore.
+    //delete photo information in firestore.
       // 1. update folder
-    const folderRef = doc(db, 'folders', req.params.folder);
+    const folderRef = doc(db, 'folders', 'animals');
     
     await updateDoc(folderRef, {
       photos: arrayRemove(req.params.id)
