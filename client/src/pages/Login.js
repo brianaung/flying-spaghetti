@@ -5,12 +5,12 @@ import { auth } from '../config/firebase.js';
 import { provider } from '../config/firebase.js';
 //import firebase from 'firebase/app';
 
-const [regesterEmail, setRegesterEmail] = useState("");
-const [regesterPassword, setRegesterPassword] = useState("");
-const [loginEmail, setLoginEmail] = useState("");
-const [loginPassword, setLoginPassword] = useState("");
 
 const Login = () => {
+  const [regesterEmail, setRegesterEmail] = useState("");
+  const [regesterPassword, setRegesterPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider).then((userCred) => {
       console.log(userCred);
