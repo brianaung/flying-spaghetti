@@ -196,17 +196,16 @@ const uploadPhoto = async (req, res, next) => {
       likes: [],
       link: imageUrl,
       owner: 'admin1'
-  };
-    
+    };
+
     const docRef = await addDoc(collection(db, 'photos'), photo);
 
     //photoSnapshot = docRef.data()
 
     if (docRef) {
       res.send(photo);
-      console.log("sending docRef");
+      console.log('sending docRef');
     }
-    
 
     // update users.
     await updateDoc(doc(db, 'users', 'admin1'), {
@@ -221,44 +220,48 @@ const uploadPhoto = async (req, res, next) => {
         photos: arrayUnion(docRef.id)
       });
     }
-    
   } catch (err) {
     next(err);
   }
 };
 
 const deletePhoto = async (req, res, next) => {
-  try{
+  try {
     //delete photo in storage.
-    // const imageRef = ref(storage, `images/${req.body.name}`);
-    // deleteObject(imageRef).then(()=> {
-    //   console.log("Photo deleted successfully");
-    // }).catch((err)=>{
-    //   console.log("There is an error, cannot delete photo");
-    // }); 
-    
+    const imageRef = ref(storage, `images/${req.body.name}`);
+    deleteObject(imageRef)
+      .then(() => {
+        console.log('Photo deleted successfully');
+      })
+      .catch((err) => {
+        console.log('There is an error, cannot delete photo');
+      });
+
     //delete photo information in firestore.
-      // 1. update folder
+    // 1. update folder
     const folderRef = doc(db, 'folders', 'animals');
-  
+
     await updateDoc(folderRef, {
       photos: arrayRemove(req.params.id)
+    }).then(() => {
+      console.log('update folder');
     });
-      // 2. update photos
+    // 2. update photos
     const photosRef = doc(db, 'photos', req.params.id);
-    await deleteDoc(photosRef);
-      // 3. update users
+    await deleteDoc(photosRef).then(() => {
+      console.log('upadate photo');
+    });
+    // 3. update users
     const usersRef = doc(db, 'users', 'admin1');
     await updateDoc(usersRef, {
       photos: arrayRemove(req.params.id)
-    })
-
-
+    }).then(() => {
+      console.log('update user');
+    });
   } catch (err) {
     next(err);
   }
-}
-
+};
 
 export default {
   getRecentPhotos,
