@@ -258,6 +258,13 @@ const deletePhoto = async (req, res, next) => {
     }).then(() => {
       console.log('update user');
     });
+
+    //send info to frontend
+    const photoDelete = {
+      "photoID":req.params.id,
+      "photoName":req.body.name
+    }
+    res.send(photoDelete);
   } catch (err) {
     next(err);
   }
