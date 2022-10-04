@@ -42,16 +42,20 @@ router.post(
   contentController.uploadPhoto
 );
 
-router.get(
-  '/dashboard/upload_photo',
+// router.get(
+//   '/dashboard/upload_photo',
+//   upload.single('selectedImage'),
+//   contentController.uploadPhoto
+// );
+
+router.post(
+  '/folder/:folder',
   upload.single('selectedImage'),
   contentController.uploadPhoto
 );
 
-router.post(
-  '/folder/:id',
-  upload.single('selectedImage'),
-  contentController.uploadPhoto
-);
+router.post('/register', adminController.regester);
+router.post('/login', adminController.signInController);
+router.post('/logout', adminController.signOutController);
 
 export default router;

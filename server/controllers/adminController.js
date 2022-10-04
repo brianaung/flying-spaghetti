@@ -66,16 +66,20 @@ const banUser = async (req, res, next) => {
 //creat a new account
 const regester = async(req, res, next) => {
   try {
+    console.log(req.body.email);
+    console.log(req.body.password);
     const auth = getAuth();
-    createUserWithEmailAndPassword(auth, req.body.email, req.body.password)
-    .then((userCredential)=> {
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error)=> {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+    const userCredential = await createUserWithEmailAndPassword(auth, req.body.email, req.body.password);
+    // .then((userCredential)=> {
+    //     const user = userCredential.user;
+    //     console.log(user);
+    //   })
+    //   .catch((error)=> {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //   });
+    console.log(userCredential.user);
+    res.send(userCredential.user);
   } catch (err) {
     next(err);
   }
@@ -85,15 +89,17 @@ const regester = async(req, res, next) => {
 const signInController = async(req, res, next) => {
   try {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, req.email, req.password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
-    })
-    .catch((error)=> {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+    const userCredential =  await signInWithEmailAndPassword(auth, req.body.email, req.body.password);
+    console.log(userCredential.user);
+    res.send(userCredential.user);
+    // .then((userCredential) => {
+    //   const user = userCredential.user;
+    //   console.log(user);
+    // })
+    // .catch((error)=> {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    // });
   } catch (error) {
     next(error);
   }
@@ -101,12 +107,16 @@ const signInController = async(req, res, next) => {
 
 const signOutController = async(req, res, next) => {
   try {
-    const auth = getAuth()
-    signOut(auth).then(()=> {
-
-    }).catch((error) => {
-
+    const auth = getAuth();
+    auth.signOut()
+    .then(()=> {
+      console.log("user sign out");
     });
+    const user = {
+      "email": req.body.email,
+     
+    };
+    res.send(user);
   } catch (error) {
     next(error);
   }

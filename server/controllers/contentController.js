@@ -191,7 +191,7 @@ const uploadPhoto = async (req, res, next) => {
     const photo = {
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
-      folder: 'animals',
+      folder: req.params.folder,
       isPrivate: false,
       likes: [],
       link: imageUrl,
@@ -240,7 +240,7 @@ const deletePhoto = async (req, res, next) => {
     //delete photo information in firestore.
       // 1. update folder
     const folderRef = doc(db, 'folders', 'animals');
-    
+  
     await updateDoc(folderRef, {
       photos: arrayRemove(req.params.id)
     });
