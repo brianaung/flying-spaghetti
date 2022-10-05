@@ -36,6 +36,10 @@ router.get('/comments/:photoID', contentController.getAllComments);
 
 router.delete('/:folder/:id', contentController.deletePhoto);
 
+router.get('/ban/:username', adminController.banUser)
+
+router.get('/accept/:username/:uniqueKey', adminController.acceptUser)
+
 router.post(
   '/dashboard/upload_photo/:folder',
   upload.single('selectedImage'),

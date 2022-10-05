@@ -63,6 +63,25 @@ const banUser = async (req, res, next) => {
   }
 };
 
+const acceptUser = async (req, res, next) => {
+  try {
+    // const userSnap = await getDoc(doc(db, 'users', req.params.username));
+    // if (!userSnap.exists()) {
+    //   res.sendStatus(404);
+    // }
+    // const key = userSnap.data().uniqueKey;
+    // if (req.params.uniqueKey != key) {
+    //   res.sendStatus(404);
+    // }
+    await updateDoc(doc(db, 'users', req.params.username), {
+      role: 'user'
+    });
+    // Inform user they got accepter and for what reason?
+  } catch (err) {
+    next(err);
+  }
+};
+
 //creat a new account
 const regester = async(req, res, next) => {
   try {
@@ -126,6 +145,7 @@ export default {
   getUser,
   createUser,
   banUser,
+  acceptUser,
   sampleUser,
   regester,
   signInController,
