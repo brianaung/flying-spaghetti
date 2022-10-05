@@ -1,5 +1,5 @@
 export default class User {
-  constructor(firstName, lastName, role, capacity, date) {
+  constructor(firstName, lastName, role, capacity, date, uniqueKey) {
     // this.username = username;
     // this.email = email;
     this.firstName = firstName;
@@ -10,5 +10,6 @@ export default class User {
     this.folders = [];
     this.images = [];
     this.liked = [];
+    this.uniqueKey = uniqueKey;
   }
 }
