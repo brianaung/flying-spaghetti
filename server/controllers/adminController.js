@@ -73,17 +73,40 @@ const banUser = async (req, res, next) => {
 const acceptUser = async (req, res, next) => {
   try {
     const userSnap = await getDoc(doc(db, 'users', req.params.uid));
-    if (!userSnap.exists() || req.params.key !== userSnap.data().secretKey) {
+    if (!userSnap.exists() || req.params.key !== userSnap.data().secretKey || userSnap.data().role != "pending") {
       res.sendStatus(404);
     }
     // const key = userSnap.data().uniqueKey;
 
     // Allow user access and generate new key
-    await updateDoc(doc(db, 'users', req.params.username), {
+    await updateDoc(doc(db, 'users', req.params.uid), {
       role: 'user',
       secretKey: v4()
     });
     // Email user they got accepted and account is activated
+    const mailTransport = createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'admn1flying@gmail.com',
+        pass: 'pgxzirsraggfdxvh'
+      }
+    });
+
+    const content = {
+      from: 'admn1flying@gmail.com',
+      to: 'admn1flying@gmail.com',
+      subject: 'testing',
+      //approve/uid/secretKey
+      text: `your account has been activited.`
+    }
+
+    mailTransport.sendMail(content, (err)=> {
+      if (err) {
+        console.log("not able to send eamil",err);
+      } else {
+        console.log("send email to admin");
+      }
+    })
   } catch (err) {
     next(err);
   }
@@ -130,7 +153,7 @@ const registerUser = async(req, res, next) => {
       to: 'admn1flying@gmail.com',
       subject: 'testing',
       //approve/uid/secretKey
-      text: `http://localhost:9000/accept/${userCredential.user.uid}/${newUser.uniqueKey}`
+      text: `http://localhost:9000/accept/${userCredential.user.uid}/${newUser.secretKey}`
     }
 
     mailTransport.sendMail(content, (err)=> {
