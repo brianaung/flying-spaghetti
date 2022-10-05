@@ -72,7 +72,8 @@ const acceptUser = async (req, res, next) => {
     //   res.sendStatus(404);
     // }
     await updateDoc(doc(db, 'users', req.params.username), {
-      role: 'user'
+      role: 'user',
+      uniqueKey: ""
     });
     // Inform user they got accepter and for what reason?
   } catch (err) {
