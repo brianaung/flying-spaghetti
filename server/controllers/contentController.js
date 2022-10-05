@@ -47,6 +47,7 @@ const getPhotoById = async (req, res, next) => {
     }
 
     const photo = {
+      name: photosnapshot.name,
       caption: photosnapshot.caption,
       date: photosnapshot.date,
       folder: photosnapshot.folder,
@@ -190,6 +191,7 @@ const uploadPhoto = async (req, res, next) => {
     // add a new photo in the photos collection of firestore
 
     const photo = {
+      name: req.body.name,
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
       folder: req.params.folder,

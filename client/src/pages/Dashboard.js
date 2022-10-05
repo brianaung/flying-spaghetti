@@ -8,7 +8,8 @@ import Navbar from '../components/Navbar';
 import { useDispatch } from 'react-redux';
 
 //actions
-import { getPhotos } from '../actions/photos';
+import { getPhotos, getPhotosInFolder } from '../actions/photos';
+import { useParams } from 'react-router-dom';
 
 const Container = styled(Box)({
   display: 'flex',
@@ -27,16 +28,23 @@ export default function Dashboard() {
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
 
+  const { id } = useParams();
+
   useEffect(() => {
-    dispatch(getPhotos());
-  }, [dispatch]);
+    if (id === 'folders') {
+      
+      dispatch(getPhotos());
+    } else {
+      dispatch(getPhotosInFolder(id));
+    }
+  }, [id]);
 
   return (
     <Container container>
       <Navbar query={query} setQuery={setQuery} />
       <StyledStack direction="row">
         <Sidebar usage="90" />
-        <Feed query={query} />
+        <Feed query={query} pageID={id}/>
       </StyledStack>
     </Container>
   );

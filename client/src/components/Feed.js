@@ -14,13 +14,16 @@ import {
   Typography,
   Stack,
   // Skeleton,
-  Fab
+  Fab,
+  Skeleton
 } from '@mui/material';
 // mui icons
 import FolderIcon from '@mui/icons-material/Folder';
 import AddIcon from '@mui/icons-material/Add';
 // my components
 import PhotoFrame from '../components/PhotoFrame';
+
+//import FoldersPage from '../pages/FoldersPage';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
@@ -72,7 +75,6 @@ const Folder = styled(Box)({
   whiteSpace: 'nowrap'
 });
 
-/*
 const FeedSkeleton = () => {
   return (
     <Stack spacing={3}>
@@ -91,26 +93,29 @@ const FeedSkeleton = () => {
     </Stack>
   );
 };
-*/
 
 // TODO: add current directory
 export default function Feed(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     setOpen(false);
-    setImageUrl(null)
-    setSelectedImage(null)
-  }
-    
+    setImageUrl(null);
+    setSelectedImage(null);
+  };
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
 
+  const handleOpenFolder = (folder) => {
+    navigate(`/dashboard/${folder}`);
+  };
+
   // get folders and photos
   // const { data, isLoading } = useSelector((state) => state.photos);
-  const data = useSelector((state) => state.photos);
-  const folders = data.folders;
+  const { folders, photos, isLoading } = useSelector((state) => state.photos);
 
   useEffect(() => {
     if (selectedImage) {
@@ -192,28 +197,37 @@ export default function Feed(props) {
       </Modal>
 
       <>
-        <FolderFrame>
-          <Typography variant="h3">Folders</Typography>
-          {folders && (
-            <FolderContainer>
-              {folders.map((folder) => {
-                return (
-                  <Folder key={folder} onClick={() => navigate(`/folder/${folders}`)}>
-                    <FolderIcon />
-                    <Typography>{folder}</Typography>
-                  </Folder>
-                );
-              })}
-            </FolderContainer>
-          )}
-        </FolderFrame>
-        <Typography variant="h3">Photos</Typography>
-        <PhotoFrame photos={data.photos} query={props.query}></PhotoFrame>
+        {isLoading ? (
+          <FeedSkeleton />
+        ) : (
+          <>
+            <FolderFrame>
+              <Typography variant="h3">{`${props.pageID
+                .charAt(0)
+                .toUpperCase()}${props.pageID.substring(1)}`}</Typography>
+              {folders && props.pageID === 'folders' && (
+                <FolderContainer>
+                  {folders.map((folder) => {
+                    return (
+                      <Folder key={folder} onClick={() => handleOpenFolder(folder)}>
+                        <FolderIcon />
+                        <Typography>{folder}</Typography>
+                      </Folder>
+                    );
+                  })}
+                </FolderContainer>
+              )}
+            </FolderFrame>
+            {props.pageID === 'folders' ? <Typography variant="h3">Photos</Typography> : <></>}
+            <PhotoFrame photos={photos} query={props.query}></PhotoFrame>
+          </>
+        )}
       </>
     </FeedContainer>
   );
 }
 
 Feed.propTypes = {
-  query: PropTypes.string
+  query: PropTypes.string,
+  pageID: PropTypes.string
 };

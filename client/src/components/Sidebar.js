@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -40,8 +40,8 @@ export default function Sidebar(props) {
     <SidebarContainer>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
-        <ListItemButton component={Link} to="/dashboard">
-          <ListItemText primary="My Photos" onClick={() => navigate('/dashboard')} />
+        <ListItemButton >
+          <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
         <ListItemButton component="a" href="#">
           <ListItemText primary="Shared With Me" />
