@@ -66,7 +66,7 @@ export default function Home() {
             <Typography color="red">dev message: click on login to access dashboard</Typography>
             {/* TODO: login should redirect to dashboard only after authentication */}
 
-            <LoginForm id="login-form" action="/dashboard">
+            <LoginForm id="login-form" action="/dashboard/folders">
               <TextField name="username" variant="outlined" label="Username"></TextField>
               <TextField
                 name="password"

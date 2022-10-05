@@ -3,6 +3,7 @@ import { setDoc, updateDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { async } from '@firebase/util';
+import { v4 } from 'uuid';
 
 const getUser = async (req, res, next) => {
   try {
@@ -109,7 +110,8 @@ const register = async(req, res, next) => {
       date: Timestamp.fromDate(new Date()),
       folders: [],
       photos: [],
-      liked: []
+      liked: [],
+      uniqueKey: v4()
     });
 
     console.log(userCredential.user);
