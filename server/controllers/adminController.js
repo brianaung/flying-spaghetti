@@ -98,7 +98,7 @@ const registerUser = async(req, res, next) => {
     const userCredential = await createUserWithEmailAndPassword(auth, req.body.email, req.body.password);
     
     //create new user in databse
-    await setDoc(doc(db, 'users', userCredential.user.uid), {
+    const newUser = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       role: 'pending',
@@ -108,7 +108,8 @@ const registerUser = async(req, res, next) => {
       photos: [],
       liked: [],
       secretKey: v4()
-    });
+    }
+    await setDoc(doc(db, 'users', userCredential.user.uid), newUser);
 
     console.log(userCredential.user);
     // res.send(userCredential.user);
