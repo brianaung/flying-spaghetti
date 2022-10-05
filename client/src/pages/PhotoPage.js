@@ -1,13 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
-import { Checkbox, Divider, Grid, Typography, Button, TextField } from '@mui/material';
+import {
+  Checkbox,
+  Divider,
+  Grid,
+  Typography,
+  Button,
+  TextField,
+  Modal,
+  Tooltip
+} from '@mui/material';
 import { Stack, Box } from '@mui/system';
 
 //icons
 import Favorite from '@mui/icons-material/Favorite';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
+import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 
 //components
 import Navbar from '../components/Navbar';
@@ -44,7 +55,7 @@ const PhotoSection = styled(Grid)(({ theme }) => ({
   flexDirection: 'column',
   width: '50%',
   [theme.breakpoints.down('sm')]: {
-    width: '100%',
+    width: '100%'
   }
 }));
 
@@ -67,7 +78,34 @@ const StyledBox = styled(Box)({
   flexDirection: 'column'
 });
 
+const LinkBox = styled(Box)({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  backgroundColor: 'white',
+  border: '1px solid #000',
+  boxShadow: 24,
+  p: 4,
+  padding: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  flexDirection: 'column'
+});
+
+const ImageLink = styled(Box)({
+  border: '1px ridge',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  padding: '20px'
+});
+
 export default function PhotoPage() {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [copied, setCopied] = useState(false);
   const container = useRef(null);
   const container1 = useRef(null);
   const [imgHeight, setImgHeight] = useState(null);
@@ -138,7 +176,7 @@ export default function PhotoPage() {
                 {/* icons */}
                 <Box display="flex" justifyContent="space-between">
                   <Checkbox size="medium" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
-                  <Button sx={{ marginRight: 'auto' }} color="primary" onClick={() => {}}>
+                  <Button sx={{ marginRight: 'auto' }} color="primary" onClick={handleOpen}>
                     <ShareIcon fontSize="medium" />
                   </Button>
                 </Box>
@@ -149,6 +187,32 @@ export default function PhotoPage() {
               </StyledBox>
             </CommentSection>
           </MainSection>
+
+          {/* image link */}
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description">
+            <LinkBox>
+              <Typography align="center">Image Link</Typography>
+              <ImageLink>
+                {photo.link}
+                <Box display="flex" justifyContent="flex-end" marginTop="1rem">
+                  <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
+                    <Checkbox
+                      onClick={() => {
+                        navigator.clipboard.writeText(photo.link);
+                        setCopied(!copied);
+                      }}
+                      icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
+                      checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
+                    />
+                  </Tooltip>
+                </Box>
+              </ImageLink>
+            </LinkBox>
+          </Modal>
         </FullPage>
       </>
     );
