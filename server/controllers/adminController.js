@@ -1,14 +1,13 @@
 // import * as fs from "firebase/firestore";
 import { setDoc, updateDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
-import { db } from '../config/firebase.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { async } from '@firebase/util';
+import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
 
 const getUser = async (req, res, next) => {
   try {
-    const userID = req.params.id;
-    const userSnap = await getDoc(doc(db, 'users', userID));
+    // const userID = req.params.id;
+    const userSnap = await getDoc(doc(db, 'users', req.params.id));
     if (!userSnap.exists) {
       res.sendStatus(404);
     }
@@ -18,6 +17,7 @@ const getUser = async (req, res, next) => {
   }
 };
 
+// Fields not updated, use registerUser
 const sampleUser = async (req, res, next) => {
   try {
     await setDoc(doc(db, 'users', 'user1'), {
@@ -36,8 +36,8 @@ const sampleUser = async (req, res, next) => {
   }
 };
 
+// Use registerUser instead
 const createUser = async (req, res, next) => {
-  
     await setDoc(doc(db, 'users', req.body.username), {
       firstName: req.body.firstname,
       lastName: req.body.lastname,
@@ -48,24 +48,22 @@ const createUser = async (req, res, next) => {
       photos: [],
       liked: []
     });
-  
 };
 
 const banUser = async (req, res, next) => {
   try {
-    const userSnap = await getDoc(doc(db, 'users', req.params.username));
-    if (!userSnap.exists()) {
+    const userSnap = await getDoc(doc(db, 'users', req.params.uid));
+    if (!userSnap.exists() || req.params.key !== userSnap.data().secretKey) {
       res.sendStatus(404);
     }
-    const key = userSnap.data().uniqueKey;
-    if (req.params.uniqueKey != key) {
-      res.sendStatus(404);
-    }
-    await updateDoc(doc(db, 'users', req.params.username), {
+    // const key = userSnap.data().secretKey;
+
+    // Ban user and generate new key
+    await updateDoc(doc(db, 'users', req.params.uid), {
       role: 'banned',
-      uniqueKey: v4()
+      secretKey: v4()
     });
-    // Inform user they got rejected and for what reason?
+    // Inform user they got rejected and banned, provide admin's email to appeal
   } catch (err) {
     next(err);
   }
@@ -73,68 +71,66 @@ const banUser = async (req, res, next) => {
 
 const acceptUser = async (req, res, next) => {
   try {
-    const userSnap = await getDoc(doc(db, 'users', req.params.username));
-    if (!userSnap.exists()) {
+    const userSnap = await getDoc(doc(db, 'users', req.params.uid));
+    if (!userSnap.exists() || req.params.key !== userSnap.data().secretKey) {
       res.sendStatus(404);
     }
-    const key = userSnap.data().uniqueKey;
-    if (req.params.uniqueKey != key) {
-      res.sendStatus(404);
-    }
+    // const key = userSnap.data().uniqueKey;
+
+    // Allow user access and generate new key
     await updateDoc(doc(db, 'users', req.params.username), {
       role: 'user',
-      uniqueKey: v4()
+      secretKey: v4()
     });
-    // Inform user they got accepter and for what reason?
+    // Email user they got accepted and account is activated
   } catch (err) {
     next(err);
   }
 };
 
-//creat a new account
-const register = async(req, res, next) => {
+// Create a new account
+const registerUser = async(req, res, next) => {
   try {
     console.log(req.body.email);
     console.log(req.body.password);
     
-    //add new user in firebase auth
-    const auth = getAuth();
+    // const auth = getAuth();
     const userCredential = await createUserWithEmailAndPassword(auth, req.body.email, req.body.password);
     
     //create new user in databse
-    await setDoc(doc(db, 'users', req.body.username), {
+    await setDoc(doc(db, 'users', userCredential.user.uid), {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      role: "Pending",
+      role: 'pending',
       capacity: 10,
       date: Timestamp.fromDate(new Date()),
       folders: [],
       photos: [],
       liked: [],
-      uniqueKey: v4()
+      secretKey: v4()
     });
 
     console.log(userCredential.user);
-    res.send(userCredential.user);
+    // res.send(userCredential.user);
+    
+    // Send confirmation email to admin(s) with approve/deny links
   } catch (err) {
     next(err);
   }
 }
 
-//sign in
-const signInController = async(req, res, next) => {
+const signIn = async(req, res, next) => {
   try {
     const auth = getAuth();
     const userCredential =  await signInWithEmailAndPassword(auth, req.body.email, req.body.password);
     console.log(userCredential.user);
     res.send(userCredential.user);
-    
   } catch (error) {
     next(error);
   }
 }
 
-const signOutController = async(req, res, next) => {
+const signOut = async(req, res, next) => {
   try {
     const auth = getAuth();
     auth.signOut()
@@ -143,7 +139,6 @@ const signOutController = async(req, res, next) => {
     });
     const user = {
       "email": req.body.email,
-     
     };
     res.send(user);
   } catch (error) {
@@ -157,7 +152,7 @@ export default {
   banUser,
   acceptUser,
   sampleUser,
-  register,
-  signInController,
-  signOutController
+  registerUser,
+  signIn,
+  signOut
 };

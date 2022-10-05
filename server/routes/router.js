@@ -36,9 +36,9 @@ router.get('/comments/:photoID', contentController.getAllComments);
 
 router.delete('/:folder/:id', contentController.deletePhoto);
 
-router.get('/ban/:username', adminController.banUser)
+router.get('/ban/:uid/:key', adminController.banUser);
 
-router.get('/accept/:username/:uniqueKey', adminController.acceptUser)
+router.get('/accept/:uid/:key', adminController.acceptUser);
 
 router.post(
   '/dashboard/upload_photo/:folder',
@@ -58,8 +58,8 @@ router.post(
   contentController.uploadPhoto
 );
 
-router.post('/register', adminController.register);
-router.post('/login', adminController.signInController);
-router.post('/logout', adminController.signOutController);
+router.post('/register', adminController.registerUser);
+router.post('/login', adminController.signIn);
+router.post('/logout', adminController.signOut);
 
 export default router;
