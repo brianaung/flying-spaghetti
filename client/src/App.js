@@ -21,10 +21,10 @@ export default function App() {
         <Routes>
           {/* TODO: Home is the main pg for non users. Dashboard is the home page for logged in users */}
           <Route path="/" exact element={<Home />} />
-          <Route path="/dashboard" exact element={<Dashboard />} />
+          <Route path="/dashboard/:id" exact element={<Dashboard />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/photo/:id" exact element={<PhotoPage />} />
-          <Route path="/folder/:id" exact element={<FoldersPage />} />
+          <Route path="/dashboard/:id" exact element={<FoldersPage />} />
         </Routes>
       </BrowserRouter>
     </>

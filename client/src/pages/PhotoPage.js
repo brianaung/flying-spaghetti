@@ -44,7 +44,7 @@ const PhotoSection = styled(Grid)(({ theme }) => ({
   flexDirection: 'column',
   width: '50%',
   [theme.breakpoints.down('sm')]: {
-    width: '100%'
+    width: '100%',
   }
 }));
 
@@ -102,7 +102,6 @@ export default function PhotoPage() {
               <img
                 ref={container}
                 width="100%"
-                height="auto"
                 style={{ maxHeight: '40rem' }}
                 src={photo.link}
                 alt={photo.caption}
