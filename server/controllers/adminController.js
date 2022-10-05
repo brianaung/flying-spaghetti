@@ -63,7 +63,7 @@ const banUser = async (req, res, next) => {
     }
     await updateDoc(doc(db, 'users', req.params.username), {
       role: 'banned',
-      uniqueKey: ""
+      uniqueKey: v4()
     });
     // Inform user they got rejected and for what reason?
   } catch (err) {
@@ -83,7 +83,7 @@ const acceptUser = async (req, res, next) => {
     }
     await updateDoc(doc(db, 'users', req.params.username), {
       role: 'user',
-      uniqueKey: ""
+      uniqueKey: v4()
     });
     // Inform user they got accepter and for what reason?
   } catch (err) {
