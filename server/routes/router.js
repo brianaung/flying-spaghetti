@@ -60,6 +60,6 @@ router.post(
 
 router.post('/register', adminController.registerUser);
 router.post('/login', adminController.signIn);
-router.post('/logout', adminController.signOut);
+router.post('/logout', adminController.signOutController);
 
 export default router;

@@ -3,6 +3,7 @@ import { setDoc, updateDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
+import { createTransport } from 'nodemailer';
 
 const getUser = async (req, res, next) => {
   try {
@@ -115,6 +116,30 @@ const registerUser = async(req, res, next) => {
     // res.send(userCredential.user);
     
     // Send confirmation email to admin(s) with approve/deny links
+    //send verify email to admin
+    const mailTransport = createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'admn1flying@gmail.com',
+        pass: 'pgxzirsraggfdxvh'
+      }
+    });
+
+    const content = {
+      from: 'admn1flying@gmail.com',
+      to: 'admn1flying@gmail.com',
+      subject: 'testing',
+      //approve/uid/secretKey
+      text: `http://localhost:9000/accept/${userCredential.user.uid}/${newUser.uniqueKey}`
+    }
+
+    mailTransport.sendMail(content, (err)=> {
+      if (err) {
+        console.log("not able to send eamil",err);
+      } else {
+        console.log("send email to admin");
+      }
+    })
   } catch (err) {
     next(err);
   }
@@ -131,7 +156,7 @@ const signIn = async(req, res, next) => {
   }
 }
 
-const signOut = async(req, res, next) => {
+const signOutController = async(req, res, next) => {
   try {
     const auth = getAuth();
     auth.signOut()
@@ -155,5 +180,5 @@ export default {
   sampleUser,
   registerUser,
   signIn,
-  signOut
+  signOutController
 };
