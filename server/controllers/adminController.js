@@ -36,7 +36,7 @@ const sampleUser = async (req, res, next) => {
 };
 
 const createUser = async (req, res, next) => {
-  try {
+  
     await setDoc(doc(db, 'users', req.body.username), {
       firstName: req.body.firstname,
       lastName: req.body.lastname,
@@ -47,9 +47,7 @@ const createUser = async (req, res, next) => {
       photos: [],
       liked: []
     });
-  } catch (err) {
-    next(err);
-  }
+  
 };
 
 const banUser = async (req, res, next) => {
@@ -83,20 +81,27 @@ const acceptUser = async (req, res, next) => {
 };
 
 //creat a new account
-const regester = async(req, res, next) => {
+const register = async(req, res, next) => {
   try {
     console.log(req.body.email);
     console.log(req.body.password);
+    
+    //add new user in firebase auth
     const auth = getAuth();
     const userCredential = await createUserWithEmailAndPassword(auth, req.body.email, req.body.password);
-    // .then((userCredential)=> {
-    //     const user = userCredential.user;
-    //     console.log(user);
-    //   })
-    //   .catch((error)=> {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //   });
+    
+    //create new user in databse
+    await setDoc(doc(db, 'users', req.body.username), {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      role: "Pending",
+      capacity: 10,
+      date: Timestamp.fromDate(new Date()),
+      folders: [],
+      photos: [],
+      liked: []
+    });
+
     console.log(userCredential.user);
     res.send(userCredential.user);
   } catch (err) {
@@ -111,14 +116,7 @@ const signInController = async(req, res, next) => {
     const userCredential =  await signInWithEmailAndPassword(auth, req.body.email, req.body.password);
     console.log(userCredential.user);
     res.send(userCredential.user);
-    // .then((userCredential) => {
-    //   const user = userCredential.user;
-    //   console.log(user);
-    // })
-    // .catch((error)=> {
-    //   const errorCode = error.code;
-    //   const errorMessage = error.message;
-    // });
+    
   } catch (error) {
     next(error);
   }
@@ -147,7 +145,7 @@ export default {
   banUser,
   acceptUser,
   sampleUser,
-  regester,
+  register,
   signInController,
   signOutController
 };
