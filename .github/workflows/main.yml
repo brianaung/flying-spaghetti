@@ -14,9 +14,9 @@ jobs:
       - name: Deploy to Heroku (Server)
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "flyingspaghetti-server" #Must be unique in Heroku
-          heroku_email: "soekhantaung16@gmail.com"
+          heroku_api_key: ${{secrets.HEROKU_SERVER_API_KEY}}
+          heroku_app_name: "flying-spaghetti-server" #Must be unique in Heroku
+          heroku_email: "phamthanhnguyen1080@gmail.com"
           appdir: "server" # <- This will point to the api folder in your project
           
   deploy-client:

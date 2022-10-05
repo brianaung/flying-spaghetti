@@ -14,7 +14,7 @@ import FoldersPage from './pages/FoldersPage';
 
 // import components here
 
-function App() {
+export default function App() {
   return (
     <>
       <BrowserRouter>
@@ -30,5 +30,3 @@ function App() {
     </>
   );
 }
-
-export default App;
