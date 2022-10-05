@@ -63,6 +63,15 @@ const getPhotoById = async (req, res, next) => {
   }
 };
 
+const comment = async (req, res, next) => {
+  try {
+    // get users
+    
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getAllComments = async (req, res, next) => {
   try {
     const comments = [];

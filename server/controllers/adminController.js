@@ -52,10 +52,19 @@ const createUser = async (req, res, next) => {
 
 const banUser = async (req, res, next) => {
   try {
+    const userSnap = await getDoc(doc(db, 'users', req.params.username));
+    if (!userSnap.exists()) {
+      res.sendStatus(404);
+    }
+    const key = userSnap.data().uniqueKey;
+    if (req.params.uniqueKey != key) {
+      res.sendStatus(404);
+    }
     await updateDoc(doc(db, 'users', req.params.username), {
-      role: 'banned'
+      role: 'banned',
+      uniqueKey: ""
     });
-    // Inform user they got banned and for what reason?
+    // Inform user they got rejected and for what reason?
   } catch (err) {
     next(err);
   }
@@ -63,14 +72,14 @@ const banUser = async (req, res, next) => {
 
 const acceptUser = async (req, res, next) => {
   try {
-    // const userSnap = await getDoc(doc(db, 'users', req.params.username));
-    // if (!userSnap.exists()) {
-    //   res.sendStatus(404);
-    // }
-    // const key = userSnap.data().uniqueKey;
-    // if (req.params.uniqueKey != key) {
-    //   res.sendStatus(404);
-    // }
+    const userSnap = await getDoc(doc(db, 'users', req.params.username));
+    if (!userSnap.exists()) {
+      res.sendStatus(404);
+    }
+    const key = userSnap.data().uniqueKey;
+    if (req.params.uniqueKey != key) {
+      res.sendStatus(404);
+    }
     await updateDoc(doc(db, 'users', req.params.username), {
       role: 'user',
       uniqueKey: ""
