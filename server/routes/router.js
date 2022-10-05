@@ -54,7 +54,7 @@ router.post(
   contentController.uploadPhoto
 );
 
-router.post('/register', adminController.regester);
+router.post('/register', adminController.register);
 router.post('/login', adminController.signInController);
 router.post('/logout', adminController.signOutController);
 
