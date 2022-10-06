@@ -1,6 +1,5 @@
 // import * as fs from "firebase/firestore";
 import { setDoc, updateDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
 import { createTransport } from 'nodemailer';
@@ -65,24 +64,6 @@ const banUser = async (req, res, next) => {
       secretKey: v4()
     });
     // Inform user they got rejected and banned, provide admin's email to appeal
-  } catch (err) {
-    next(err);
-  }
-};
-
-const acceptUser = async (req, res, next) => {
-  try {
-    const userSnap = await getDoc(doc(db, 'users', req.params.uid));
-    if (!userSnap.exists() || req.params.key !== userSnap.data().secretKey || userSnap.data().role != "pending") {
-      res.sendStatus(404);
-    }
-    // const key = userSnap.data().uniqueKey;
-
-    // Allow user access and generate new key
-    await updateDoc(doc(db, 'users', req.params.uid), {
-      role: 'user',
-      secretKey: v4()
-    });
     // Email user they got accepted and account is activated
     const mailTransport = createTransport({
       service: 'gmail',
@@ -92,19 +73,25 @@ const acceptUser = async (req, res, next) => {
       }
     });
 
+    const emailText =
+      `
+      Hi ${userSnap.data().firstName},\n\n
+      Your current account has been baned by the admin\n
+      Dev Team
+      `
+
     const content = {
       from: 'admn1flying@gmail.com',
       to: 'admn1flying@gmail.com',
-      subject: 'testing',
-      //approve/uid/secretKey
-      text: `your account has been activited.`
+      subject: 'Your account has been baned!',
+      text: emailText
     }
 
-    mailTransport.sendMail(content, (err)=> {
+    mailTransport.sendMail(content, (err) => {
       if (err) {
-        console.log("not able to send eamil",err);
+        console.log('Unable to send email', err);
       } else {
-        console.log("send email to admin");
+        console.log('send email to admin');
       }
     })
   } catch (err) {
@@ -112,34 +99,25 @@ const acceptUser = async (req, res, next) => {
   }
 };
 
-// Create a new account
-const registerUser = async(req, res, next) => {
+const acceptUser = async (req, res, next) => {
   try {
-    console.log(req.body.email);
-    console.log(req.body.password);
-    
-    // const auth = getAuth();
-    const userCredential = await createUserWithEmailAndPassword(auth, req.body.email, req.body.password);
-    
-    //create new user in databse
-    const newUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      role: 'pending',
-      capacity: 10,
-      date: Timestamp.fromDate(new Date()),
-      folders: [],
-      photos: [],
-      liked: [],
-      secretKey: v4()
+    const userSnap = await getDoc(doc(db, 'users', req.params.uid));
+    if (!userSnap.exists()) {
+      res.sendStatus(404);
     }
-    await setDoc(doc(db, 'users', userCredential.user.uid), newUser);
 
-    console.log(userCredential.user);
-    // res.send(userCredential.user);
-    
-    // Send confirmation email to admin(s) with approve/deny links
-    //send verify email to admin
+    const userData = userSnap.data();
+    if (userData.role != 'pending' || req.params.key !== userData.secretKey) {
+      res.sendStatus(404);
+    }
+
+    // Allow user access and generate new key
+    await updateDoc(doc(db, 'users', req.params.uid), {
+      role: 'user',
+      secretKey: v4()
+    });
+
+    // Email user they got accepted and account is activated
     const mailTransport = createTransport({
       service: 'gmail',
       auth: {
@@ -148,61 +126,37 @@ const registerUser = async(req, res, next) => {
       }
     });
 
+    const emailText =
+      `
+      Hi ${userData.firstName},\n\n
+      Congratulations, your account has been approved and you can now login with your email and password.\n\n
+      Enjoy,\n
+      Dev Team
+      `
+
     const content = {
       from: 'admn1flying@gmail.com',
       to: 'admn1flying@gmail.com',
-      subject: 'testing',
-      //approve/uid/secretKey
-      text: `http://localhost:9000/accept/${userCredential.user.uid}/${newUser.secretKey}`
+      subject: 'Your account has been activated!',
+      text: emailText
     }
 
-    mailTransport.sendMail(content, (err)=> {
+    mailTransport.sendMail(content, (err) => {
       if (err) {
-        console.log("not able to send eamil",err);
+        console.log('Unable to send email', err);
       } else {
-        console.log("send email to admin");
+        console.log('send email to admin');
       }
     })
   } catch (err) {
     next(err);
   }
-}
-
-const signIn = async(req, res, next) => {
-  try {
-    
-    const auth = getAuth();
-    const userCredential =  await signInWithEmailAndPassword(auth, req.body.email, req.body.password);
-    console.log(userCredential.user);
-    res.send(userCredential.user);
-  } catch (error) {
-    next(error);
-  }
-}
-
-const signOutController = async(req, res, next) => {
-  try {
-    const auth = getAuth();
-    auth.signOut()
-    .then(()=> {
-      console.log("user sign out");
-    });
-    const user = {
-      "email": req.body.email,
-    };
-    res.send(user);
-  } catch (error) {
-    next(error);
-  }
-}
+};
 
 export default {
   getUser,
   createUser,
   banUser,
   acceptUser,
-  sampleUser,
-  registerUser,
-  signIn,
-  signOutController
+  sampleUser
 };

@@ -1,13 +1,14 @@
 import { application, Router } from 'express';
 
-// controller
 import adminController from '../controllers/adminController.js';
 import contentController from '../controllers/contentController.js';
+import authController from '../controllers/authController.js';
 // import login from '../login.js';
 
 import multer from 'multer';
+//import authController from '../controllers/authController.js';
 // const upload = multer({ dest: './public/data/uploads/' });
-// multer
+
 const memoStorage = multer.memoryStorage();
 const upload = multer({ memoStorage });
 
@@ -58,8 +59,8 @@ router.post(
   contentController.uploadPhoto
 );
 
-router.post('/register', adminController.registerUser);
-router.post('/login', adminController.signIn);
-router.post('/logout', adminController.signOutController);
+router.post('/register', authController.registerUser);
+router.post('/login', authController.signInUser);
+router.post('/logout', authController.signOutUser);
 
 export default router;
