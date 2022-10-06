@@ -170,6 +170,7 @@ const registerUser = async(req, res, next) => {
 
 const signIn = async(req, res, next) => {
   try {
+    
     const auth = getAuth();
     const userCredential =  await signInWithEmailAndPassword(auth, req.body.email, req.body.password);
     console.log(userCredential.user);
