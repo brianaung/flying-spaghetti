@@ -64,6 +64,36 @@ const banUser = async (req, res, next) => {
       secretKey: v4()
     });
     // Inform user they got rejected and banned, provide admin's email to appeal
+    // Email user they got accepted and account is activated
+    const mailTransport = createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'admn1flying@gmail.com',
+        pass: 'pgxzirsraggfdxvh'
+      }
+    });
+
+    const emailText =
+      `
+      Hi ${userSnap.data().firstName},\n\n
+      Your current account has been baned by the admin\n
+      Dev Team
+      `
+
+    const content = {
+      from: 'admn1flying@gmail.com',
+      to: 'admn1flying@gmail.com',
+      subject: 'Your account has been baned!',
+      text: emailText
+    }
+
+    mailTransport.sendMail(content, (err) => {
+      if (err) {
+        console.log('Unable to send email', err);
+      } else {
+        console.log('send email to admin');
+      }
+    })
   } catch (err) {
     next(err);
   }

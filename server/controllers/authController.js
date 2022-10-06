@@ -4,8 +4,10 @@ import {
     signOut,
     signInWithEmailLink
 } from 'firebase/auth';
-import { doc, Timestamp } from 'firebase/firestore';
+import { setDoc, doc, Timestamp } from 'firebase/firestore';
 import { db, auth } from '../config/firebase.js';
+import { v4 } from 'uuid'
+import { createTransport } from 'nodemailer';
 
 // Create a new account
 const registerUser = async(req, res, next) => {
