@@ -41,6 +41,8 @@ router.get('/ban/:uid/:key', adminController.banUser);
 
 router.get('/accept/:uid/:key', adminController.acceptUser);
 
+router.get('/isLogin', authController.isLogIn);
+
 router.post(
   '/dashboard/upload_photo/:folder',
   upload.single('selectedImage'),

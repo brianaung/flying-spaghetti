@@ -27,6 +27,16 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 //     return photoList;
 // }
 
+function getCurUserID() {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      return user.uid;
+    } else {
+      return null;
+    }
+  });
+}
+
 const getPhotoById = async (req, res, next) => {
   try {
     const snapshot = await getDoc(doc(db, 'photos', req.params.id));
@@ -102,10 +112,11 @@ const getLikedPhotos = async (req, res, next) => {
   try {
     // const user = req.user.toJSON();
     // const userSnap = await getDoc(doc(db, "users", user.username));
-    const userSnap = await getDoc(doc(db, 'users', 'admin1'));
-    if (!userSnap.exists()) {
+    const userID = getCurUserID();
+    if (userID == null) {
       res.sendStatus(404);
     }
+    const userSnap = await getDoc(doc(db, 'users', userID));
     const liked = userSnap.data().liked;
     const photos = [];
     for (const photoID of liked) {
@@ -123,11 +134,11 @@ const getUserFolders = async (req, res, next) => {
     // const user = req.user.toJSON();
     // const userRef = firestore.collection('users').doc(user.username);
     // const userSnap = await getDoc(doc(db, "users", user.username));
-    const userSnap = await getDoc(doc(db, 'users', 'user1'));
-    if (!userSnap.exists()) {
-      // res.sendStatus(404);
-      res.send('none');
+    const userID = getCurUserID();
+    if (userID == null) {
+      res.sendStatus(404);
     }
+    const userSnap = await getDoc(doc(db, 'users', userID));
     const folders = userSnap.data().folders;
     res.send(folders);
   } catch (err) {
@@ -157,10 +168,11 @@ const getPhotosInFolder = async (req, res, next) => {
 
 const getContentByUser = async (req, res, next) => {
   try {
-    const userSnap = await getDoc(doc(db, 'users', 'admin1'));
-    if (!userSnap.exists()) {
+    const userID = getCurUserID();
+    if (userID == null) {
       res.sendStatus(404);
     }
+    const userSnap = await getDoc(doc(db, 'users', userID));
     const folders = userSnap.data().folders;
     const photoIDs = userSnap.data().photos;
     const photoList = [];
@@ -198,7 +210,10 @@ const uploadPhoto = async (req, res, next) => {
     const imageUrl = await getDownloadURL(imageRef);
 
     // add a new photo in the photos collection of firestore
-
+    const userID = getCurUserID();
+    if (userID == null) {
+      res.sendStatus(404);
+    }
     const photo = {
       name: req.body.name,
       caption: req.body.description,
@@ -207,7 +222,7 @@ const uploadPhoto = async (req, res, next) => {
       isPrivate: false,
       likes: [],
       link: imageUrl,
-      owner: 'admin1'
+      owner: userID
     };
 
     const docRef = await addDoc(collection(db, 'photos'), photo);
@@ -218,7 +233,7 @@ const uploadPhoto = async (req, res, next) => {
     }
 
     // update users.
-    await updateDoc(doc(db, 'users', 'admin1'), {
+    await updateDoc(doc(db, 'users', userID), {
       photos: arrayUnion(docRef.id)
 
       // update capacity
@@ -226,7 +241,7 @@ const uploadPhoto = async (req, res, next) => {
 
     // update folder
     if (req.params.folder != null) {
-      await updateDoc(doc(db, 'folders', 'animals'), {
+      await updateDoc(doc(db, 'folders', req.params.folder), {
         photos: arrayUnion(docRef.id)
       });
     }
@@ -262,7 +277,11 @@ const deletePhoto = async (req, res, next) => {
       console.log('upadate photo');
     });
     // 3. update users
-    const usersRef = doc(db, 'users', 'admin1');
+    const userID = getCurUserID();
+    if (userID == null) {
+      res.sendStatus(404);
+    }
+    const usersRef = doc(db, 'users', userID);
     await updateDoc(usersRef, {
       photos: arrayRemove(req.params.id)
     }).then(() => {

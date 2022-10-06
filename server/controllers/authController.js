@@ -2,9 +2,9 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
-    signInWithEmailLink
+    onAuthStateChanged
 } from 'firebase/auth';
-import { setDoc, doc, Timestamp } from 'firebase/firestore';
+import { setDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
 import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid'
 import { createTransport } from 'nodemailer';
@@ -17,6 +17,9 @@ const registerUser = async(req, res, next) => {
       
       const userCredential = await createUserWithEmailAndPassword(auth, req.body.email, req.body.password);
       
+      //sign out the new register user
+      await signOut(auth);
+
       // Add new Firestore doc in users collection
       const newUser = {
         firstName: req.body.firstName,
@@ -68,33 +71,43 @@ const registerUser = async(req, res, next) => {
           console.log("Email sent to admin.");
         }
       })
+
+            
     } catch (err) {
       next(err);
     }
   }
   
-  const signInUser = async(req, res, next) => {
+  const signInUser = async (req, res, next) => {
     try {
-        signInWithEmailAndPassword(auth, req.body.email, req.body.password)
-            .then((userCredential) => {
-                const role = doc(db, 'users', userCredential.user.uid).data().role;
-                if (role !== 'user') {
-                    if (role == 'banned') {
-                        alert('You have been banned from accessing your account.');
-                    } else if (role == 'pending') {
-                        alert('Please wait until an admin approves your account.');
-                    }
-                    res.redirect('/back');
-                    signOut(auth);
-                }
-            });
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        req.body.email,
+        req.body.password
+      );
 
-    //   console.log(userCredential.user);
-    //   res.send(userCredential.user);
+      const user = await getDoc(doc(db, 'users', userCredential.user.uid));
+      const role = user.data().role;
+      if (role !== 'user') {
+        if (role == 'banned') {
+          console.log('You have been banned from accessing your account.');
+        } else if (role == 'pending') {
+          console.log('Please wait until an admin approves your account.');
+        }
+
+        await signOut(auth).then(() => {
+          console.log('User signed out');
+        });
+        console.log(auth.currentUser.email);
+        res.redirect('/back');
+      }
+
+      //   console.log(userCredential.user);
+      //   res.send(userCredential.user);
     } catch (error) {
       next(error);
     }
-  }
+  };
   
   const signOutUser = async(req, res, next) => {
     try {
@@ -111,8 +124,25 @@ const registerUser = async(req, res, next) => {
     }
   }
 
+  const isLogIn = async(req, res, next) => {
+    try {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          res.send(true);
+        
+        } else {
+          res.send(false);
+        }
+      });
+      
+    } catch (error) {
+      
+    }
+  }
+
 export default {
     registerUser,
     signInUser,
-    signOutUser
+    signOutUser,
+    isLogIn
 }
