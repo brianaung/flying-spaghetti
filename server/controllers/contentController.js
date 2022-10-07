@@ -37,6 +37,15 @@ function getCurUserID() {
   });
 }
 
+const getUserById = async (req, res, next) => {
+  try {
+    const userRef = await getDoc(doc(db, 'users', req.params.id));
+    res.send(userRef.data());
+  } catch(err) {
+    next(err);
+  }
+}
+
 const getPhotoById = async (req, res, next) => {
   try {
     const snapshot = await getDoc(doc(db, 'photos', req.params.id));
@@ -195,7 +204,7 @@ const getContentByUser = async (req, res, next) => {
       res.sendStatus(404);
     }
     const userSnap = await getDoc(doc(db, 'users', userID));
-    const folders = userSnap.data().folders;
+    const folderSnap = userSnap.data().folders;
     const photoIDs = userSnap.data().photos;
     const photoList = [];
 
@@ -203,13 +212,13 @@ const getContentByUser = async (req, res, next) => {
       const photoRef = await getDoc(doc(db, 'photos', photoID));
       const photo = photoRef.data();
       // Check if photo in root folder
-      if (photo.folder == null) {
+      if (photo.folder == "root") {
         photoList.push({ ...photo, photoID });
       }
     }
 
     const content = {
-      folders,
+      folders: folderSnap,
       photos: photoList
     };
     res.send(content);
@@ -349,5 +358,6 @@ export default {
   getPhotoById,
   deletePhoto,
   likePost,
-  comment
+  comment,
+  getUserById
 };
