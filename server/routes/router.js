@@ -69,5 +69,6 @@ router.post('/logout', authController.signOutUser);
 router.get('/like/:id', contentController.likePost);
 router.get('/comment/:photoID', contentController.comment);
 router.post('/createFolder', contentController.createFolder);
+router.post('/moveFolder/:folder/:id', contentController.moveToDifferentFolder);
 
 export default router;

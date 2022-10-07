@@ -414,6 +414,26 @@ const createFolder = async(req, res, next) => {
   }
 } 
 
+const moveToDifferentFolder = async (req, res, next) => {
+  try {
+    // 1. add photo to different folder
+    await updateDoc(doc(db, 'folders', req.body.moveTo), {
+      photos: arrayUnion(req.params.id)
+    }).then(()=>{
+      console.log("photo moves into this folder");
+    });
+    // 2. delete photo in current folder
+    const folderRef = doc(db, 'folders', req.params.folder);
+    await updateDoc(folderRef, {
+      photos: arrayRemove(req.params.id)
+    }).then(() => {
+      console.log('delete photo from folder');
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export default {
   getRecentPhotos,
   getLikedPhotos,
@@ -428,5 +448,6 @@ export default {
   comment,
   getUserById,
   createFolder,
-  moveToBin
+  moveToBin,
+  moveToDifferentFolder
 };
