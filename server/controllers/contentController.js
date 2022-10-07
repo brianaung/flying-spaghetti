@@ -18,16 +18,7 @@ import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage
 import { onAuthStateChanged } from 'firebase/auth';
 // import { v4 } from 'uuid';
 
-// const getPhotosFromIDs = async (photos) => {
-//     const photoList = [];
-//     for (let photoID of photos) {
-//         const photoSnap = await getDoc(doc(db, "photos", photoID));
-//         photoList.push(photoSnap.data());
-//     }
-//     return photoList;
-// }
-
-function getCurUserID() {
+function getCurrUserID() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       return user.uid;
@@ -48,34 +39,30 @@ const getUserById = async (req, res, next) => {
 
 const getPhotoById = async (req, res, next) => {
   try {
-    const snapshot = await getDoc(doc(db, 'photos', req.params.id));
-    const photosnapshot = snapshot.data();
-
-    const userLikesID = photosnapshot.likes;
-    const userList = [];
-
-    for (const userID of userLikesID) {
-      const userRef = await getDoc(doc(db, 'users', userID));
-      const user = userRef.data();
-      const userOBJ = {
-        id: userRef.id,
-        user
-      };
-      userList.push(userOBJ);
-      // Check if photo in root folder
+    const photoSnap = await getDoc(doc(db, 'photos', req.params.id));
+    if (!photoSnap.exists()) {
+      res.sendStatus(404);
     }
+    
+    const photoData = photo.data();
+    const userID = getCurrUserID();
+    const userLiked = false;
 
+    if (userID) {
+      if (photoData.isPrivate && photoData.owner !== userID) {
+        res.sendStatus(404);
+      } else {
+        userLiked = photoData.likes.includes(userID);
+      }
+    } else {
+      if (photoData.isPrivate) {
+        res.sendStatus(404);
+      }
+    }
     const photo = {
-      name: photosnapshot.name,
-      caption: photosnapshot.caption,
-      date: photosnapshot.date,
-      folder: photosnapshot.folder,
-      isPrivate: photosnapshot.isPrivate,
-      link: photosnapshot.link,
-      owner: photosnapshot.owner,
-      likes: userList
-    };
-
+      data: photoData,
+      isLiked: userLiked
+    }
     res.send(photo);
   } catch (err) {
     next(err);
@@ -129,7 +116,8 @@ const getAllComments = async (req, res, next) => {
 const getRecentPhotos = async (req, res, next) => {
   try {
     const photos = [];
-    const snapshot = await getDocs(query(collection(db, 'photos'), orderBy('date', 'desc')));
+    const snapshot = await getDocs(query(collection(db, 'photos'),
+      orderBy('date', 'desc'), where('isPrivate', '==', false)));
     snapshot.forEach((doc) => {
       photos.push(doc.data());
     });
@@ -143,7 +131,7 @@ const getLikedPhotos = async (req, res, next) => {
   try {
     // const user = req.user.toJSON();
     // const userSnap = await getDoc(doc(db, "users", user.username));
-    const userID = getCurUserID();
+    const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
@@ -165,7 +153,7 @@ const getUserFolders = async (req, res, next) => {
     // const user = req.user.toJSON();
     // const userRef = firestore.collection('users').doc(user.username);
     // const userSnap = await getDoc(doc(db, "users", user.username));
-    const userID = getCurUserID();
+    const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
@@ -197,29 +185,56 @@ const getPhotosInFolder = async (req, res, next) => {
   }
 };
 
-const getContentByUser = async (req, res, next) => {
+const getUserContent = async (req, res, next) => {
   try {
-    const userID = getCurUserID();
-    if (userID == null) {
+    const userID = getCurrUserID();
+    if (!userID) {
       res.sendStatus(404);
     }
     const userSnap = await getDoc(doc(db, 'users', userID));
-    const folderSnap = userSnap.data().folders;
-    const photoIDs = userSnap.data().photos;
-    const photoList = [];
+    const userData = userSnap.data();
+    const userPhotos = [];
 
-    for (const photoID of photoIDs) {
-      const photoRef = await getDoc(doc(db, 'photos', photoID));
-      const photo = photoRef.data();
-      // Check if photo in root folder
-      if (photo.folder == "root") {
-        photoList.push({ ...photo, photoID });
+    for (const photoID of userData.photos) {
+      const photoSnap = await getDoc(doc(db, 'photos', photoID));
+      if (photoSnap.data().folder == "root") {
+        userPhotos.push(photoID);
       }
     }
 
     const content = {
-      folders: folderSnap,
-      photos: photoList
+      folders: userData.folders,
+      photos: userPhotos
+    };
+    res.send(content);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getOtherContent = async (req, res, next) => {
+  try {
+    const userID = getCurrUserID();
+    if (!userID) {
+      res.sendStatus(404);
+    }
+    const folderSnap = await getDocs(query(collection(db, 'folders'),
+      where('owner', '!=', userID)));
+    const photoSnap = await getDocs(query(collection(db, 'photos'),
+      where('owner', '!=', userID), where('folder', '==', 'root')));
+    const otherFolders = [];
+    const otherPhotos = [];
+
+    folderSnap.forEach((doc) => {
+      otherFolders.push(doc.data());
+    })
+    photoSnap.forEach((doc) => {
+      otherPhotos.push(doc.data());
+    })
+
+    const content = {
+      folders: otherFolders,
+      photos: otherPhotos
     };
     res.send(content);
   } catch (err) {
@@ -241,7 +256,7 @@ const uploadPhoto = async (req, res, next) => {
     const imageUrl = await getDownloadURL(imageRef);
 
     // add a new photo in the photos collection of firestore
-    const userID = getCurUserID();
+    const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
@@ -308,7 +323,7 @@ const deletePhoto = async (req, res, next) => {
       console.log('upadate photo');
     });
     // 3. update users
-    const userID = getCurUserID();
+    const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
@@ -333,7 +348,7 @@ const deletePhoto = async (req, res, next) => {
 
 const likePost = async (req, res, next) => {
   try {
-    const userID = getCurUserID();
+    const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
@@ -352,7 +367,7 @@ export default {
   getLikedPhotos,
   getUserFolders,
   getPhotosInFolder,
-  getContentByUser,
+  getUserContent,
   getAllComments,
   uploadPhoto,
   getPhotoById,

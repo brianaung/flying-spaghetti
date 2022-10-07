@@ -8,6 +8,6 @@ export default class Photo {
     this.folder = folder;
     this.date = date;
     this.comments = [];
-    this.likes = [];
+    this.likes = 0;
   }
 }
