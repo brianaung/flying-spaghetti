@@ -299,6 +299,23 @@ const deletePhoto = async (req, res, next) => {
   }
 };
 
+
+const likePost = async (req, res, next) => {
+  try {
+    const userID = getCurUserID();
+    if (userID == null) {
+      res.sendStatus(404);
+    }
+
+    await updateDoc(doc(db, 'photos', req.params.id), {
+      likes: arrayUnion(userID)
+
+
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 export default {
   getRecentPhotos,
   getLikedPhotos,
@@ -308,5 +325,6 @@ export default {
   getAllComments,
   uploadPhoto,
   getPhotoById,
-  deletePhoto
+  deletePhoto,
+  likePost
 };
