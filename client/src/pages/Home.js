@@ -1,6 +1,8 @@
-import { styled, Stack, Modal, Button, Typography, TextField } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
+//import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 // mui components
+import { styled, Stack, Modal, Button, Typography, TextField } from '@mui/material';
 // my components
 // import Gallery from '../components/Gallery';
 
@@ -39,9 +41,11 @@ const LoginForm = styled('form')({
 });
 
 export default function Home() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const navigate = useNavigate();
 
   return (
     <HomeContainer direction="row">
@@ -55,9 +59,6 @@ export default function Home() {
           sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
           est laborum.
         </Typography>
-        <Button variant="contained" color="primary" onClick={handleOpen}>
-          GET STARTED
-        </Button>
 
         <Modal open={open} onClose={handleClose}>
           <LoginBox gap={2}>
@@ -66,7 +67,7 @@ export default function Home() {
             <Typography color="red">dev message: click on login to access dashboard</Typography>
             {/* TODO: login should redirect to dashboard only after authentication */}
 
-            <LoginForm id="login-form" action="/dashboard/folders">
+            <LoginForm id="login-form" action="/login">
               <TextField name="username" variant="outlined" label="Username"></TextField>
               <TextField
                 name="password"
@@ -79,6 +80,19 @@ export default function Home() {
             </LoginForm>
           </LoginBox>
         </Modal>
+        <Stack direction="row" spacing={2}>
+          <Button variant="contained" color="primary" onClick={handleOpen}>
+            LOGIN
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              navigate('/register');
+            }}>
+            GET STARTED
+          </Button>
+        </Stack>
       </Stack>
     </HomeContainer>
   );

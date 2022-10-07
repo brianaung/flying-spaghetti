@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import PhotoPage from './pages/PhotoPage';
 import Home from './pages/Home';
 import FoldersPage from './pages/FoldersPage';
+import Register from './pages/Register';
 
 //import { Route, Routes } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/dashboard/:id" exact element={<Dashboard />} />
           <Route path="/login" exact element={<Login />} />
+          <Route path="/register" exact element={<Register />} />
           <Route path="/photo/:id" exact element={<PhotoPage />} />
           <Route path="/dashboard/:id" exact element={<FoldersPage />} />
         </Routes>

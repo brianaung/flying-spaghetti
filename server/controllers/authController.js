@@ -72,8 +72,11 @@ const registerUser = async(req, res, next) => {
         }
       })
 
+      res.send({code: "email sent pls wait"});
+
             
     } catch (err) {
+      res.send(err);
       next(err);
     }
   }
