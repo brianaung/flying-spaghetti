@@ -40,7 +40,7 @@ export default function Sidebar(props) {
     <SidebarContainer>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
-        <ListItemButton >
+        <ListItemButton>
           <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
         <ListItemButton component="a" href="#">

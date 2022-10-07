@@ -5,12 +5,11 @@ import { auth } from '../config/firebase.js';
 import { provider } from '../config/firebase.js';
 //import firebase from 'firebase/app';
 
-
 const Login = () => {
-  const [regesterEmail, setRegesterEmail] = useState("");
-  const [regesterPassword, setRegesterPassword] = useState("");
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [regesterEmail, setRegesterEmail] = useState('');
+  const [regesterPassword, setRegesterPassword] = useState('');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider).then((userCred) => {
       console.log(userCred);
@@ -35,15 +34,15 @@ const Login = () => {
 
         <div>
           <h3>Register user</h3>
-          <input 
-            placeholder='Emial...' 
-            onChange={(event)=> {
+          <input
+            placeholder="Emial..."
+            onChange={(event) => {
               setRegesterEmail(event.target.value);
             }}
           />
-          <input 
-            placeholder='Password...'
-            onChange={(event)=> {
+          <input
+            placeholder="Password..."
+            onChange={(event) => {
               setRegesterPassword(event.target.value);
             }}
           />
@@ -52,15 +51,15 @@ const Login = () => {
 
         <div>
           <h3>Login</h3>
-          <input 
-            placeholder='Emial...'
-            onChange={(event)=> {
+          <input
+            placeholder="Emial..."
+            onChange={(event) => {
               setLoginEmail(event.target.value);
             }}
           />
-          <input 
-            placeholder='Password...'
-            onChange={(event)=> {
+          <input
+            placeholder="Password..."
+            onChange={(event) => {
               setLoginPassword(event.target.value);
             }}
           />

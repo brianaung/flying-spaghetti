@@ -32,7 +32,7 @@ export const getPhoto = (id) => async (dispatch) => {
 
 export const getPhotosInFolder = (id) => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING});
+    dispatch({ type: START_LOADING });
     const { data } = await api.fetchPhotosInFolder(id);
 
     dispatch({ type: FETCH_PHOTOS_IN_FOLDERS, payload: data });

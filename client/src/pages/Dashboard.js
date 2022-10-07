@@ -32,7 +32,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (id === 'folders') {
-      
       dispatch(getPhotos());
     } else {
       dispatch(getPhotosInFolder(id));
@@ -44,7 +43,7 @@ export default function Dashboard() {
       <Navbar query={query} setQuery={setQuery} />
       <StyledStack direction="row">
         <Sidebar usage="90" />
-        <Feed query={query} pageID={id}/>
+        <Feed query={query} pageID={id} />
       </StyledStack>
     </Container>
   );

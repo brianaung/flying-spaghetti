@@ -41,18 +41,12 @@ const StyledStack = styled(Stack)(({ theme }) => ({
 }));
 // TODO: add current directory
 export default function FoldersPage(props) {
-
-  
-
   if (!props.data) return null;
   else {
     return (
       <Container container>
-        
         <StyledStack direction="row">
-          
           <FeedContainer>
-            
             <Typography variant="h3">Folders</Typography>
             <PhotoFrame photos={props.data} query={props.query}></PhotoFrame>
           </FeedContainer>
@@ -61,7 +55,6 @@ export default function FoldersPage(props) {
     );
   }
 }
-
 
 FoldersPage.propTypes = {
   query: PropTypes.string,
