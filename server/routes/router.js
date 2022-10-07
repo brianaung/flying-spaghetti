@@ -64,6 +64,7 @@ router.post(
 router.post('/register', authController.registerUser);
 router.post('/login', authController.signInUser);
 router.post('/logout', authController.signOutUser);
-router.post('/like/:id', contentController.likePost);
+router.get('/like/:id', contentController.likePost);
+router.get('/comment/:photoID', contentController.comment);
 
 export default router;

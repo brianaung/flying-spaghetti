@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore';
 import { db, storage } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 // import { v4 } from 'uuid';
 
 // const getPhotosFromIDs = async (photos) => {
@@ -75,7 +75,20 @@ const getPhotoById = async (req, res, next) => {
 
 const comment = async (req, res, next) => {
   try {
-    // get users
+    const userID = getCurUserID();
+    if (userID == null) {
+      res.sendStatus(404);
+    }
+
+    // make comment
+    const CurrentComment = {
+      owner: userID,
+      text: req.body.text,
+      date: Timestamp.fromDate(new Date())
+    };
+
+    const docRef = await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), CurrentComment);
+    
     
   } catch (err) {
     next(err);
@@ -85,10 +98,19 @@ const comment = async (req, res, next) => {
 const getAllComments = async (req, res, next) => {
   try {
     const comments = [];
-    const snapshot = await getDocs(collection(db, 'photos', req.params.photoID, 'comments'));
-    snapshot.forEach((doc) => {
-      comments.push(doc.data());
-    });
+    const snapshot = await getDocs(collection(db, 'photos', "a0b0m8MLlV6qfqX92qR4", 'comments'));
+    
+    for (var doc in snapshot) {
+      var docData = doc.data();
+      var ownerRef = await getDoc(doc(db, 'users', docData.owner));
+      var ownerName = ownerRef.data().firstName;
+      var currentComment = {
+        name: ownerName,
+        text: docData.text,
+        date: docData.date,
+      }
+      comments.push(currentComment);
+    } 
     res.send(comments);
   } catch (err) {
     next(err);
@@ -326,5 +348,6 @@ export default {
   uploadPhoto,
   getPhotoById,
   deletePhoto,
-  likePost
+  likePost,
+  comment
 };
