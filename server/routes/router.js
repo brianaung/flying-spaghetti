@@ -35,6 +35,8 @@ router.get('/getPhoto/:id', contentController.getPhotoById);
 
 router.get('/comments/:photoID', contentController.getAllComments);
 
+router.post('/bin/:id', contentController.moveToBin);
+
 router.delete('/:folder/:id', contentController.deletePhoto);
 
 router.get('/ban/:uid/:key', adminController.banUser);
@@ -66,5 +68,6 @@ router.post('/login', authController.signInUser);
 router.post('/logout', authController.signOutUser);
 router.get('/like/:id', contentController.likePost);
 router.get('/comment/:photoID', contentController.comment);
+router.post('/createFolder', contentController.createFolder);
 
 export default router;

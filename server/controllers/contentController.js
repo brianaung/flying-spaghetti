@@ -1,6 +1,7 @@
 import {
   doc,
   addDoc,
+  setDoc,
   getDoc,
   getDocs,
   updateDoc,
@@ -13,9 +14,10 @@ import {
   arrayRemove,
   deleteDoc
 } from 'firebase/firestore';
-import { db, storage } from '../config/firebase.js';
+import { db, storage, auth } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged } from 'firebase/auth';
+
 // import { v4 } from 'uuid';
 
 function getCurrUserID() {
@@ -296,6 +298,36 @@ const uploadPhoto = async (req, res, next) => {
   }
 };
 
+const moveToBin = async(req, res, next) => {
+  const userID = getCurUserID();
+    if (userID == null) {
+      res.sendStatus(404);
+    }
+    const usersRef = doc(db, 'users', userID);
+  //add photo id into bin array
+  await updateDoc(usersRef, {
+    bin: arrayUnion(req.params.id)
+  }).then(() => {
+    console.log('move photo to the bin');
+  });
+  
+  //delete photo id in photo array
+    await updateDoc(usersRef, {
+      photos: arrayRemove(req.params.id)
+    }).then(() => {
+      console.log('delete photo from photos');
+    });
+
+  //delete photo from folder
+  const folderRef = doc(db, 'folders', req.params.folder);
+
+  await updateDoc(folderRef, {
+    photos: arrayRemove(req.params.id)
+  }).then(() => {
+    console.log('delete photo from folder');
+  });
+}
+
 const deletePhoto = async (req, res, next) => {
   try {
     //delete photo in storage.
@@ -309,27 +341,20 @@ const deletePhoto = async (req, res, next) => {
       });
 
     //delete photo information in firestore.
-    // 1. update folder
-    const folderRef = doc(db, 'folders', 'animals');
-
-    await updateDoc(folderRef, {
-      photos: arrayRemove(req.params.id)
-    }).then(() => {
-      console.log('update folder');
-    });
-    // 2. update photos
+    
+    // 1. update photos
     const photosRef = doc(db, 'photos', req.params.id);
     await deleteDoc(photosRef).then(() => {
       console.log('upadate photo');
     });
-    // 3. update users
-    const userID = getCurrUserID();
+    // 2. update users
+    const userID = getCurUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
     const usersRef = doc(db, 'users', userID);
     await updateDoc(usersRef, {
-      photos: arrayRemove(req.params.id)
+      bin: arrayRemove(req.params.id)
     }).then(() => {
       console.log('update user');
     });
@@ -352,16 +377,43 @@ const likePost = async (req, res, next) => {
     if (userID == null) {
       res.sendStatus(404);
     }
-
     await updateDoc(doc(db, 'photos', req.params.id), {
       likes: arrayUnion(userID)
-
-
     });
   } catch (err) {
     next(err);
   }
 };
+    
+    
+
+const createFolder = async(req, res, next) => {
+  try {
+    const userID = getCurUserID();
+    if (userID == null) {
+      res.sendStatus(404);
+    }
+
+// 1.update user
+    const usersRef = doc(db, 'users', userID);
+    await updateDoc(usersRef, {
+      folders: arrayUnion(req.body.folderName)
+    }).then(() => {
+      console.log('update new folder in user');
+    });
+    // 2.update folders
+    const folder = {
+      date: Timestamp.fromDate(new Date()),
+      owner: userID,
+      photos: []
+    }
+    await setDoc(doc(db, 'folders', req.body.folderName), folder);
+
+  } catch (error) {
+    next(error);
+  }
+} 
+
 export default {
   getRecentPhotos,
   getLikedPhotos,
@@ -374,5 +426,7 @@ export default {
   deletePhoto,
   likePost,
   comment,
-  getUserById
+  getUserById,
+  createFolder,
+  moveToBin
 };

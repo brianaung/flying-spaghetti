@@ -10,6 +10,7 @@ export default class User {
     this.folders = [];
     this.images = [];
     this.liked = [];
+    this.bin = [];
     this.uniqueKey = uniqueKey;
   }
 }
