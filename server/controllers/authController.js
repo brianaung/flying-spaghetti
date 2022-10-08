@@ -93,8 +93,10 @@ const registerUser = async(req, res, next) => {
       const role = user.data().role;
       if (role !== 'user') {
         if (role == 'banned') {
+          // res.send({code: 'You have been banned from accessing your account.'});
           console.log('You have been banned from accessing your account.');
         } else if (role == 'pending') {
+          // res.send({code:'Please wait until an admin approves your account.'});
           console.log('Please wait until an admin approves your account.');
         }
 
@@ -104,10 +106,12 @@ const registerUser = async(req, res, next) => {
         console.log(auth.currentUser.email);
         res.redirect('/back');
       }
+      res.send(user.data());
 
       //   console.log(userCredential.user);
       //   res.send(userCredential.user);
     } catch (error) {
+      res.send(error);
       next(error);
     }
   };
@@ -131,15 +135,13 @@ const registerUser = async(req, res, next) => {
     try {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          res.send(true);
-        
+          res.send(user);
         } else {
-          res.send(false);
+          res.send(null);
         }
       });
-      
     } catch (error) {
-      
+      console.log(error);      
     }
   }
 
