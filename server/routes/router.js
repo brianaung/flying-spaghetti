@@ -6,7 +6,7 @@ import authController from '../controllers/authController.js';
 // import login from '../login.js';
 
 import multer from 'multer';
-//import authController from '../controllers/authController.js';
+// import authController from '../controllers/authController.js';
 // const upload = multer({ dest: './public/data/uploads/' });
 
 const memoStorage = multer.memoryStorage();
@@ -55,11 +55,7 @@ router.post(
 //   contentController.uploadPhoto
 // );
 
-router.post(
-  '/folder/:folder',
-  upload.single('selectedImage'),
-  contentController.uploadPhoto
-);
+router.post('/folder/:folder', upload.single('selectedImage'), contentController.uploadPhoto);
 
 router.post('/register', authController.registerUser);
 router.post('/login', authController.signInUser);

@@ -1,5 +1,5 @@
-import React from 'react';
-import { auth, provider } from '../config/firebase.js';
+/* import React from 'react';
+import { auth, provider } from './config/firebase.js';
 import { signInWithPopup } from 'firebase/auth';
 
 function login({ setIsAuth }) {
@@ -19,4 +19,4 @@ function login({ setIsAuth }) {
   );
 }
 
-export default login;
+export default login; */
