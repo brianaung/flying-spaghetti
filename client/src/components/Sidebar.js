@@ -39,7 +39,7 @@ export default function Sidebar(props) {
   return (
     <SidebarContainer>
       <Stack>
-        <WelcomeMsg variant="h3">G&apos;day John</WelcomeMsg>
+        <WelcomeMsg variant="h3">G&apos;day {props.user.firstName}</WelcomeMsg>
         <ListItemButton>
           <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
@@ -63,5 +63,6 @@ export default function Sidebar(props) {
 }
 
 Sidebar.propTypes = {
+  user: PropTypes.object,
   usage: PropTypes.number.isRequired
 };

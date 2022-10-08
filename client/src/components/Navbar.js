@@ -33,7 +33,7 @@ export default function Navbar(props) {
       <StyledToolbar>
         <User>
           <Avatar />
-          Username
+          {props.user.firstName}
         </User>
 
         <Searchbar query={props.query} setQuery={props.setQuery} />
@@ -46,5 +46,6 @@ export default function Navbar(props) {
 
 Navbar.propTypes = {
   query: PropTypes.string,
-  setQuery: PropTypes.func
+  setQuery: PropTypes.func,
+  user: PropTypes.object
 };

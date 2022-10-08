@@ -29,6 +29,7 @@ export default function Home() {
         : 'http://localhost:9000/register';
 
     // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+    console.log(e.target.email.value);
     axios
       .post(registerApi, {
         firstName: e.target.firstName.value,
@@ -37,6 +38,7 @@ export default function Home() {
         password: e.target.password.value
       })
       .then((res) => {
+        alert(res.data.code);
         console.log(res.data);
       })
       .catch((err) => {

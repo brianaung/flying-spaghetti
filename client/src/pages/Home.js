@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-//import axios from 'axios';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // mui components
 import { styled, Stack, Modal, Button, Typography, TextField } from '@mui/material';
@@ -40,12 +41,39 @@ const LoginForm = styled('form')({
   gap: '10px'
 });
 
-export default function Home() {
+export default function Home(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const navigate = useNavigate();
+
+  const postLogin = (e) => {
+    e.preventDefault();
+
+    const loginApi =
+      process.env.NODE_ENV === 'production'
+        ? 'https://flying-spaghetti-server.herokuapp.com/login'
+        : 'http://localhost:9000/login';
+
+    // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+    axios
+      .post(loginApi, {
+        email: e.target.email.value,
+        password: e.target.password.value
+      })
+      .then((res) => {
+        console.log(res.data);
+        props.handleLogin(res.data);
+        console.log('login success');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    // this doesn't work because user is still null (props.handleLogin should've set it alrdy but idk)
+    // navigate('/dashboard/folders');
+  };
 
   return (
     <HomeContainer direction="row">
@@ -60,16 +88,20 @@ export default function Home() {
           est laborum.
         </Typography>
 
+        {/* popup form for login */}
         <Modal open={open} onClose={handleClose}>
           <LoginBox gap={2}>
             <Typography color="gray">or</Typography>
 
-            <Typography color="red">dev message: click on login to access dashboard</Typography>
+            <Typography color="red">
+              Bug: does not automatically redirect to dashboard on successfully login
+            </Typography>
             {/* TODO: login should redirect to dashboard only after authentication */}
 
-            <LoginForm id="login-form" action="/login">
-              <TextField name="username" variant="outlined" label="Username"></TextField>
+            <LoginForm id="login-form" onSubmit={postLogin}>
+              <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
               <TextField
+                id="password"
                 name="password"
                 variant="outlined"
                 label="Password"
@@ -80,6 +112,8 @@ export default function Home() {
             </LoginForm>
           </LoginBox>
         </Modal>
+
+        {/* Login/Register buttons */}
         <Stack direction="row" spacing={2}>
           <Button variant="contained" color="primary" onClick={handleOpen}>
             LOGIN
@@ -97,3 +131,7 @@ export default function Home() {
     </HomeContainer>
   );
 }
+
+Home.propTypes = {
+  handleLogin: PropTypes.func
+};
