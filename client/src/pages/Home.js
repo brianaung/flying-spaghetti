@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom';
 // mui components
 import { styled, Stack, Modal, Button, Typography, TextField } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../actions/auth';
+
 // my components
 // import Gallery from '../components/Gallery';
 
@@ -47,32 +50,14 @@ export default function Home(props) {
   const handleClose = () => setOpen(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const postLogin = (e) => {
     e.preventDefault();
 
-    const loginApi =
-      process.env.NODE_ENV === 'production'
-        ? 'https://flying-spaghetti-server.herokuapp.com/login'
-        : 'http://localhost:9000/login';
-
-    // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-    axios
-      .post(loginApi, {
-        email: e.target.email.value,
-        password: e.target.password.value
-      })
-      .then((res) => {
-        console.log(res.data);
-        props.handleLogin(res.data);
-        console.log('login success');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    // this doesn't work because user is still null (props.handleLogin should've set it alrdy but idk)
-    // navigate('/dashboard/folders');
+    dispatch(userLogin(e.target.email.value, e.target.password.value, navigate));
+    props.handleLogin(localStorage.getItem('user'))
+    
   };
 
   return (

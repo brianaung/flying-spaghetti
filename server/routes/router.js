@@ -21,7 +21,7 @@ router.get('/sampleUser', adminController.sampleUser);
 // Get user object by ID
 router.get('/user/:id', adminController.getUser);
 
-router.get('/', contentController.getContentByUser);
+router.get('/', contentController.getUserContent);
 
 router.get('/folder/:id', contentController.getPhotosInFolder);
 
