@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // mui components
-import { Button, TextField } from '@mui/material';
+import { styled, Button, TextField } from '@mui/material';
 
 // TODO: make it a seperate component
 function Logo() {
@@ -18,8 +18,17 @@ function Logo() {
   );
 }
 
+const RegisterForm = styled('form')({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '90vh',
+  gap: '10px'
+});
+
 // TODO: style it
-export default function Home() {
+export default function Register() {
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -49,7 +58,7 @@ export default function Home() {
   return (
     <>
       <Logo />
-      <form id="register-form" onSubmit={handleRegister}>
+      <RegisterForm id="register-form" onSubmit={handleRegister}>
         <TextField
           id="firstName"
           name="firstName"
@@ -66,7 +75,7 @@ export default function Home() {
         <Button variant="contained" color="primary" type="submit">
           Register
         </Button>
-      </form>
+      </RegisterForm>
     </>
   );
 }

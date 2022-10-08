@@ -91,6 +91,7 @@ const registerUser = async(req, res, next) => {
 
       const user = await getDoc(doc(db, 'users', userCredential.user.uid));
       const role = user.data().role;
+      res.send(user.data());
       if (role !== 'user') {
         if (role == 'banned') {
           // res.send({code: 'You have been banned from accessing your account.'});
@@ -103,16 +104,11 @@ const registerUser = async(req, res, next) => {
         await signOut(auth).then(() => {
           console.log('User signed out');
         });
-        console.log(auth.currentUser.email);
-        res.redirect('/back');
       }
-      res.send(user.data());
 
-      //   console.log(userCredential.user);
-      //   res.send(userCredential.user);
     } catch (error) {
-      res.send(error);
-      next(error);
+      // next(error);
+      console.log(error);
     }
   };
   
@@ -122,10 +118,6 @@ const registerUser = async(req, res, next) => {
             .then(()=> {
                 console.log("User signed out");
             });
-        // const user = {
-        //     "email": req.body.email,
-        // };
-        // res.send(user);
     } catch (error) {
       next(error);
     }
@@ -141,7 +133,7 @@ const registerUser = async(req, res, next) => {
         }
       });
     } catch (error) {
-      console.log(error);      
+      console.log(error);
     }
   }
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useNavigate } from 'react-router-dom';
 // mui components
-import { styled, Stack, Modal, Button, Typography, TextField } from '@mui/material';
+import { styled, Stack, Modal, Button, Typography, TextField, Link } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { userLogin } from '../actions/auth';
 
@@ -57,7 +57,6 @@ export default function Home(props) {
 
     dispatch(userLogin(e.target.email.value, e.target.password.value, navigate));
     props.handleLogin(localStorage.getItem('user'))
-    
   };
 
   return (
@@ -76,13 +75,6 @@ export default function Home(props) {
         {/* popup form for login */}
         <Modal open={open} onClose={handleClose}>
           <LoginBox gap={2}>
-            <Typography color="gray">or</Typography>
-
-            <Typography color="red">
-              Bug: does not automatically redirect to dashboard on successfully login
-            </Typography>
-            {/* TODO: login should redirect to dashboard only after authentication */}
-
             <LoginForm id="login-form" onSubmit={postLogin}>
               <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
               <TextField
@@ -95,6 +87,7 @@ export default function Home(props) {
                 Login
               </Button>
             </LoginForm>
+            <Typography>No account? <Link href='/register' underline='none' variant='body2'>Register here</Link></Typography>
           </LoginBox>
         </Modal>
 

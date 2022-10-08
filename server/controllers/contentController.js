@@ -9,11 +9,10 @@ import {
   query,
   orderBy,
   Timestamp,
-  deleteField,
   arrayRemove,
   deleteDoc
 } from 'firebase/firestore';
-import { db, storage } from '../config/firebase.js';
+import { db, storage, auth } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged } from 'firebase/auth';
 // import { v4 } from 'uuid';
@@ -71,7 +70,7 @@ const getPhotoById = async (req, res, next) => {
 
 const comment = async (req, res, next) => {
   try {
-    const userID = getCurUserID();
+    const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
