@@ -3,10 +3,10 @@ import { LOGIN } from '../constants/actionTypes';
 
 export const userLogin = (email, password, navigate) => async (dispatch) => {
   try {
-    const { data } = await api.userLogin({email, password});
+    const { data } = await api.userLogin({ email, password });
     console.log(data);
     dispatch({ type: LOGIN, payload: data });
-    switch(data.role) {
+    switch (data.role) {
       case 'user':
         navigate('/dashboard/folders');
         break;

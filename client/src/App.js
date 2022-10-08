@@ -10,10 +10,9 @@ import Home from './pages/Home';
 import FoldersPage from './pages/FoldersPage';
 import Register from './pages/Register';
 
-
 // protect routes to only give access to accounts with the role `user`
 const PrivateRoutes = (props) => {
-  return (props.user && (props.user.role == 'user')) ? props.children : <Navigate to="/" />;
+  return props.user && props.user.role == 'user' ? props.children : <Navigate to="/" />;
 };
 PrivateRoutes.propTypes = {
   user: PropTypes.object,
@@ -53,7 +52,8 @@ export default function App() {
         {/* Protected routes */}
         <Route
           path="/dashboard/:id"
-          exact element={
+          exact
+          element={
             <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
               <Dashboard user={JSON.parse(localStorage.getItem('user'))} />
             </PrivateRoutes>
@@ -62,7 +62,8 @@ export default function App() {
 
         <Route
           path="/photo/:id"
-          exact element={
+          exact
+          element={
             <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
               <PhotoPage />
             </PrivateRoutes>
@@ -71,11 +72,12 @@ export default function App() {
 
         <Route
           path="/dashboard/:id"
-          exact element={
+          exact
+          element={
             <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
               <FoldersPage />
             </PrivateRoutes>
-          } 
+          }
         />
       </Routes>
     </>

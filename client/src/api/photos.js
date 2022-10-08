@@ -9,4 +9,3 @@ const url =
 export const fetchPhotos = () => axios.get(url);
 export const fetchPhoto = (id) => axios.get(`${url}/getPhoto/${id}`);
 export const fetchPhotosInFolder = (id) => axios.get(`${url}/folder/${id}`);
-

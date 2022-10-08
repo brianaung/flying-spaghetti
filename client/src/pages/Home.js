@@ -50,13 +50,13 @@ export default function Home(props) {
   const handleClose = () => setOpen(false);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const postLogin = (e) => {
     e.preventDefault();
 
     dispatch(userLogin(e.target.email.value, e.target.password.value, navigate));
-    props.handleLogin(localStorage.getItem('user'))
+    props.handleLogin(localStorage.getItem('user'));
   };
 
   return (
@@ -87,7 +87,12 @@ export default function Home(props) {
                 Login
               </Button>
             </LoginForm>
-            <Typography>No account? <Link href='/register' underline='none' variant='body2'>Register here</Link></Typography>
+            <Typography>
+              No account?{' '}
+              <Link href="/register" underline="none" variant="body2">
+                Register here
+              </Link>
+            </Typography>
           </LoginBox>
         </Modal>
 
