@@ -15,6 +15,7 @@ const upload = multer({ memoStorage });
 // create our Router object
 const router = Router();
 
+
 // Add sample user to firestore
 router.get('/sampleUser', adminController.sampleUser);
 
