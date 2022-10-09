@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 // mui components
 import { styled, Box, Stack } from '@mui/material';
 // my components
@@ -24,7 +25,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
 
@@ -40,11 +41,15 @@ export default function Dashboard() {
 
   return (
     <Container container>
-      <Navbar query={query} setQuery={setQuery} />
+      <Navbar query={query} setQuery={setQuery} user={props.user} />
       <StyledStack direction="row">
-        <Sidebar usage="90" />
+        <Sidebar usage={90} user={props.user} />
         <Feed query={query} pageID={id} />
       </StyledStack>
     </Container>
   );
 }
+
+Dashboard.propTypes = {
+  user: PropTypes.object
+};

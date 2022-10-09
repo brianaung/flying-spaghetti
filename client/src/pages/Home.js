@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-//import axios from 'axios';
+import PropTypes from 'prop-types';
+
 import { useNavigate } from 'react-router-dom';
 // mui components
-import { styled, Stack, Modal, Button, Typography, TextField } from '@mui/material';
+import { styled, Stack, Modal, Button, Typography, TextField, Link } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../actions/auth';
+
 // my components
 // import Gallery from '../components/Gallery';
 
@@ -40,12 +44,20 @@ const LoginForm = styled('form')({
   gap: '10px'
 });
 
-export default function Home() {
+export default function Home(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const postLogin = (e) => {
+    e.preventDefault();
+
+    dispatch(userLogin(e.target.email.value, e.target.password.value, navigate));
+    props.handleLogin(localStorage.getItem('user'));
+  };
 
   return (
     <HomeContainer direction="row">
@@ -60,16 +72,13 @@ export default function Home() {
           est laborum.
         </Typography>
 
+        {/* popup form for login */}
         <Modal open={open} onClose={handleClose}>
           <LoginBox gap={2}>
-            <Typography color="gray">or</Typography>
-
-            <Typography color="red">dev message: click on login to access dashboard</Typography>
-            {/* TODO: login should redirect to dashboard only after authentication */}
-
-            <LoginForm id="login-form" action="/login">
-              <TextField name="username" variant="outlined" label="Username"></TextField>
+            <LoginForm id="login-form" onSubmit={postLogin}>
+              <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
               <TextField
+                id="password"
                 name="password"
                 variant="outlined"
                 label="Password"
@@ -78,8 +87,16 @@ export default function Home() {
                 Login
               </Button>
             </LoginForm>
+            <Typography>
+              No account?{' '}
+              <Link href="/register" underline="none" variant="body2">
+                Register here
+              </Link>
+            </Typography>
           </LoginBox>
         </Modal>
+
+        {/* Login/Register buttons */}
         <Stack direction="row" spacing={2}>
           <Button variant="contained" color="primary" onClick={handleOpen}>
             LOGIN
@@ -97,3 +114,7 @@ export default function Home() {
     </HomeContainer>
   );
 }
+
+Home.propTypes = {
+  handleLogin: PropTypes.func
+};

@@ -1,34 +1,85 @@
-import React from 'react';
-// import Sidebar from './components/Dashboard/Sidebar';
-// import Feed from './components/Dashboard/Feed';
-// import { Box, Stack } from '@mui/material';
-// import Navbar from './components/Dashboard/Navbar';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
+// mui components
+import { Button } from '@mui/material';
+// my components
 import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
 import PhotoPage from './pages/PhotoPage';
 import Home from './pages/Home';
 import FoldersPage from './pages/FoldersPage';
 import Register from './pages/Register';
 
-//import { Route, Routes } from 'react-router-dom';
+// protect routes to only give access to accounts with the role `user`
+const PrivateRoutes = (props) => {
+  return props.user && props.user.role == 'user' ? props.children : <Navigate to="/" />;
+};
+PrivateRoutes.propTypes = {
+  user: PropTypes.object,
+  children: PropTypes.element
+};
 
-// import components here
+// get the current logged in user
+const savedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
 
 export default function App() {
+  const [user, setUser] = useState(savedUser);
+
+  const navigate = useNavigate();
+
+  // store current user state on local storage
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
+
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          {/* TODO: Home is the main pg for non users. Dashboard is the home page for logged in users */}
-          <Route path="/" exact element={<Home />} />
-          <Route path="/dashboard/:id" exact element={<Dashboard />} />
-          <Route path="/login" exact element={<Login />} />
-          <Route path="/register" exact element={<Register />} />
-          <Route path="/photo/:id" exact element={<PhotoPage />} />
-          <Route path="/dashboard/:id" exact element={<FoldersPage />} />
-        </Routes>
-      </BrowserRouter>
+      {/* NOTE: tmp logout button that clears local storage and navigate back to landing page */}
+      <Button
+        onClick={() => {
+          localStorage.clear();
+          navigate('/');
+        }}>
+        Logout
+      </Button>
+
+      <Routes>
+        {/* TODO: prevent logged in user from accessing login page? */}
+        <Route path="/" exact element={<Home handleLogin={setUser} />} />
+
+        <Route path="/register" exact element={<Register />} />
+
+        {/* Protected routes */}
+        <Route
+          path="/dashboard/:id"
+          exact
+          element={
+            <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
+              <Dashboard user={JSON.parse(localStorage.getItem('user'))} />
+            </PrivateRoutes>
+          }
+        />
+
+        <Route
+          path="/photo/:id"
+          exact
+          element={
+            <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
+              <PhotoPage />
+            </PrivateRoutes>
+          }
+        />
+
+        <Route
+          path="/dashboard/:id"
+          exact
+          element={
+            <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
+              <FoldersPage />
+            </PrivateRoutes>
+          }
+        />
+      </Routes>
     </>
   );
 }

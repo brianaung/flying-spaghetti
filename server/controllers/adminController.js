@@ -38,16 +38,16 @@ const sampleUser = async (req, res, next) => {
 
 // Use registerUser instead
 const createUser = async (req, res, next) => {
-    await setDoc(doc(db, 'users', req.body.username), {
-      firstName: req.body.firstname,
-      lastName: req.body.lastname,
-      role: req.body.role,
-      capacity: req.body.capacity,
-      date: Timestamp.fromDate(new Date()),
-      folders: [],
-      photos: [],
-      liked: []
-    });
+  await setDoc(doc(db, 'users', req.body.username), {
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    role: req.body.role,
+    capacity: req.body.capacity,
+    date: Timestamp.fromDate(new Date()),
+    folders: [],
+    photos: [],
+    liked: []
+  });
 };
 
 const banUser = async (req, res, next) => {
@@ -73,19 +73,18 @@ const banUser = async (req, res, next) => {
       }
     });
 
-    const emailText =
-      `
+    const emailText = `
       Hi ${userSnap.data().firstName},\n\n
       Your current account has been baned by the admin\n
       Dev Team
-      `
+      `;
 
     const content = {
       from: 'admn1flying@gmail.com',
       to: 'admn1flying@gmail.com',
       subject: 'Your account has been baned!',
       text: emailText
-    }
+    };
 
     mailTransport.sendMail(content, (err) => {
       if (err) {
@@ -93,7 +92,7 @@ const banUser = async (req, res, next) => {
       } else {
         console.log('send email to admin');
       }
-    })
+    });
   } catch (err) {
     next(err);
   }
@@ -107,7 +106,7 @@ const acceptUser = async (req, res, next) => {
     }
 
     const userData = userSnap.data();
-    if (userData.role != 'pending' || req.params.key !== userData.secretKey) {
+    if (userData.role !== 'pending' || req.params.key !== userData.secretKey) {
       res.sendStatus(404);
     }
 
@@ -126,20 +125,19 @@ const acceptUser = async (req, res, next) => {
       }
     });
 
-    const emailText =
-      `
+    const emailText = `
       Hi ${userData.firstName},\n\n
       Congratulations, your account has been approved and you can now login with your email and password.\n\n
       Enjoy,\n
       Dev Team
-      `
+      `;
 
     const content = {
       from: 'admn1flying@gmail.com',
       to: 'admn1flying@gmail.com',
       subject: 'Your account has been activated!',
       text: emailText
-    }
+    };
 
     mailTransport.sendMail(content, (err) => {
       if (err) {
@@ -147,7 +145,7 @@ const acceptUser = async (req, res, next) => {
       } else {
         console.log('send email to admin');
       }
-    })
+    });
   } catch (err) {
     next(err);
   }

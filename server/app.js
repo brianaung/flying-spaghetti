@@ -1,12 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 
+// const [isAuth, setIsAuth] = userState(false);
+
 // import userRouter from './routes/userRouter.js';
 import router from './routes/router.js';
 
 const app = express();
 
-// const [isAuth, setIsAuth] = userState(false);
 app.use(cors());
 
 app.use(express.json());
