@@ -10,17 +10,13 @@ import {
   query,
   orderBy,
   Timestamp,
-  deleteField,
   arrayRemove,
-  deleteDoc
+  deleteDoc,
+  onSnapshot
 } from 'firebase/firestore';
 import { db, storage, auth } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged } from 'firebase/auth';
-
-// import { v4 } from 'uuid';
-
-
 
 const getCurrUserID =  () => {
   const user = auth.currentUser;
@@ -31,16 +27,26 @@ const getCurrUserID =  () => {
   }
 }
 
-const getUserById = async (req, res, next) => {
+const getUserByID = async (req, res, next) => {
   try {
-    const userRef = await getDoc(doc(db, 'users', req.params.id));
-    res.send(userRef.data());
+    const userSnap = await getDoc(doc(db, 'users', req.params.id));
+    res.send(userSnap.data());
   } catch(err) {
     next(err);
   }
 }
 
-const getPhotoById = async (req, res, next) => {
+const getNameByID = async (req, res, next) => {
+  try {
+    const userSnap = await getDoc(doc(db, 'users', req.params.id));
+    const userData = userSnap.data();
+    res.send(userData.firstName + ' ' + userData.lastName);
+  } catch(err) {
+    next(err);
+  }
+}
+
+const getPhotoByID = async (req, res, next) => {
   try {
     const photoSnap = await getDoc(doc(db, 'photos', req.params.id));
     if (!photoSnap.exists()) {
@@ -51,6 +57,7 @@ const getPhotoById = async (req, res, next) => {
     const userID = getCurrUserID();
     const userLiked = false;
 
+    // Check if photo is private or liked by user
     if (userID) {
       if (photoData.isPrivate && photoData.owner !== userID) {
         res.sendStatus(404);
@@ -72,45 +79,55 @@ const getPhotoById = async (req, res, next) => {
   }
 };
 
-const comment = async (req, res, next) => {
+const postComment = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
 
-    // make comment
-    const CurrentComment = {
+    const comment = {
       owner: userID,
       text: req.body.text,
       date: Timestamp.fromDate(new Date())
     };
 
-    const docRef = await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), CurrentComment);
-    
-    
+    await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), comment);
   } catch (err) {
     next(err);
   }
 };
 
-const getAllComments = async (req, res, next) => {
+const getPhotoComments = async (req, res, next) => {
   try {
-    const comments = [];
-    const snapshot = await getDocs(collection(db, 'photos', "a0b0m8MLlV6qfqX92qR4", 'comments'));
+    // Query newest first
+    const colRef = query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date', 'desc'));
+    const unsubscribe = onSnapshot(colRef, (snapshot) => {
+      const comments = [];
+      snapshot.forEach((doc) => {
+        comments.push(doc.data());
+      })
+      res.send(comments);
+    });
+        
+    // Stop listening to changes
+    unsubscribe();
+
+    // const comments = [];
+    // const snapshot = await getDocs(collection(db, 'photos', req.params.photoID, 'comments'));
     
-    for (var doc in snapshot) {
-      var docData = doc.data();
-      var ownerRef = await getDoc(doc(db, 'users', docData.owner));
-      var ownerName = ownerRef.data().firstName;
-      var currentComment = {
-        name: ownerName,
-        text: docData.text,
-        date: docData.date,
-      }
-      comments.push(currentComment);
-    } 
-    res.send(comments);
+    // for (var doc in snapshot) {
+    //   var docData = doc.data();
+    //   var ownerRef = await getDoc(doc(db, 'users', docData.owner));
+    //   var ownerName = ownerRef.data().firstName;
+    //   var currentComment = {
+    //     name: ownerName,
+    //     text: docData.text,
+    //     date: docData.date,
+    //   }
+    //   comments.push(currentComment);
+    // } 
+    // res.send(comments);
   } catch (err) {
     next(err);
   }
@@ -118,13 +135,18 @@ const getAllComments = async (req, res, next) => {
 
 const getRecentPhotos = async (req, res, next) => {
   try {
-    const photos = [];
-    const snapshot = await getDocs(query(collection(db, 'photos'),
-      orderBy('date', 'desc'), where('isPrivate', '==', false)));
-    snapshot.forEach((doc) => {
-      photos.push(doc.data());
+    // Query newest first
+    const colRef = query(collection(db, 'photos'), orderBy('date', 'desc'), where('isPrivate', '==', false));
+    const unsubscribe = onSnapshot(colRef, (snapshot) => {
+      const photos = [];
+      snapshot.forEach((doc) => {
+        photos.push(doc.data());
+      })
+      res.send(photos);
     });
-    res.send(photos);
+        
+    // Stop listening to changes
+    unsubscribe();
   } catch (err) {
     next(err);
   }
@@ -132,16 +154,14 @@ const getRecentPhotos = async (req, res, next) => {
 
 const getLikedPhotos = async (req, res, next) => {
   try {
-    // const user = req.user.toJSON();
-    // const userSnap = await getDoc(doc(db, "users", user.username));
     const userID = getCurrUserID();
-    if (userID == null) {
+    if (!userID) {
       res.sendStatus(404);
     }
+
     const userSnap = await getDoc(doc(db, 'users', userID));
-    const liked = userSnap.data().liked;
     const photos = [];
-    for (const photoID of liked) {
+    for (const photoID of userSnap.data().liked) {
       const photoSnap = await getDoc(doc(db, 'photos', photoID));
       photos.push(photoSnap.data());
     }
@@ -153,13 +173,11 @@ const getLikedPhotos = async (req, res, next) => {
 
 const getUserFolders = async (req, res, next) => {
   try {
-    // const user = req.user.toJSON();
-    // const userRef = firestore.collection('users').doc(user.username);
-    // const userSnap = await getDoc(doc(db, "users", user.username));
     const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
+
     const userSnap = await getDoc(doc(db, 'users', userID));
     const folders = userSnap.data().folders;
     res.send(folders);
@@ -168,20 +186,14 @@ const getUserFolders = async (req, res, next) => {
   }
 };
 
-// get all photos in a specific folder
+// Get all photos in a specific folder
 const getPhotosInFolder = async (req, res, next) => {
   try {
-    const targetFolder = await getDoc(doc(db, 'folders', req.params.id));
-    if (!targetFolder.exists()) {
+    const folderSnap = await getDoc(doc(db, 'folders', req.params.id));
+    if (!folderSnap.exists()) {
       res.sendStatus(404);
     }
-    const photoIDs = targetFolder.data().photos;
-    const photos = [];
-    for (const photoID of photoIDs) {
-      const photoSnap = await getDoc(doc(db, 'photos', photoID));
-      const data = photoSnap.data();
-      photos.push({ photoID: photoSnap.id, ...data });
-    }
+    const photos = folderSnap.data().photos;
     res.send(photos);
   } catch (err) {
     next(err);
@@ -381,17 +393,18 @@ const deletePhoto = async (req, res, next) => {
   }
 };
 
-
 const likePost = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
+
+    await updateDoc(doc(db, 'users', userID), {
+      liked: arrayUnion(req.params.id)
+    });
     await updateDoc(doc(db, 'photos', req.params.id), {
       likes: arrayUnion(userID)
-
-
     });
   } catch (err) {
     next(err);
@@ -453,14 +466,15 @@ export default {
   getUserFolders,
   getPhotosInFolder,
   getUserContent,
-  getAllComments,
+  getPhotoComments,
   uploadPhoto,
-  getPhotoById,
+  getPhotoByID,
   deletePhoto,
   likePost,
-  comment,
-  getUserById,
   createFolder,
   moveToBin,
-  moveToDifferentFolder
+  moveToDifferentFolder,
+  postComment,
+  getUserByID,
+  getNameByID
 };

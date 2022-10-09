@@ -4,52 +4,6 @@ import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
 import { createTransport } from 'nodemailer';
 
-const getUser = async (req, res, next) => {
-  try {
-    // const userID = req.params.id;
-    const userSnap = await getDoc(doc(db, 'users', req.params.id));
-    if (!userSnap.exists) {
-      res.sendStatus(404);
-    }
-    res.send(userSnap.data());
-  } catch (err) {
-    next(err);
-  }
-};
-
-// Fields not updated, use registerUser
-const sampleUser = async (req, res, next) => {
-  try {
-    await setDoc(doc(db, 'users', 'user1'), {
-      firstName: 'Tom',
-      lastName: 'Hanks',
-      role: 'user',
-      capacity: 3,
-      date: Timestamp.fromDate(new Date()),
-      folders: [],
-      photos: [],
-      liked: []
-    });
-    res.send('success');
-  } catch (err) {
-    next(err);
-  }
-};
-
-// Use registerUser instead
-const createUser = async (req, res, next) => {
-  await setDoc(doc(db, 'users', req.body.username), {
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    role: req.body.role,
-    capacity: req.body.capacity,
-    date: Timestamp.fromDate(new Date()),
-    folders: [],
-    photos: [],
-    liked: []
-  });
-};
-
 const banUser = async (req, res, next) => {
   try {
     const userSnap = await getDoc(doc(db, 'users', req.params.uid));
@@ -152,9 +106,6 @@ const acceptUser = async (req, res, next) => {
 };
 
 export default {
-  getUser,
-  createUser,
   banUser,
-  acceptUser,
-  sampleUser
+  acceptUser
 };

@@ -1,50 +1,35 @@
-import { application, Router } from 'express';
+import { Router } from 'express';
 
 import adminController from '../controllers/adminController.js';
 import contentController from '../controllers/contentController.js';
 import authController from '../controllers/authController.js';
-// import login from '../login.js';
 
 import multer from 'multer';
-// import authController from '../controllers/authController.js';
 // const upload = multer({ dest: './public/data/uploads/' });
 
 const memoStorage = multer.memoryStorage();
 const upload = multer({ memoStorage });
 
-// create our Router object
 const router = Router();
 
-
-// Add sample user to firestore
-router.get('/sampleUser', adminController.sampleUser);
-
-// Get user object by ID
-router.get('/user/:id', adminController.getUser);
-
+// Content (photos and folders)
 router.get('/', contentController.getUserContent);
-
+router.get('/photo/:id', contentController.getPhotoByID);
 router.get('/folder/:id', contentController.getPhotosInFolder);
 
-router.get('/getFolders', contentController.getUserFolders);
-
-router.get('/getLiked', contentController.getLikedPhotos);
-
+router.get('/user/:id', contentController.getUserByID);
+router.get('/folders', contentController.getUserFolders);
+router.get('/liked', contentController.getLikedPhotos);
 router.get('/recents', contentController.getRecentPhotos);
 
-router.get('/getPhoto/:id', contentController.getPhotoById);
-
-router.get('/comments/:photoID', contentController.getAllComments);
-
+router.get('/comments/:photoID', contentController.getPhotoComments);
+router.post('/comments/:photoID', contentController.postComment);
 router.post('/bin/:id', contentController.moveToBin);
-
+router.get('/like/:id', contentController.likePost);
 router.delete('/:folder/:id', contentController.deletePhoto);
 
-router.get('/ban/:uid/:key', adminController.banUser);
-
-router.get('/accept/:uid/:key', adminController.acceptUser);
-
-router.get('/isLogin', authController.isLogIn);
+router.post('/createFolder', contentController.createFolder);
+router.post('/moveFolder/:folder/:id', contentController.moveToDifferentFolder);
 
 router.post(
   '/dashboard/upload_photo/:folder',
@@ -52,20 +37,19 @@ router.post(
   contentController.uploadPhoto
 );
 
-// router.get(
-//   '/dashboard/upload_photo',
-//   upload.single('selectedImage'),
-//   contentController.uploadPhoto
-// );
+router.post(
+  '/folder/:folder',
+  upload.single('selectedImage'),
+  contentController.uploadPhoto
+);
 
-router.post('/folder/:folder', upload.single('selectedImage'), contentController.uploadPhoto);
+// Admin
+router.get('/accept/:uid/:key', adminController.acceptUser);
+router.get('/ban/:uid/:key', adminController.banUser);
 
+// Authentication
 router.post('/register', authController.registerUser);
 router.post('/login', authController.signInUser);
 router.post('/logout', authController.signOutUser);
-router.get('/like/:id', contentController.likePost);
-router.get('/comment/:photoID', contentController.comment);
-router.post('/createFolder', contentController.createFolder);
-router.post('/moveFolder/:folder/:id', contentController.moveToDifferentFolder);
 
 export default router;

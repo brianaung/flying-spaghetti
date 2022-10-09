@@ -2,7 +2,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
 } from 'firebase/auth';
 import { setDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
 import { db, auth } from '../config/firebase.js';
@@ -20,8 +19,6 @@ const registerUser = async (req, res, next) => {
       req.body.email,
       req.body.password
     );
-
-    // sign out the new register user
     await signOut(auth);
 
     // Add new Firestore doc in users collection
@@ -46,19 +43,20 @@ const registerUser = async (req, res, next) => {
         pass: 'pgxzirsraggfdxvh'
       }
     });
-
-    const emailText = `
-        Hi Admin,\n\n
-        The following user has requested to register an account in your website:\n
-        Email: ${req.body.email}\n
-        Full name: ${req.body.firstName} ${req.body.lastName}\n\n
-        Approve/reject account access for this user (for single-use only):\n
-        Click here to approve: http://localhost:9000/accept/${userCredential.user.uid}/${newUser.secretKey}\n
-        Click here to reject (ban): http://localhost:9000/ban/${userCredential.user.uid}/${newUser.secretKey}\n
-        Please do not share the link to anyone else.\n\n
-        Thanks,\n
-        Dev Team
-        `;
+    
+    const emailText = 
+      `
+      Hi Admin,\n\n
+      The following user has requested to register an account in your website:\n
+      Email: ${req.body.email}\n
+      Full name: ${req.body.firstName} ${req.body.lastName}\n\n
+      Approve/reject account access for this user (for single-use only):\n
+      Click here to approve: http://localhost:9000/accept/${userCredential.user.uid}/${newUser.secretKey}\n
+      Click here to reject (ban): http://localhost:9000/ban/${userCredential.user.uid}/${newUser.secretKey}\n
+      Please do not share the link to anyone else.\n\n
+      Thanks,\n
+      Dev Team
+      `
 
     const content = {
       from: 'admn1flying@gmail.com',
@@ -74,8 +72,6 @@ const registerUser = async (req, res, next) => {
         console.log('Email sent to admin.');
       }
     });
-
-    res.send({ code: 'email sent pls wait' });
   } catch (err) {
     res.send(err);
     next(err);
@@ -122,23 +118,8 @@ const signOutUser = async (req, res, next) => {
   }
 };
 
-const isLogIn = async (req, res, next) => {
-  try {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        res.send(user);
-      } else {
-        res.send(null);
-      }
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export default {
   registerUser,
   signInUser,
-  signOutUser,
-  isLogIn
+  signOutUser
 };
