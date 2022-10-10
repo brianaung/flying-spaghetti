@@ -53,9 +53,9 @@ const getPhotoByID = async (req, res, next) => {
       res.sendStatus(404);
     }
     
-    const photoData = photo.data();
+    const photoData = photoSnap.data();
     const userID = getCurrUserID();
-    const userLiked = false;
+    let userLiked = false;
 
     // Check if photo is private or liked by user
     if (userID) {

@@ -65,7 +65,7 @@ export default function App() {
           exact
           element={
             <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
-              <PhotoPage />
+              <PhotoPage user={JSON.parse(localStorage.getItem('user'))} />
             </PrivateRoutes>
           }
         />
@@ -75,7 +75,7 @@ export default function App() {
           exact
           element={
             <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
-              <FoldersPage />
+              <FoldersPage user={JSON.parse(localStorage.getItem('user'))} />
             </PrivateRoutes>
           }
         />

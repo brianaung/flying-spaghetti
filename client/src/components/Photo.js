@@ -63,7 +63,7 @@ export default function Photo(props) {
 
         <Box sx={{ padding: '10px' }}>
           <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
-            {props.aPhoto.owner}
+            {props.aPhoto.name}
           </Typography>
           <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
             {props.aPhoto.caption}

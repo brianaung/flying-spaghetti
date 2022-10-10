@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import styled from '@emotion/styled';
 import {
@@ -101,7 +102,7 @@ const ImageLink = styled(Box)({
   padding: '20px'
 });
 
-export default function PhotoPage() {
+export default function PhotoPage(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -127,10 +128,11 @@ export default function PhotoPage() {
   } else {
     return (
       <>
-        <Navbar />
+      
+        <Navbar user={props.user} />
 
         <FullPage>
-          <Sidebar />
+          <Sidebar user={props.user} />
           <MainSection>
             <PhotoSection>
               <Box
@@ -150,7 +152,7 @@ export default function PhotoPage() {
             <CommentSection>
               <StyledBox sx={{ overflowY: 'scroll', height: { sx: '20rem', md: '30rem' } }}>
                 <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
-                  {photo.caption}
+                  {photo.name}
                 </Typography>
                 <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
                   {photo.caption}
@@ -218,3 +220,8 @@ export default function PhotoPage() {
     );
   }
 }
+
+PhotoPage.propTypes = {
+  user: PropTypes.object
+};
+
