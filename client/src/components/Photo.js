@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // mui components
 import { styled } from '@mui/system';
@@ -14,6 +14,8 @@ import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import ShareIcon from '@mui/icons-material/Share';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useDispatch } from 'react-redux';
+import { movePhotoToBin } from '../actions/photos';
 
 const StyledImgListItem = styled(ImageListItem)({
   width: '250px',
@@ -50,10 +52,16 @@ export default function Photo(props) {
   const handleClose = () => setOpen(false);
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const openPhoto = () => {
     navigate(`/photo/${props.aPhoto.photoID}`);
   };
+
+  let folderID = useParams().id;
+  if (folderID === 'folders') {
+    folderID = 'root'
+  }
 
   return (
     <div>
@@ -77,7 +85,9 @@ export default function Photo(props) {
           <Button color="primary" onClick={() => {}}>
             <ModeCommentOutlinedIcon size="small" fontSize="medium" />
           </Button>
-          <Button color="primary" onClick={() => {}}>
+          <Button
+            color="primary"
+            onClick={() => dispatch(movePhotoToBin(folderID, props.aPhoto.photoID))}>
             <DeleteIcon size="small" fontSize="medium" />
           </Button>
           <Button size="small" color="primary" onClick={handleOpen}>

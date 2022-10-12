@@ -315,34 +315,38 @@ const uploadPhoto = async (req, res, next) => {
 };
 
 const moveToBin = async(req, res, next) => {
-  
-  const userID = getCurUserID();
-    if (userID == null) {
-      res.sendStatus(404);
-    }
-    const usersRef = doc(db, 'users', userID);
-  //add photo id into bin array
-  await updateDoc(usersRef, {
-    bin: arrayUnion(req.params.id)
-  }).then(() => {
-    console.log('move photo to the bin');
-  });
-  
-  //delete photo id in photo array
+  try {
+    const userID = getCurrUserID();
+      if (userID == null) {
+        res.sendStatus(404);
+      }
+      const usersRef = doc(db, 'users', userID);
+    //add photo id into bin array
     await updateDoc(usersRef, {
+      bin: arrayUnion(req.params.id)
+    }).then(() => {
+      console.log('move photo to the bin');
+    });
+    
+    //delete photo id in photo array
+      await updateDoc(usersRef, {
+        photos: arrayRemove(req.params.id)
+      }).then(() => {
+        console.log('delete photo from photos');
+      });
+  
+    //delete photo from folder
+    const folderRef = doc(db, 'folders', req.params.folder);
+  
+    await updateDoc(folderRef, {
       photos: arrayRemove(req.params.id)
     }).then(() => {
-      console.log('delete photo from photos');
+      console.log('delete photo from folder');
     });
-
-  //delete photo from folder
-  const folderRef = doc(db, 'folders', req.params.folder);
-
-  await updateDoc(folderRef, {
-    photos: arrayRemove(req.params.id)
-  }).then(() => {
-    console.log('delete photo from folder');
-  });
+    res.send({ photoID: req.params.id });
+  } catch (error) {
+    next(error)
+  }
 }
 
 const deletePhoto = async (req, res, next) => {

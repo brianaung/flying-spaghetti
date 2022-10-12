@@ -9,4 +9,4 @@ const url =
 export const fetchPhotos = () => axios.get(url);
 export const fetchPhoto = (id) => axios.get(`${url}/photo/${id}`);
 export const fetchPhotosInFolder = (id) => axios.get(`${url}/folder/${id}`);
-export const movePhotoToBin = (id) => axios.get(`${url}/bin/${id}`);
+export const movePhotoToBin = (folderID, photoID) => axios.get(`${url}/bin/${folderID}/${photoID}`);

@@ -4,7 +4,8 @@ import {
   FETCH_ALL,
   FETCH_PHOTO,
   FETCH_PHOTOS_IN_FOLDERS,
-  START_LOADING
+  START_LOADING,
+  MOVE_PHOTO_TO_BIN
 } from '../constants/actionTypes';
 
 export const getPhotos = () => async (dispatch) => {
@@ -41,3 +42,13 @@ export const getPhotosInFolder = (id) => async (dispatch) => {
     console.log(error.message);
   }
 };
+
+export const movePhotoToBin = (folderID, photoID) => async (dispatch) => {
+  try {
+    const { data } = await api.movePhotoToBin(folderID, photoID);
+    console.log(data);
+    dispatch({type: MOVE_PHOTO_TO_BIN, payload: data})
+  } catch (error) {
+    console.log(error.message);
+  }
+}

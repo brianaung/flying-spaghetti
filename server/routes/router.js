@@ -24,7 +24,7 @@ router.get('/recents', contentController.getRecentPhotos);
 
 router.get('/comments/:photoID', contentController.getPhotoComments);
 router.post('/comments/:photoID', contentController.postComment);
-router.post('/bin/:id', contentController.moveToBin);
+router.get('/bin/:folder/:id', contentController.moveToBin);
 router.get('/like/:id', contentController.likePost);
 router.delete('/:folder/:id', contentController.deletePhoto);
 
