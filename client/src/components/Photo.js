@@ -13,6 +13,7 @@ import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutl
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import ShareIcon from '@mui/icons-material/Share';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const StyledImgListItem = styled(ImageListItem)({
   width: '250px',
@@ -73,8 +74,11 @@ export default function Photo(props) {
         {/* like, comment, share buttons */}
         <Box display="flex" justifyContent="space-between">
           <Checkbox size="medium" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
-          <Button sx={{ marginRight: 'auto' }} color="primary" onClick={() => {}}>
+          <Button color="primary" onClick={() => {}}>
             <ModeCommentOutlinedIcon size="small" fontSize="medium" />
+          </Button>
+          <Button color="primary" onClick={() => {}}>
+            <DeleteIcon size="small" fontSize="medium" />
           </Button>
           <Button size="small" color="primary" onClick={handleOpen}>
             <ShareIcon fontSize="medium" />

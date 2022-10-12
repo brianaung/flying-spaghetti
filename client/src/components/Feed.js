@@ -135,8 +135,8 @@ export default function Feed(props) {
 
     const API =
       process.env.NODE_ENV === 'production'
-        ? 'https://flyingspaghetti-server.herokuapp.com/dashboard/upload_photo'
-        : 'http://localhost:9000/dashboard/upload_photo';
+        ? 'https://flyingspaghetti-server.herokuapp.com/folder/root'
+        : 'http://localhost:9000/folder/root';
 
     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     axios

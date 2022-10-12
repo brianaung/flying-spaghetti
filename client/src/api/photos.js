@@ -7,5 +7,6 @@ const url =
     : 'http://localhost:9000';
 
 export const fetchPhotos = () => axios.get(url);
-export const fetchPhoto = (id) => axios.get(`${url}/getPhoto/${id}`);
+export const fetchPhoto = (id) => axios.get(`${url}/photo/${id}`);
 export const fetchPhotosInFolder = (id) => axios.get(`${url}/folder/${id}`);
+export const movePhotoToBin = (id) => axios.get(`${url}/bin/${id}`);

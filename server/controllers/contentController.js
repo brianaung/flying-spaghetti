@@ -315,6 +315,7 @@ const uploadPhoto = async (req, res, next) => {
 };
 
 const moveToBin = async(req, res, next) => {
+  
   const userID = getCurUserID();
     if (userID == null) {
       res.sendStatus(404);
