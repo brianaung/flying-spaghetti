@@ -10,7 +10,7 @@ import {
   Box,
   Modal,
   TextField,
-  // Typography,
+  Typography,
   Stack,
   // Skeleton,
   Fab,
@@ -99,9 +99,6 @@ export default function Feed(props) {
     //e.preventDefault();
 
     var formData = new FormData(e.target);
-    // formData.append("name", e.target.name.value);
-    // formData.append("description", e.target.description.value);
-    // formData.append("selectedImage", e.target.selectedImage);
 
     // TODO: do not hardcode target folder (give user option to choose)
     const API =
@@ -166,12 +163,17 @@ export default function Feed(props) {
         {isLoading ? (
           <FeedSkeleton />
         ) : (
-          <>
+          <Stack gap={5}>
             <Directory currFolder={props.pageID}></Directory>
-            <FolderFrame folders={folders} pageID={props.pageID} query={props.query}></FolderFrame>
-            {/*{props.pageID === 'folders' ? <Typography variant="h3">Photos</Typography> : <></>}*/}
-            <PhotoFrame photos={photos} query={props.query}></PhotoFrame>
-          </>
+
+            {folders.length === 0 && photos.length === 0 &&
+              <Typography variant="h3">THIS FOLDER IS EMPTY.</Typography>
+            }
+
+            {folders.length > 0 && <FolderFrame folders={folders} pageID={props.pageID} query={props.query}></FolderFrame>}
+
+            {photos.length > 0 && <PhotoFrame photos={photos} query={props.query}></PhotoFrame>}
+          </Stack>
         )}
       </>
     </FeedContainer>

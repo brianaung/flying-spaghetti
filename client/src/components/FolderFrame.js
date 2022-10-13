@@ -37,7 +37,7 @@ export default function FolderFrame(props) {
   };
 
   return (
-    <>
+    <Stack gap={2}>
       <Typography variant="h3">Folders</Typography>
       {props.folders && props.pageID === 'folders' && (
         <FolderContainer>
@@ -53,7 +53,7 @@ export default function FolderFrame(props) {
             })}
         </FolderContainer>
       )}
-    </>
+    </Stack>
   );
 }
 
