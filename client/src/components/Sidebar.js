@@ -11,6 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 // my components
 import Progressbar from './Progressbar';
 
+
 const WelcomeMsg = styled(Typography)({
   textAlign: 'center',
   fontWeight: '600',
@@ -33,27 +34,33 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
-// TODO: replace username with prop.username
 export default function Sidebar(props) {
   const navigate = useNavigate();
+
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const handleListItemClick = (index) => {
+    setSelectedIndex(index);
+  }
+
   return (
     <SidebarContainer>
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day {props.user.firstName}</WelcomeMsg>
-        <ListItemButton>
+
+        <ListItemButton selected={selectedIndex === 0} onClick={() => handleListItemClick(0)} >
           <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
-        <ListItemButton component="a" href="#">
-          <ListItemText primary="Shared With Me" />
+
+        <ListItemButton selected={selectedIndex === 1} onClick={() => handleListItemClick(1)} >
+          <ListItemText primary="Shared With Me" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
-        <ListItemButton component="a" href="#">
-          <ListItemText primary="Recent" />
+
+        <ListItemButton selected={selectedIndex === 2} onClick={() => handleListItemClick(2)} >
+          <ListItemText primary="Liked" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
-        <ListItemButton component="a" href="#">
-          <ListItemText primary="Liked" />
-        </ListItemButton>
-        <ListItemButton component="a" href="#">
-          <ListItemText primary="Trash" />
+
+        <ListItemButton selected={selectedIndex === 3} onClick={() => handleListItemClick(3)} >
+          <ListItemText primary="Trash" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
       </Stack>
 
