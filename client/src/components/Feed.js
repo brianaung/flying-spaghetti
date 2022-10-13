@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import FormData from 'form-data';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 // mui components
 import {
   styled,
@@ -11,19 +10,21 @@ import {
   Box,
   Modal,
   TextField,
-  Typography,
+  // Typography,
   Stack,
   // Skeleton,
   Fab,
   Skeleton
 } from '@mui/material';
 // mui icons
-import FolderIcon from '@mui/icons-material/Folder';
+// import FolderIcon from '@mui/icons-material/Folder';
 import AddIcon from '@mui/icons-material/Add';
 // my components
 import PhotoFrame from '../components/PhotoFrame';
-
+import FolderFrame from '../components/FolderFrame';
+import Directory from '../components/Directory';
 //import FoldersPage from '../pages/FoldersPage';
+
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
@@ -50,31 +51,6 @@ const SubmitForm = styled('form')({
   padding: '20px'
 });
 
-const FolderFrame = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '50px'
-});
-
-const FolderContainer = styled(Stack)({
-  display: 'flex',
-  flexDirection: 'row',
-  gap: '20px',
-  flexWrap: 'wrap'
-});
-
-const Folder = styled(Box)({
-  display: 'flex',
-  flexDirection: 'row',
-  border: '2px solid',
-  width: '250px',
-  height: '50px',
-  padding: '10px',
-  gap: '20px',
-  overflow: 'hidden',
-  whiteSpace: 'nowrap'
-});
-
 const FeedSkeleton = () => {
   return (
     <Stack spacing={3}>
@@ -96,21 +72,14 @@ const FeedSkeleton = () => {
 
 // TODO: add current directory
 export default function Feed(props) {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-
   const handleClose = () => {
     setOpen(false);
     setImageUrl(null);
     setSelectedImage(null);
-  };
-
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
-  const navigate = useNavigate();
-
-  const handleOpenFolder = (folder) => {
-    navigate(`/dashboard/${folder}`);
   };
 
   // get folders and photos
@@ -147,11 +116,6 @@ export default function Feed(props) {
       .catch((err) => {
         console.log(err);
       });
-
-    // printing form data entries
-    for (var pair of formData.entries()) {
-      console.log('formdata entries:' + pair[0] + ', ' + pair[1]);
-    }
   };
 
   return (
@@ -201,24 +165,9 @@ export default function Feed(props) {
           <FeedSkeleton />
         ) : (
           <>
-            <FolderFrame>
-              <Typography variant="h3">{`${props.pageID
-                .charAt(0)
-                .toUpperCase()}${props.pageID.substring(1)}`}</Typography>
-              {folders && props.pageID === 'folders' && (
-                <FolderContainer>
-                  {folders.map((folder) => {
-                    return (
-                      <Folder key={folder} onClick={() => handleOpenFolder(folder)}>
-                        <FolderIcon />
-                        <Typography>{folder}</Typography>
-                      </Folder>
-                    );
-                  })}
-                </FolderContainer>
-              )}
-            </FolderFrame>
-            {props.pageID === 'folders' ? <Typography variant="h3">Photos</Typography> : <></>}
+            <Directory currFolder={props.pageID}></Directory>
+            <FolderFrame folders={folders} pageID={props.pageID}></FolderFrame>
+          {/*{props.pageID === 'folders' ? <Typography variant="h3">Photos</Typography> : <></>}*/}
             <PhotoFrame photos={photos} query={props.query}></PhotoFrame>
           </>
         )}
