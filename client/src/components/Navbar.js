@@ -16,14 +16,22 @@ const StyledToolbar = styled(Toolbar)({
 });
 
 const MenuBtn = styled(Button)({
-  color: 'white'
+  color: 'white',
+  transition: 'transform 200ms ease 0s, background 200ms ease 0s',
+  '&:hover': {
+    transform: 'translateY(-2px)'
+  }
 });
 
 const User = styled(Button)({
   display: 'flex',
   flexDirection: 'row',
   gap: '15px',
-  color: 'white'
+  color: 'white',
+  transition: 'transform 200ms ease 0s, background 200ms ease 0s',
+  '&:hover': {
+    transform: 'translateY(-2px)'
+  }
 });
 
 // TODO: replace username with prop.username
