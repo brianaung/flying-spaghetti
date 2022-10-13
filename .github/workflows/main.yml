@@ -18,7 +18,7 @@ jobs:
           heroku_app_name: "flying-spaghetti-server" #Must be unique in Heroku
           heroku_email: "phamthanhnguyen1080@gmail.com"
           appdir: "server" # <- This will point to the api folder in your project
-          
+
   deploy-client:
     runs-on: ubuntu-latest
     environment: 
@@ -34,7 +34,3 @@ jobs:
           heroku_app_name: "flyingspaghetti-client" #Must be unique in Heroku
           heroku_email: "soekhantaung16@gmail.com"
           appdir: "client" # <- This will point to the api folder in your project
-  
-            
-      
-
