@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getPhotos, getPhotosInFolder } from '../actions/photos';
 // mui components
 import { styled, Box, Stack } from '@mui/material';
 // my components
 import Sidebar from '../components/Sidebar';
 import Feed from '../components/Feed';
 import Navbar from '../components/Navbar';
-import { useDispatch } from 'react-redux';
 
-//actions
-import { getPhotos, getPhotosInFolder } from '../actions/photos';
-import { useParams } from 'react-router-dom';
 
 const Container = styled(Box)({
   display: 'flex',

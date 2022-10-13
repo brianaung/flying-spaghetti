@@ -93,8 +93,8 @@ export default function Feed(props) {
   }, [selectedImage]);
 
   // var bodyFormData = new FormData();
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleUpload = (e) => {
+    //e.preventDefault();
 
     var formData = new FormData(e.target);
     // formData.append("name", e.target.name.value);
@@ -133,7 +133,7 @@ export default function Feed(props) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <SubmitForm id="upload-form" onSubmit={handleSubmit} enctype="multipart/form-data">
+        <SubmitForm id="upload-form" onSubmit={handleUpload} enctype="multipart/form-data">
           <input
             accept="image/*"
             type="file"

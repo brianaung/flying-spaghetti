@@ -1,20 +1,14 @@
+/*
 import React from 'react';
-
 import PropTypes from 'prop-types';
-
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
-
 // mui icons
 //import CircularProgress from '@mui/material/CircularProgress';
-
 // my components
-
 import { Box, Typography } from '@mui/material';
-
 import PhotoFrame from '../components/PhotoFrame';
-
 //import Photo from '../components/Photo';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
@@ -60,3 +54,4 @@ FoldersPage.propTypes = {
   query: PropTypes.string,
   data: PropTypes.object
 };
+*/

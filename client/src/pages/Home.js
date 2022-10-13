@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import { useNavigate } from 'react-router-dom';
-// mui components
-import { styled, Stack, Modal, Button, Typography, TextField, Link } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { userLogin } from '../actions/auth';
-
+// mui components
+import { styled, Stack, Modal, Button, Typography, TextField, Link } from '@mui/material';
 // my components
 // import Gallery from '../components/Gallery';
+
 
 const HomeContainer = styled(Stack)({
   padding: '0 300px',

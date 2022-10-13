@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
+// mui components
 import {
+  styled,
   Checkbox,
   Divider,
   Grid,
@@ -10,21 +11,19 @@ import {
   Button,
   TextField,
   Modal,
-  Tooltip
+  Tooltip,
+  Stack,
+  Box
 } from '@mui/material';
-import { Stack, Box } from '@mui/system';
-
-//icons
+// icons
 import Favorite from '@mui/icons-material/Favorite';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
-
-//components
+// my components
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
-//import CircularProgress from '@mui/material/CircularProgress';
 
 //sample data
 import { comments } from '../data/photo-data';

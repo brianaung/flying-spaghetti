@@ -18,33 +18,33 @@ import { db, storage, auth } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged } from 'firebase/auth';
 
-const getCurrUserID =  () => {
+const getCurrUserID = () => {
   const user = auth.currentUser;
   if (user != null) {
     return user.uid;
   } else {
     return null;
   }
-}
+};
 
 const getUserByID = async (req, res, next) => {
   try {
     const userSnap = await getDoc(doc(db, 'users', req.params.id));
     res.send(userSnap.data());
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
-}
+};
 
 const getNameByID = async (req, res, next) => {
   try {
     const userSnap = await getDoc(doc(db, 'users', req.params.id));
     const userData = userSnap.data();
     res.send(userData.firstName + ' ' + userData.lastName);
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
-}
+};
 
 const getPhotoByID = async (req, res, next) => {
   try {
@@ -52,7 +52,7 @@ const getPhotoByID = async (req, res, next) => {
     if (!photoSnap.exists()) {
       res.sendStatus(404);
     }
-    
+
     const photoData = photoSnap.data();
     const userID = getCurrUserID();
     let userLiked = false;
@@ -72,7 +72,7 @@ const getPhotoByID = async (req, res, next) => {
     const photo = {
       data: photoData,
       isLiked: userLiked
-    }
+    };
     res.send(photo);
   } catch (err) {
     next(err);
@@ -101,21 +101,24 @@ const postComment = async (req, res, next) => {
 const getPhotoComments = async (req, res, next) => {
   try {
     // Query newest first
-    const colRef = query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date', 'desc'));
+    const colRef = query(
+      collection(db, 'photos', req.params.photoID, 'comments'),
+      orderBy('date', 'desc')
+    );
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
       const comments = [];
       snapshot.forEach((doc) => {
         comments.push(doc.data());
-      })
+      });
       res.send(comments);
     });
-        
+
     // Stop listening to changes
     unsubscribe();
 
     // const comments = [];
     // const snapshot = await getDocs(collection(db, 'photos', req.params.photoID, 'comments'));
-    
+
     // for (var doc in snapshot) {
     //   var docData = doc.data();
     //   var ownerRef = await getDoc(doc(db, 'users', docData.owner));
@@ -126,7 +129,7 @@ const getPhotoComments = async (req, res, next) => {
     //     date: docData.date,
     //   }
     //   comments.push(currentComment);
-    // } 
+    // }
     // res.send(comments);
   } catch (err) {
     next(err);
@@ -136,15 +139,19 @@ const getPhotoComments = async (req, res, next) => {
 const getRecentPhotos = async (req, res, next) => {
   try {
     // Query newest first
-    const colRef = query(collection(db, 'photos'), orderBy('date', 'desc'), where('isPrivate', '==', false));
+    const colRef = query(
+      collection(db, 'photos'),
+      orderBy('date', 'desc'),
+      where('isPrivate', '==', false)
+    );
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
       const photos = [];
       snapshot.forEach((doc) => {
         photos.push(doc.data());
-      })
+      });
       res.send(photos);
     });
-        
+
     // Stop listening to changes
     unsubscribe();
   } catch (err) {
@@ -202,20 +209,20 @@ const getPhotosInFolder = async (req, res, next) => {
 
 const getUserContent = async (req, res, next) => {
   try {
-    const userID = getCurrUserID()
+    const userID = getCurrUserID();
 
     if (!userID) {
       res.sendStatus(404);
     }
-    
+
     const userSnap = await getDoc(doc(db, 'users', userID));
     const userData = userSnap.data();
     const userPhotos = [];
 
     for (const photoID of userData.photos) {
       const photoSnap = await getDoc(doc(db, 'photos', photoID));
-      if (photoSnap.data().folder == "root") {
-        userPhotos.push({...photoSnap.data(), photoID});
+      if (photoSnap.data().folder == 'root') {
+        userPhotos.push({ ...photoSnap.data(), photoID });
       }
     }
 
@@ -236,19 +243,21 @@ const getOtherContent = async (req, res, next) => {
     if (!userID) {
       res.sendStatus(404);
     }
-    const folderSnap = await getDocs(query(collection(db, 'folders'),
-      where('owner', '!=', userID)));
-    const photoSnap = await getDocs(query(collection(db, 'photos'),
-      where('owner', '!=', userID), where('folder', '==', 'root')));
+    const folderSnap = await getDocs(
+      query(collection(db, 'folders'), where('owner', '!=', userID))
+    );
+    const photoSnap = await getDocs(
+      query(collection(db, 'photos'), where('owner', '!=', userID), where('folder', '==', 'root'))
+    );
     const otherFolders = [];
     const otherPhotos = [];
 
     folderSnap.forEach((doc) => {
       otherFolders.push(doc.data());
-    })
+    });
     photoSnap.forEach((doc) => {
       otherPhotos.push(doc.data());
-    })
+    });
 
     const content = {
       folders: otherFolders,
@@ -291,7 +300,7 @@ const uploadPhoto = async (req, res, next) => {
 
     const docRef = await addDoc(collection(db, 'photos'), photo);
     if (docRef) {
-      //console.log(photo);
+      // console.log(photo);
       res.send(photo);
       console.log('sending docRef');
     }
@@ -314,30 +323,30 @@ const uploadPhoto = async (req, res, next) => {
   }
 };
 
-const moveToBin = async(req, res, next) => {
+const moveToBin = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
-      if (userID == null) {
-        res.sendStatus(404);
-      }
-      const usersRef = doc(db, 'users', userID);
-    //add photo id into bin array
+    if (userID == null) {
+      res.sendStatus(404);
+    }
+    const usersRef = doc(db, 'users', userID);
+    // add photo id into bin array
     await updateDoc(usersRef, {
       bin: arrayUnion(req.params.id)
     }).then(() => {
       console.log('move photo to the bin');
     });
-    
-    //delete photo id in photo array
-      await updateDoc(usersRef, {
-        photos: arrayRemove(req.params.id)
-      }).then(() => {
-        console.log('delete photo from photos');
-      });
-  
-    //delete photo from folder
+
+    // delete photo id in photo array
+    await updateDoc(usersRef, {
+      photos: arrayRemove(req.params.id)
+    }).then(() => {
+      console.log('delete photo from photos');
+    });
+
+    // delete photo from folder
     const folderRef = doc(db, 'folders', req.params.folder);
-  
+
     await updateDoc(folderRef, {
       photos: arrayRemove(req.params.id)
     }).then(() => {
@@ -345,13 +354,13 @@ const moveToBin = async(req, res, next) => {
     });
     res.send({ photoID: req.params.id });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 const deletePhoto = async (req, res, next) => {
   try {
-    //delete photo in storage.
+    // delete photo in storage.
     const imageRef = ref(storage, `images/${req.body.name}`);
     deleteObject(imageRef)
       .then(() => {
@@ -361,7 +370,7 @@ const deletePhoto = async (req, res, next) => {
         console.log('There is an error, cannot delete photo');
       });
 
-    //delete photo information in firestore.
+    // delete photo information in firestore.
     // 1. update folder
     const folderRef = doc(db, 'folders', 'animals');
 
@@ -387,11 +396,11 @@ const deletePhoto = async (req, res, next) => {
       console.log('update user');
     });
 
-    //send info to frontend
+    // send info to frontend
     const photoDelete = {
-      "photoID":req.params.id,
-      "photoName":req.body.name
-    }
+      photoID: req.params.id,
+      photoName: req.body.name
+    };
     res.send(photoDelete);
   } catch (err) {
     next(err);
@@ -415,17 +424,15 @@ const likePost = async (req, res, next) => {
     next(err);
   }
 };
-    
-    
 
-const createFolder = async(req, res, next) => {
+const createFolder = async (req, res, next) => {
   try {
     const userID = getCurUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
 
-// 1.update user
+    // 1.update user
     const usersRef = doc(db, 'users', userID);
     await updateDoc(usersRef, {
       folders: arrayUnion(req.body.folderName)
@@ -437,21 +444,20 @@ const createFolder = async(req, res, next) => {
       date: Timestamp.fromDate(new Date()),
       owner: userID,
       photos: []
-    }
+    };
     await setDoc(doc(db, 'folders', req.body.folderName), folder);
-
   } catch (error) {
     next(error);
   }
-} 
+};
 
 const moveToDifferentFolder = async (req, res, next) => {
   try {
     // 1. add photo to different folder
     await updateDoc(doc(db, 'folders', req.body.moveTo), {
       photos: arrayUnion(req.params.id)
-    }).then(()=>{
-      console.log("photo moves into this folder");
+    }).then(() => {
+      console.log('photo moves into this folder');
     });
     // 2. delete photo in current folder
     const folderRef = doc(db, 'folders', req.params.folder);
@@ -463,7 +469,7 @@ const moveToDifferentFolder = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 export default {
   getRecentPhotos,

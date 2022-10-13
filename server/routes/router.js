@@ -37,11 +37,7 @@ router.post(
   contentController.uploadPhoto
 );
 
-router.post(
-  '/folder/:folder',
-  upload.single('selectedImage'),
-  contentController.uploadPhoto
-);
+router.post('/folder/:folder', upload.single('selectedImage'), contentController.uploadPhoto);
 
 // Admin
 router.get('/accept/:uid/:key', adminController.acceptUser);

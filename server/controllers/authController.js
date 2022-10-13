@@ -1,8 +1,4 @@
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { setDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
 import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
@@ -43,9 +39,8 @@ const registerUser = async (req, res, next) => {
         pass: 'pgxzirsraggfdxvh'
       }
     });
-    
-    const emailText = 
-      `
+
+    const emailText = `
       Hi Admin,\n\n
       The following user has requested to register an account in your website:\n
       Email: ${req.body.email}\n
@@ -56,7 +51,7 @@ const registerUser = async (req, res, next) => {
       Please do not share the link to anyone else.\n\n
       Thanks,\n
       Dev Team
-      `
+      `;
 
     const content = {
       from: 'admn1flying@gmail.com',
