@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // mui components
 import {
   styled,
+  Link as Muilink,
   Checkbox,
   Divider,
   Grid,
@@ -16,17 +17,13 @@ import {
   Box
 } from '@mui/material';
 // icons
-import { Link, Heart } from '@styled-icons/evil';
+import { Link, Heart, ArrowLeft } from '@styled-icons/evil';
 import { Favorite } from '@styled-icons/material-rounded';
-
-// import Favorite from '@mui/icons-material/Favorite';
-// import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-// import ShareIcon from '@mui/icons-material/Share';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 // my components
 import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
+// import Sidebar from '../components/Sidebar';
 
 //sample data
 import { comments } from '../data/photo-data';
@@ -34,21 +31,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPhoto } from '../actions/photos';
 import { useParams } from 'react-router-dom';
 
-const FullPage = styled(Stack)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
-  [theme.breakpoints.down('sm')]: {
-    flexDirection: 'column'
-  }
-}));
 
 const MainSection = styled(Stack)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
-  margin: '40px',
-  height: '40rem',
+  margin: '0px 40px',
+  paddingBottom: '40px',
+  maxHeight: '40rem',
   gap: '40px',
   [theme.breakpoints.down('sm')]: {
+    margin: '40px',
     flexDirection: 'column'
   }
 }));
@@ -134,8 +126,13 @@ export default function PhotoPage(props) {
       <>
         <Navbar user={props.user} />
 
-        <FullPage>
-          <Sidebar user={props.user} />
+        <Stack>
+          <Muilink variant="body1" sx={{ margin: '20px' }} underline="hover" color="inherit" href="/dashboard/folders">
+            <ArrowLeft size="30" />
+            Back
+          </Muilink>
+        </Stack>
+
           <MainSection>
             <PhotoSection>
               <Box
@@ -196,6 +193,7 @@ export default function PhotoPage(props) {
                 </Stack>
               </StyledBox>
             </CommentSection>
+
           </MainSection>
 
           {/* image link */}
@@ -223,7 +221,6 @@ export default function PhotoPage(props) {
               </ImageLink>
             </LinkBox>
           </Modal>
-        </FullPage>
       </>
     );
   }

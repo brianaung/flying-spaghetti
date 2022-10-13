@@ -23,7 +23,7 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'flex-start',
   width: '20%',
   // TODO: toggle off sidebar in mobile view
-  minWidth: '250px',
+  minWidth: '300px',
   borderRight: 'solid 1px lightgrey',
   padding: '20px',
   [theme.breakpoints.down('sm')]: {
