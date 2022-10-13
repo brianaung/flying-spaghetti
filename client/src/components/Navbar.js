@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 // mui components
 import { styled, Button, AppBar, Toolbar, Avatar } from '@mui/material';
 // import { deepPurple } from '@mui/material/colors';
@@ -63,8 +64,7 @@ function stringAvatar(name) {
 
 // TODO: replace username with prop.username
 export default function Navbar(props) {
-  // const initials =
-  //   props.user.firstName.slice(0,1) + props.user.lastName.slice(0,1);
+  const navigate = useNavigate();
 
   return (
     <AppBar position="static">
@@ -76,7 +76,13 @@ export default function Navbar(props) {
 
         <Searchbar query={props.query} setQuery={props.setQuery} />
 
-        <MenuBtn>Menu</MenuBtn>
+        <MenuBtn
+          onClick={() => {
+            localStorage.clear();
+            navigate('/');
+          }}>
+          Logout
+        </MenuBtn>
       </StyledToolbar>
     </AppBar>
   );

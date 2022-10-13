@@ -1,8 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
-// mui components
-import { Button } from '@mui/material';
+import { Routes, Route, Navigate } from 'react-router-dom';
 // my components
 import Dashboard from './pages/Dashboard';
 import PhotoPage from './pages/PhotoPage';
@@ -24,8 +22,6 @@ const savedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem
 export default function App() {
   const [user, setUser] = useState(savedUser);
 
-  const navigate = useNavigate();
-
   // store current user state on local storage
   useEffect(() => {
     localStorage.setItem('user', JSON.stringify(user));
@@ -34,14 +30,6 @@ export default function App() {
   return (
     <>
       {/* NOTE: tmp logout button that clears local storage and navigate back to landing page */}
-      <Button
-        onClick={() => {
-          localStorage.clear();
-          navigate('/');
-        }}>
-        Logout
-      </Button>
-
       <Routes>
         {/* TODO: prevent logged in user from accessing login page? */}
         <Route path="/" exact element={<Home handleLogin={setUser} />} />
