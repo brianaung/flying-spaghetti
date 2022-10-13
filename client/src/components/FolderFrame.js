@@ -58,7 +58,7 @@ export default function FolderFrame(props) {
 }
 
 FolderFrame.propTypes = {
-  folders: PropTypes.object,
+  folders: PropTypes.array,
   pageID: PropTypes.string,
   query: PropTypes.string
 };

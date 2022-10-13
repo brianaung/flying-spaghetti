@@ -31,12 +31,7 @@ router.delete('/:folder/:id', contentController.deletePhoto);
 router.post('/createFolder', contentController.createFolder);
 router.post('/moveFolder/:folder/:id', contentController.moveToDifferentFolder);
 
-router.post(
-  '/dashboard/upload_photo/:folder',
-  upload.single('selectedImage'),
-  contentController.uploadPhoto
-);
-
+// upload photo
 router.post('/folder/:folder', upload.single('selectedImage'), contentController.uploadPhoto);
 
 // Admin

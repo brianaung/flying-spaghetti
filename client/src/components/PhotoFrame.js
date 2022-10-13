@@ -32,6 +32,6 @@ export default function PhotoFrame(props) {
 }
 
 PhotoFrame.propTypes = {
-  photos: PropTypes.object,
+  photos: PropTypes.arrayOf(PropTypes.object),
   query: PropTypes.string
 };

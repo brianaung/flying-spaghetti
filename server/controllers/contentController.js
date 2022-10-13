@@ -193,15 +193,31 @@ const getUserFolders = async (req, res, next) => {
   }
 };
 
-// Get all photos in a specific folder
+/* NOTE: this is very similar to getUserContent
+         we could actually refactor these into one to use it for every folders
+         but will need to update urls and routes (too much work ughh)
+*/
+// Get user content a specific folder (there will just be photos no more folders)
 const getPhotosInFolder = async (req, res, next) => {
   try {
-    const folderSnap = await getDoc(doc(db, 'folders', req.params.id));
-    if (!folderSnap.exists()) {
+    const userID = getCurrUserID();
+
+    if (!userID) {
       res.sendStatus(404);
     }
-    const photos = folderSnap.data().photos;
-    res.send(photos);
+
+    const userSnap = await getDoc(doc(db, 'users', userID));
+    const userData = userSnap.data();
+    const userPhotos = [];
+
+    for (const photoID of userData.photos) {
+      const photoSnap = await getDoc(doc(db, 'photos', photoID));
+      if (photoSnap.data().folder == req.params.id) {
+        userPhotos.push({ ...photoSnap.data(), photoID });
+      }
+    }
+
+    res.send(userPhotos);
   } catch (err) {
     next(err);
   }

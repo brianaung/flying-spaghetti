@@ -103,6 +103,7 @@ export default function Feed(props) {
     // formData.append("description", e.target.description.value);
     // formData.append("selectedImage", e.target.selectedImage);
 
+    // TODO: do not hardcode target folder (give user option to choose)
     const API =
       process.env.NODE_ENV === 'production'
         ? 'https://flyingspaghetti-server.herokuapp.com/folder/root'
