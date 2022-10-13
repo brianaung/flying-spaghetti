@@ -8,7 +8,6 @@ import { styled, Stack, Modal, Button, Typography, TextField, Link } from '@mui/
 // my components
 // import Gallery from '../components/Gallery';
 
-
 const HomeContainer = styled(Stack)({
   padding: '0 300px',
   height: '100%',

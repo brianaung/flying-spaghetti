@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
-
-// mui components
-import { styled } from '@mui/system';
-import { Typography, Box, ImageListItem, Button, Modal, Checkbox, Tooltip } from '@mui/material';
-
-//mui icons
-import Favorite from '@mui/icons-material/Favorite';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
-import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
-import ShareIcon from '@mui/icons-material/Share';
-import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch } from 'react-redux';
 import { movePhotoToBin } from '../actions/photos';
+// mui components
+import { styled } from '@mui/system';
+import {
+  Stack,
+  Typography,
+  Box,
+  ImageListItem,
+  Button,
+  Modal,
+  Checkbox,
+  Tooltip,
+  IconButton
+} from '@mui/material';
+//icons
+import { Comment, Trash, Link, Heart } from '@styled-icons/evil';
+import { Favorite } from '@styled-icons/material-rounded';
+import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 
 const StyledImgListItem = styled(ImageListItem)({
   width: '250px',
@@ -36,6 +41,8 @@ const LinkBox = styled(Box)({
   padding: '20px',
   display: 'flex',
   justifyContent: 'center',
+  alignItems: 'center',
+  gap: '20px',
   flexDirection: 'column'
 });
 
@@ -47,19 +54,21 @@ const ImageLink = styled(Box)({
   padding: '20px'
 });
 
-const PhotoContainer = styled('div')({
-  border: 'solid 2px black',
-  transition: 'transform 200ms ease 0s, background 200ms ease 0s',
-  '&:hover': {
-    transform: 'translateY(-6px)'
-  }
-})
+const PhotoContainer = styled(Stack)({
+  border: 'solid 2px black'
+});
 
 export default function Photo(props) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const [copied, setCopied] = useState(false);
+
+  const [openShare, setOpenShare] = useState(false);
+  const handleOpenShare = () => setOpenShare(true);
+  const handleCloseShare = () => setOpenShare(false);
+
+  const [openDel, setOpenDel] = useState(false);
+  const handleOpenDel = () => setOpenDel(true);
+  const handleCloseDel = () => setOpenDel(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -79,7 +88,7 @@ export default function Photo(props) {
           <img src={props.aPhoto.link} alt={props.aPhoto.name} />
         </StyledImgListItem>
 
-        <Box sx={{ padding: '10px' }}>
+        <Box sx={{ padding: '5px 12px' }}>
           <Typography variant="body1" color="primary" sx={{ textTransform: 'uppercase' }}>
             {props.aPhoto.name}
           </Typography>
@@ -89,26 +98,33 @@ export default function Photo(props) {
         </Box>
 
         {/* like, comment, share buttons */}
-        <Box display="flex" justifyContent="space-between">
-          <Checkbox size="medium" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
-          <Button color="primary" onClick={() => {}}>
-            <ModeCommentOutlinedIcon size="small" fontSize="medium" />
-          </Button>
-          <Button
-            color="primary"
-            onClick={() => dispatch(movePhotoToBin(folderID, props.aPhoto.photoID))}>
-            <DeleteIcon size="small" fontSize="medium" />
-          </Button>
-          <Button size="small" color="primary" onClick={handleOpen}>
-            <ShareIcon fontSize="medium" />
-          </Button>
-        </Box>
+        <Stack direction="row" sx={{ width: '100%' }} >
+          <Checkbox
+            sx={{ color: 'black' }}
+            color="error"
+            icon={<Heart size="30" />}
+            checkedIcon={<Favorite size="30" />}
+          />
+
+          <IconButton size="small" color="primary" onClick={() => {}}>
+            <Comment size="30" />
+          </IconButton>
+
+          <IconButton size="small" color="primary" onClick={handleOpenShare}>
+            <Link size="30" />
+          </IconButton>
+
+          <IconButton sx={{ marginLeft: 'auto' }} color="primary" onClick={handleOpenDel}>
+            <Trash size="30" />
+          </IconButton>
+        </Stack>
+
       </PhotoContainer>
 
       {/* image link */}
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={openShare}
+        onClose={handleCloseShare}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
         <LinkBox>
@@ -123,11 +139,34 @@ export default function Photo(props) {
                     setCopied(!copied);
                   }}
                   icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
-                  checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
+                  checkedIcon={<LibraryAddCheckIcon />}
                 />
               </Tooltip>
             </Box>
           </ImageLink>
+        </LinkBox>
+      </Modal>
+
+      {/* delete confirmation box */}
+      <Modal open={openDel} onClose={handleCloseDel}>
+        <LinkBox>
+          <Typography align="center">Are you sure you want to delete this photo?</Typography>
+          <Stack direction="row" gap={2}>
+            <Button
+              sx={{ border: 'solid 2px black' }}
+              variant="contained"
+              color="error"
+              onClick={() => dispatch(movePhotoToBin(folderID, props.aPhoto.photoID))}>
+              Yes
+            </Button>
+            <Button
+              sx={{ border: 'solid 2px black' }}
+              variant="contained"
+              color="primary"
+              onClick={handleCloseDel}>
+              No
+            </Button>
+          </Stack>
         </LinkBox>
       </Modal>
     </div>

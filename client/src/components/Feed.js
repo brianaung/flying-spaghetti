@@ -166,11 +166,16 @@ export default function Feed(props) {
           <Stack gap={5}>
             <Directory currFolder={props.pageID}></Directory>
 
-            {folders.length === 0 && photos.length === 0 &&
+            {folders.length === 0 && photos.length === 0 && (
               <Typography variant="h3">THIS FOLDER IS EMPTY.</Typography>
-            }
+            )}
 
-            {folders.length > 0 && <FolderFrame folders={folders} pageID={props.pageID} query={props.query}></FolderFrame>}
+            {folders.length > 0 && (
+              <FolderFrame
+                folders={folders}
+                pageID={props.pageID}
+                query={props.query}></FolderFrame>
+            )}
 
             {photos.length > 0 && <PhotoFrame photos={photos} query={props.query}></PhotoFrame>}
           </Stack>

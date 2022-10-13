@@ -25,7 +25,7 @@ const Folder = styled(Box)({
   // add hover effect
   transition: 'transform 200ms ease 0s, background 200ms ease 0s',
   '&:hover': {
-    transform: 'translateY(-6px)'
+    transform: 'translateY(-2px)'
   }
 });
 

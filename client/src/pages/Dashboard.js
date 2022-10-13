@@ -10,7 +10,6 @@ import Sidebar from '../components/Sidebar';
 import Feed from '../components/Feed';
 import Navbar from '../components/Navbar';
 
-
 const Container = styled(Box)({
   display: 'flex',
   flexDirection: 'column',

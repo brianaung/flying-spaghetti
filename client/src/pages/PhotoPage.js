@@ -16,9 +16,12 @@ import {
   Box
 } from '@mui/material';
 // icons
-import Favorite from '@mui/icons-material/Favorite';
-import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
+import { Link, Heart } from '@styled-icons/evil';
+import { Favorite } from '@styled-icons/material-rounded';
+
+// import Favorite from '@mui/icons-material/Favorite';
+// import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+// import ShareIcon from '@mui/icons-material/Share';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 // my components
@@ -90,6 +93,8 @@ const LinkBox = styled(Box)({
   padding: '20px',
   display: 'flex',
   justifyContent: 'center',
+  alignItems: 'center',
+  gap: '20px',
   flexDirection: 'column'
 });
 
@@ -175,9 +180,14 @@ export default function PhotoPage(props) {
               <StyledBox display="flex" flexDirection="column" marginTop="auto" fullWidth>
                 {/* icons */}
                 <Box display="flex" justifyContent="space-between">
-                  <Checkbox size="medium" icon={<FavoriteBorder />} checkedIcon={<Favorite />} />
+                  <Checkbox
+                    color="error"
+                    size="medium"
+                    icon={<Heart size="30" />}
+                    checkedIcon={<Favorite size="30" />}
+                  />
                   <Button sx={{ marginRight: 'auto' }} color="primary" onClick={handleOpen}>
-                    <ShareIcon fontSize="medium" />
+                    <Link size="30" />
                   </Button>
                 </Box>
                 <Stack direction="row" spacing={2}>
