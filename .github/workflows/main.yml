@@ -3,7 +3,7 @@ name: CI
 # Controls when the workflow will run
 on:
   push:
-    branches: [ "deploy" ]
+    branches: [ "main" ]
 
 jobs:
   deploy-server:
