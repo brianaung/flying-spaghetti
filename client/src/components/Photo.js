@@ -52,7 +52,7 @@ export default function Photo(props) {
   const handleClose = () => setOpen(false);
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const openPhoto = () => {
     navigate(`/photo/${props.aPhoto.photoID}`);
@@ -60,7 +60,7 @@ export default function Photo(props) {
 
   let folderID = useParams().id;
   if (folderID === 'folders') {
-    folderID = 'root'
+    folderID = 'root';
   }
 
   return (

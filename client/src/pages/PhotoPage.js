@@ -128,7 +128,6 @@ export default function PhotoPage(props) {
   } else {
     return (
       <>
-      
         <Navbar user={props.user} />
 
         <FullPage>
@@ -224,4 +223,3 @@ export default function PhotoPage(props) {
 PhotoPage.propTypes = {
   user: PropTypes.object
 };
-

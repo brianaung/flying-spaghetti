@@ -2,14 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 // mui components
-import {
-  styled,
-  Box,
-  Typography,
-  Stack
-} from '@mui/material';
+import { styled, Box, Typography, Stack } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
-
 
 const FolderContainer = styled(Stack)({
   display: 'flex',
@@ -42,8 +36,7 @@ export default function FolderFrame(props) {
       <Typography variant="h3">Folders</Typography>
       {props.folders && props.pageID === 'folders' && (
         <FolderContainer>
-          {props.folders
-            .map((folder) => {
+          {props.folders.map((folder) => {
             return (
               <Folder key={folder} onClick={() => handleOpenFolder(folder)}>
                 <FolderIcon />

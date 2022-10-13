@@ -26,10 +26,8 @@ const User = styled(Button)({
   color: 'white'
 });
 
-
 // TODO: replace username with prop.username
 export default function Navbar(props) {
-  
   return (
     <AppBar position="static">
       <StyledToolbar>

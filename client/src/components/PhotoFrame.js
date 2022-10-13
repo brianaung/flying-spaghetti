@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // mui components
-import { styled } from '@mui/system';
-import ImageList from '@mui/material/ImageList';
-
+import { styled, Typography, ImageList } from '@mui/material';
 // my components
 import Photo from './Photo';
 
@@ -16,6 +14,7 @@ const PhotoContainer = styled(ImageList)({
 export default function PhotoFrame(props) {
   return (
     <>
+      <Typography variant="h3">Photos</Typography>
       <PhotoContainer gap={20}>
         {/* filter search queries */}
 

@@ -7,7 +7,6 @@ import { Button } from '@mui/material';
 import Dashboard from './pages/Dashboard';
 import PhotoPage from './pages/PhotoPage';
 import Home from './pages/Home';
-import FoldersPage from './pages/FoldersPage';
 import Register from './pages/Register';
 
 // protect routes to only give access to accounts with the role `user`
@@ -70,6 +69,7 @@ export default function App() {
           }
         />
 
+        {/*
         <Route
           path="/dashboard/:id"
           exact
@@ -79,6 +79,7 @@ export default function App() {
             </PrivateRoutes>
           }
         />
+      */}
       </Routes>
     </>
   );

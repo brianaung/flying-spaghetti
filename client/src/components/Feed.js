@@ -25,7 +25,6 @@ import FolderFrame from '../components/FolderFrame';
 import Directory from '../components/Directory';
 //import FoldersPage from '../pages/FoldersPage';
 
-
 const FeedContainer = styled(Stack)(({ theme }) => ({
   gap: '50px',
   justifyContent: 'flex-start',
@@ -167,7 +166,7 @@ export default function Feed(props) {
           <>
             <Directory currFolder={props.pageID}></Directory>
             <FolderFrame folders={folders} pageID={props.pageID}></FolderFrame>
-          {/*{props.pageID === 'folders' ? <Typography variant="h3">Photos</Typography> : <></>}*/}
+            {/*{props.pageID === 'folders' ? <Typography variant="h3">Photos</Typography> : <></>}*/}
             <PhotoFrame photos={photos} query={props.query}></PhotoFrame>
           </>
         )}
