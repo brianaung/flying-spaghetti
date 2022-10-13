@@ -98,7 +98,7 @@ export default function Photo(props) {
         </Box>
 
         {/* like, comment, share buttons */}
-        <Stack direction="row" sx={{ width: '100%' }} >
+        <Stack direction="row" sx={{ width: '100%' }}>
           <Checkbox
             sx={{ color: 'black' }}
             color="error"
@@ -118,7 +118,6 @@ export default function Photo(props) {
             <Trash size="30" />
           </IconButton>
         </Stack>
-
       </PhotoContainer>
 
       {/* image link */}

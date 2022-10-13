@@ -13,7 +13,7 @@ export default function Directory(props) {
 
   const handleNavigation = () => {
     navigate('/dashboard/folders');
-  }
+  };
 
   return (
     <>

@@ -31,7 +31,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPhoto } from '../actions/photos';
 import { useParams } from 'react-router-dom';
 
-
 const MainSection = styled(Stack)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
@@ -127,100 +126,101 @@ export default function PhotoPage(props) {
         <Navbar user={props.user} />
 
         <Stack>
-          <Muilink variant="body1" sx={{ margin: '20px' }} underline="hover" color="inherit" href="/dashboard/folders">
+          <Muilink
+            variant="body1"
+            sx={{ margin: '20px' }}
+            underline="hover"
+            color="inherit"
+            href="/dashboard/folders">
             <ArrowLeft size="30" />
             Back
           </Muilink>
         </Stack>
 
-          <MainSection>
-            <PhotoSection>
-              <Box
-                bgcolor="black"
-                height={`calc((100% - ${imgHeight}px)/2)`}
-                ref={container1}></Box>
-              <img
-                ref={container}
-                width="100%"
-                style={{ maxHeight: '40rem' }}
-                src={photo.link}
-                alt={photo.caption}
-              />
-              <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`}></Box>
-            </PhotoSection>
+        <MainSection>
+          <PhotoSection>
+            <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`} ref={container1}></Box>
+            <img
+              ref={container}
+              width="100%"
+              style={{ maxHeight: '40rem' }}
+              src={photo.link}
+              alt={photo.caption}
+            />
+            <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`}></Box>
+          </PhotoSection>
 
-            <CommentSection>
-              <StyledBox sx={{ overflowY: 'scroll', height: { sx: '20rem', md: '30rem' } }}>
-                <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
-                  {photo.name}
-                </Typography>
-                <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
-                  {photo.caption}
-                </Typography>
-              </StyledBox>
+          <CommentSection>
+            <StyledBox sx={{ overflowY: 'scroll', height: { sx: '20rem', md: '30rem' } }}>
+              <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
+                {photo.name}
+              </Typography>
+              <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
+                {photo.caption}
+              </Typography>
+            </StyledBox>
 
-              <Divider style={{ width: '80%' }}></Divider>
+            <Divider style={{ width: '80%' }}></Divider>
 
-              {/* comments  */}
-              <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
-                {comments.map((comment, id) => {
-                  return (
-                    <Stack key={id} direction="row" spacing={2}>
-                      <Typography sx={{ fontWeight: '600' }}>{comment.username}</Typography>
-                      <Typography>{comment.user_comment}</Typography>
-                    </Stack>
-                  );
-                })}
-              </StyledBox>
+            {/* comments  */}
+            <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
+              {comments.map((comment, id) => {
+                return (
+                  <Stack key={id} direction="row" spacing={2}>
+                    <Typography sx={{ fontWeight: '600' }}>{comment.username}</Typography>
+                    <Typography>{comment.user_comment}</Typography>
+                  </Stack>
+                );
+              })}
+            </StyledBox>
 
-              {/* box to write comment */}
-              <StyledBox display="flex" flexDirection="column" marginTop="auto" fullWidth>
-                {/* icons */}
-                <Box display="flex" justifyContent="space-between">
+            {/* box to write comment */}
+            <StyledBox display="flex" flexDirection="column" marginTop="auto" fullWidth>
+              {/* icons */}
+              <Box display="flex" justifyContent="space-between">
+                <Checkbox
+                  color="error"
+                  size="medium"
+                  icon={<Heart size="30" />}
+                  checkedIcon={<Favorite size="30" />}
+                />
+                <Button sx={{ marginRight: 'auto' }} color="primary" onClick={handleOpen}>
+                  <Link size="30" />
+                </Button>
+              </Box>
+              <Stack direction="row" spacing={2}>
+                <TextField fullWidth name="comment" label="Add a comment"></TextField>
+                <Button type="submit">Post</Button>
+              </Stack>
+            </StyledBox>
+          </CommentSection>
+        </MainSection>
+
+        {/* image link */}
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description">
+          <LinkBox>
+            <Typography align="center">Image Link</Typography>
+            <ImageLink>
+              {photo.link}
+              <Box display="flex" justifyContent="flex-end" marginTop="1rem">
+                <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
                   <Checkbox
-                    color="error"
-                    size="medium"
-                    icon={<Heart size="30" />}
-                    checkedIcon={<Favorite size="30" />}
+                    onClick={() => {
+                      navigator.clipboard.writeText(photo.link);
+                      setCopied(!copied);
+                    }}
+                    icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
+                    checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
                   />
-                  <Button sx={{ marginRight: 'auto' }} color="primary" onClick={handleOpen}>
-                    <Link size="30" />
-                  </Button>
-                </Box>
-                <Stack direction="row" spacing={2}>
-                  <TextField fullWidth name="comment" label="Add a comment"></TextField>
-                  <Button type="submit">Post</Button>
-                </Stack>
-              </StyledBox>
-            </CommentSection>
-
-          </MainSection>
-
-          {/* image link */}
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
-            <LinkBox>
-              <Typography align="center">Image Link</Typography>
-              <ImageLink>
-                {photo.link}
-                <Box display="flex" justifyContent="flex-end" marginTop="1rem">
-                  <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
-                    <Checkbox
-                      onClick={() => {
-                        navigator.clipboard.writeText(photo.link);
-                        setCopied(!copied);
-                      }}
-                      icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
-                      checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
-                    />
-                  </Tooltip>
-                </Box>
-              </ImageLink>
-            </LinkBox>
-          </Modal>
+                </Tooltip>
+              </Box>
+            </ImageLink>
+          </LinkBox>
+        </Modal>
       </>
     );
   }

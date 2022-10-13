@@ -2,7 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 // mui components
-import { styled, Button, AppBar, Toolbar, Avatar } from '@mui/material';
+import {
+  styled,
+  Box,
+  Modal,
+  Typography,
+  Stack,
+  Button,
+  AppBar,
+  Toolbar,
+  Avatar
+} from '@mui/material';
 // import { deepPurple } from '@mui/material/colors';
 // my components
 import Searchbar from './Searchbar';
@@ -30,6 +40,23 @@ const User = styled(Button)({
   '&:hover': {
     transform: 'translateY(-2px)'
   }
+});
+
+const LinkBox = styled(Box)({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  backgroundColor: 'white',
+  border: '1px solid #000',
+  boxShadow: 24,
+  p: 4,
+  padding: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '20px',
+  flexDirection: 'column'
 });
 
 function stringToColor(string) {
@@ -64,27 +91,52 @@ function stringAvatar(name) {
 
 // TODO: replace username with prop.username
 export default function Navbar(props) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const navigate = useNavigate();
 
   return (
-    <AppBar position="static">
-      <StyledToolbar>
-        <User>
-          <Avatar {...stringAvatar(`${props.user.firstName} ${props.user.lastName}`)} />
-          {props.user.firstName}
-        </User>
+    <>
+      <AppBar position="static">
+        <StyledToolbar>
+          <User>
+            <Avatar {...stringAvatar(`${props.user.firstName} ${props.user.lastName}`)} />
+            {props.user.firstName}
+          </User>
 
-        <Searchbar query={props.query} setQuery={props.setQuery} />
+          <Searchbar query={props.query} setQuery={props.setQuery} />
 
-        <MenuBtn
-          onClick={() => {
-            localStorage.clear();
-            navigate('/');
-          }}>
-          Logout
-        </MenuBtn>
-      </StyledToolbar>
-    </AppBar>
+          <MenuBtn onClick={handleOpen}>Logout</MenuBtn>
+        </StyledToolbar>
+      </AppBar>
+
+      <Modal open={open} onClose={handleClose}>
+        <LinkBox>
+          <Typography align="center">Are you sure you want to logout?</Typography>
+          <Stack direction="row" gap={2}>
+            <Button
+              sx={{ border: 'solid 2px black' }}
+              variant="contained"
+              color="error"
+              onClick={() => {
+                localStorage.clear();
+                navigate('/');
+              }}>
+              Yes
+            </Button>
+            <Button
+              sx={{ border: 'solid 2px black' }}
+              variant="contained"
+              color="primary"
+              onClick={handleClose}>
+              No
+            </Button>
+          </Stack>
+        </LinkBox>
+      </Modal>
+    </>
   );
 }
 
