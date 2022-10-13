@@ -21,7 +21,12 @@ const Folder = styled(Box)({
   padding: '10px',
   gap: '20px',
   overflow: 'hidden',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  // add hover effect
+  transition: 'transform 200ms ease 0s, background 200ms ease 0s',
+  '&:hover': {
+    transform: 'translateY(-6px)'
+  }
 });
 
 export default function FolderFrame(props) {

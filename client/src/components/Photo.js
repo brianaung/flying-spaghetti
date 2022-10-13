@@ -20,6 +20,7 @@ import { movePhotoToBin } from '../actions/photos';
 const StyledImgListItem = styled(ImageListItem)({
   width: '250px',
   overflow: 'hidden',
+  borderBottom: 'solid 2px black',
   aspectRatio: '1/1'
 });
 
@@ -46,6 +47,14 @@ const ImageLink = styled(Box)({
   padding: '20px'
 });
 
+const PhotoContainer = styled('div')({
+  border: 'solid 2px black',
+  transition: 'transform 200ms ease 0s, background 200ms ease 0s',
+  '&:hover': {
+    transform: 'translateY(-6px)'
+  }
+})
+
 export default function Photo(props) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -65,16 +74,16 @@ export default function Photo(props) {
 
   return (
     <div>
-      <Box sx={{ border: 'solid 2px black' }}>
+      <PhotoContainer>
         <StyledImgListItem onClick={openPhoto}>
           <img src={props.aPhoto.link} alt={props.aPhoto.name} />
         </StyledImgListItem>
 
         <Box sx={{ padding: '10px' }}>
-          <Typography color="gray" sx={{ textTransform: 'capitalise' }}>
+          <Typography variant="body1" color="primary" sx={{ textTransform: 'uppercase' }}>
             {props.aPhoto.name}
           </Typography>
-          <Typography sx={{ fontWeight: '600', textTransform: 'uppercase' }}>
+          <Typography variant="body2" color="primary" sx={{ textTransform: 'lowercase' }}>
             {props.aPhoto.caption}
           </Typography>
         </Box>
@@ -94,7 +103,7 @@ export default function Photo(props) {
             <ShareIcon fontSize="medium" />
           </Button>
         </Box>
-      </Box>
+      </PhotoContainer>
 
       {/* image link */}
       <Modal
