@@ -53,14 +53,16 @@ const SubmitForm = styled('form')({
 const FeedSkeleton = () => {
   return (
     <Stack spacing={3}>
-      <Skeleton variant="text" width={250} sx={{ fontSize: '1rem' }} />
-      <Stack direction="row" gap={20}>
+      <Skeleton variant="text" width={230} height={50} sx={{ fontSize: '1rem' }} />
+      <Stack direction="row" gap={10}>
+        <Skeleton variant="rounded" width={250} height={70} />
         <Skeleton variant="rounded" width={250} height={70} />
         <Skeleton variant="rounded" width={250} height={70} />
         <Skeleton variant="rounded" width={250} height={70} />
       </Stack>
-      <Skeleton variant="text" width={250} sx={{ fontSize: '1rem' }} />
-      <Stack direction="row" gap={20}>
+      <Skeleton variant="text" width={230} height={50} sx={{ fontSize: '1rem' }} />
+      <Stack direction="row" gap={10}>
+        <Skeleton variant="rounded" width={250} height={250} />
         <Skeleton variant="rounded" width={250} height={250} />
         <Skeleton variant="rounded" width={250} height={250} />
         <Skeleton variant="rounded" width={250} height={250} />
