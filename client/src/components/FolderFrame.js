@@ -36,14 +36,16 @@ export default function FolderFrame(props) {
       <Typography variant="h3">Folders</Typography>
       {props.folders && props.pageID === 'folders' && (
         <FolderContainer>
-          {props.folders.map((folder) => {
-            return (
-              <Folder key={folder} onClick={() => handleOpenFolder(folder)}>
-                <FolderIcon />
-                <Typography>{folder}</Typography>
-              </Folder>
-            );
-          })}
+          {props.folders
+            .filter((folder) => folder.toLowerCase().includes(props.query))
+            .map((folder) => {
+              return (
+                <Folder key={folder} onClick={() => handleOpenFolder(folder)}>
+                  <FolderIcon />
+                  <Typography>{folder}</Typography>
+                </Folder>
+              );
+            })}
         </FolderContainer>
       )}
     </>
@@ -52,5 +54,6 @@ export default function FolderFrame(props) {
 
 FolderFrame.propTypes = {
   folders: PropTypes.object,
-  pageID: PropTypes.string
+  pageID: PropTypes.string,
+  query: PropTypes.string
 };

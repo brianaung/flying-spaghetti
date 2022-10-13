@@ -165,7 +165,7 @@ export default function Feed(props) {
         ) : (
           <>
             <Directory currFolder={props.pageID}></Directory>
-            <FolderFrame folders={folders} pageID={props.pageID}></FolderFrame>
+            <FolderFrame folders={folders} pageID={props.pageID} query={props.query}></FolderFrame>
             {/*{props.pageID === 'folders' ? <Typography variant="h3">Photos</Typography> : <></>}*/}
             <PhotoFrame photos={photos} query={props.query}></PhotoFrame>
           </>
