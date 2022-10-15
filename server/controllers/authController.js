@@ -84,7 +84,7 @@ const signInUser = async (req, res, next) => {
     const user = await getDoc(doc(db, 'users', userCredential.user.uid));
     const role = user.data().role;
     res.send(user.data());
-    if (role !== 'user') {
+    if (role !== 'user' && role !== 'admin') {
       if (role === 'banned') {
         // res.send({code: 'You have been banned from accessing your account.'});
         console.log('You have been banned from accessing your account.');

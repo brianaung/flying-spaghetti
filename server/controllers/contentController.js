@@ -12,19 +12,68 @@ import {
   Timestamp,
   arrayRemove,
   deleteDoc,
+  where,
   onSnapshot
 } from 'firebase/firestore';
 import { db, storage, auth } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { onAuthStateChanged } from 'firebase/auth';
+import { KillOthers } from 'concurrently';
+// import { onAuthStateChanged } from 'firebase/auth';
 
+// Helper functions
 const getCurrUserID = () => {
   const user = auth.currentUser;
-  if (user != null) {
+  if (user !== null) {
     return user.uid;
   } else {
     return null;
   }
+};
+
+const getNameByID = async (userID) => {
+  const userSnap = await getDoc(doc(db, 'users', userID));
+  if (!userSnap.exists()) {
+    return null;
+  }
+  const userData = userSnap.data();
+  return userData.firstName + ' ' + userData.lastName;
+}
+
+const getPhotoByID = async (photoID) => {
+  const photoSnap = await getDoc(doc(db, 'photos', photoID));
+  if (!photoSnap.exists()) {
+    return null;
+  }
+  const photoData = photoSnap.data();
+  const userID = getCurrUserID();
+  let userLiked = false;
+
+  // Check if photo needs to be hidden
+  if (userID) {
+    const userRole = await getDoc(doc(db, 'users', userID));
+    if (userRole === 'admin') {
+      // Admin can see private photos
+      userLiked = photoData.likes.includes(userID);
+    } else {
+      // Check if user viewing other user private photo
+      if (photoData.isPrivate && photoData.owner !== userID) {
+        return null;
+      } else {
+        userLiked = photoData.likes.includes(userID);
+      }
+    }
+  } else {
+    if (photoData.isPrivate) {
+      return null;
+    }
+  }
+  const photo = {
+    id: photoID,
+    data: photoData,
+    isLiked: userLiked
+  }
+  // console.log(photoData)
+  return photo;
 };
 
 const getUserByID = async (req, res, next) => {
@@ -36,101 +85,110 @@ const getUserByID = async (req, res, next) => {
   }
 };
 
-const getNameByID = async (req, res, next) => {
-  try {
-    const userSnap = await getDoc(doc(db, 'users', req.params.id));
-    const userData = userSnap.data();
-    res.send(userData.firstName + ' ' + userData.lastName);
-  } catch (err) {
-    next(err);
+const getContentByUID = async (userID) => {
+  const userSnap = await getDoc(doc(db, 'users', userID));
+  const userData = userSnap.data();
+  const userPhotos = [];
+
+  for (const photoID of userData.photos) {
+    const photoSnap = await getDoc(doc(db, 'photos', photoID));
+    if (photoSnap.data().folder === "root") {
+      const photo = await getPhotoByID(photoID);
+      userPhotos.push(photo);
+    }
   }
+  const content = {
+    folders: userData.folders,
+    photos: userPhotos
+  };
+
+  return content;
 };
 
-const getPhotoByID = async (req, res, next) => {
-  try {
-    const photoSnap = await getDoc(doc(db, 'photos', req.params.id));
-    if (!photoSnap.exists()) {
-      res.sendStatus(404);
-    }
+/************************************************************/
 
-    const photoData = photoSnap.data();
-    const userID = getCurrUserID();
-    let userLiked = false;
-
-    // Check if photo is private or liked by user
-    if (userID) {
-      if (photoData.isPrivate && photoData.owner !== userID) {
-        res.sendStatus(404);
-      } else {
-        userLiked = photoData.likes.includes(userID);
-      }
-    } else {
-      if (photoData.isPrivate) {
-        res.sendStatus(404);
-      }
-    }
-    const photo = {
-      data: photoData,
-      isLiked: userLiked
-    };
-    res.send(photo);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const postComment = async (req, res, next) => {
+// Content (photos and folders)
+const getOwnContent = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
-    if (userID == null) {
+    // const userID = 'qMxsw4rNtCYmsaDzjskwZ2iqBmh1';
+    if (!userID) {
       res.sendStatus(404);
     }
-
-    const comment = {
-      owner: userID,
-      text: req.body.text,
-      date: Timestamp.fromDate(new Date())
-    };
-
-    await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), comment);
+    const content = await getContentByUID(userID);
+    res.send(content);
   } catch (err) {
     next(err);
   }
 };
 
-const getPhotoComments = async (req, res, next) => {
+const getUserContent = async (req, res, next) => {
   try {
-    // Query newest first
-    const colRef = query(
-      collection(db, 'photos', req.params.photoID, 'comments'),
-      orderBy('date', 'desc')
-    );
-    const unsubscribe = onSnapshot(colRef, (snapshot) => {
-      const comments = [];
-      snapshot.forEach((doc) => {
-        comments.push(doc.data());
-      });
-      res.send(comments);
+    // Check if logged in as admin
+    const adminID = getCurrUserID();
+    // const adminID = 'fvJJwk61OmMiIITjFm7SkRhaYcF2';
+    if (!adminID) {
+      res.sendStatus(404);
+    }
+    const adminSnap = await getDoc(doc(db, 'users', adminID));
+    if (adminSnap.data().role !== 'admin') {
+      res.sendStatus(404);
+    }
+    const content = await getContentByUID(req.params.id);
+    res.send(content);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getSharedContent = async (req, res, next) => {
+  try {
+    const userID = getCurrUserID();
+    // const userID = 'qMxsw4rNtCYmsaDzjskwZ2iqBmh1';
+    if (!userID) {
+      res.sendStatus(404);
+    }
+    const folderSnap = await getDocs(query(collection(db, 'folders'),
+      where('owner', '!=', userID)));       // already ordered by folder ID
+    const photoSnap = await getDocs(query(collection(db, 'photos'),
+      where('owner', '!=', userID), where('folder', '==', 'root')));
+    const otherFolders = [];
+    const otherPhotos = [];
+
+    folderSnap.forEach((doc) => {
+      otherFolders.push(doc.id);
     });
 
-    // Stop listening to changes
-    unsubscribe();
+    const photoIDs = []
+    photoSnap.forEach((doc) => {
+      photoIDs.push(doc.id);
+    });
+    for (const id of photoIDs) {
+      const photo = await getPhotoByID(id);
+      otherPhotos.push(photo);
+    }
+    otherPhotos.filter((photo) => photo !== null);
 
-    // const comments = [];
-    // const snapshot = await getDocs(collection(db, 'photos', req.params.photoID, 'comments'));
+    const content = {
+      folders: otherFolders,
+      photos: otherPhotos
+    };
+    res.send(content);
+  } catch (err) {
+    next(err);
+  }
+};
 
-    // for (var doc in snapshot) {
-    //   var docData = doc.data();
-    //   var ownerRef = await getDoc(doc(db, 'users', docData.owner));
-    //   var ownerName = ownerRef.data().firstName;
-    //   var currentComment = {
-    //     name: ownerName,
-    //     text: docData.text,
-    //     date: docData.date,
-    //   }
-    //   comments.push(currentComment);
-    // }
-    // res.send(comments);
+/************************************************************/
+
+// View photos
+const getPhotoPage = async (req, res, next) => {
+  try {
+    const photo = await getPhotoByID(req.params.id);
+    if (photo === null) {
+      res.sendStatus(404);
+    }
+    res.send(photo);
   } catch (err) {
     next(err);
   }
@@ -139,21 +197,33 @@ const getPhotoComments = async (req, res, next) => {
 const getRecentPhotos = async (req, res, next) => {
   try {
     // Query newest first
-    const colRef = query(
-      collection(db, 'photos'),
-      orderBy('date', 'desc'),
-      where('isPrivate', '==', false)
-    );
-    const unsubscribe = onSnapshot(colRef, (snapshot) => {
-      const photos = [];
-      snapshot.forEach((doc) => {
-        photos.push(doc.data());
-      });
-      res.send(photos);
-    });
-
+    // const colRef = query(collection(db, 'photos'), orderBy('date', 'desc'), where('isPrivate', '==', false));
+    // const unsubscribe = onSnapshot(colRef, (snapshot) => {
+    //   const photos = [];
+    //   snapshot.forEach(async (doc) => {
+    //     const photo = await getPhotoByID(doc.id);
+    //     photos.push(photo);
+    //   })
+    //   photos.filter((photo) => photo !== null);
+    //   res.send(photos);
+    // });
+    
+        
     // Stop listening to changes
-    unsubscribe();
+    // unsubscribe();
+    const colSnap = await getDocs(query(collection(db, 'photos'),
+      where('isPrivate', '==', false), orderBy('date', 'desc')));
+    const photoIDs = [];
+    const photos = [];
+    colSnap.forEach((doc) => {
+      photoIDs.push(doc.id);
+    })
+    for (const id of photoIDs) {
+      const photo = await getPhotoByID(id);
+      photos.push(photo);
+    }
+    photos.filter((photo) => photo !== null);
+    res.send(photos);
   } catch (err) {
     next(err);
   }
@@ -169,15 +239,84 @@ const getLikedPhotos = async (req, res, next) => {
     const userSnap = await getDoc(doc(db, 'users', userID));
     const photos = [];
     for (const photoID of userSnap.data().liked) {
-      const photoSnap = await getDoc(doc(db, 'photos', photoID));
-      photos.push(photoSnap.data());
+      const photo = await getPhotoByID(photoID);
+      photos.push(photo);
     }
+    photos.filter((photo) => photo !== null);
     res.send(photos);
   } catch (err) {
     next(err);
   }
 };
 
+const getPhotosInFolder = async (req, res, next) => {
+  try {
+    const folderSnap = await getDoc(doc(db, 'folders', req.params.id));
+    if (!folderSnap.exists()) {
+      res.sendStatus(404);
+    }
+
+    const folderPhotos = folderSnap.data().photos;
+    const photos = []
+    for (let photoID of folderPhotos) {
+      const photo = await getPhotoByID(photoID);
+      photos.push(photo);
+    }
+    photos.filter((photo) => photo !== null);
+    res.send(photos);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Comments
+const getPhotoComments = async (req, res, next) => {
+  try {
+    // Query newest first
+    const colRef = query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date', 'desc'));
+    const unsubscribe = onSnapshot(colRef, (snapshot) => {
+      const comments = [];
+      snapshot.forEach(async (doc) => {
+        const commentData = doc.data();
+        const fullName = await getNameByID(commentData.owner);
+        const comment = {
+          name: fullName,
+          text: commentData.text
+        }
+        comments.push(comment);
+      })
+      res.send(comments);
+    });
+        
+    // Stop listening to changes
+    unsubscribe();
+  } catch (err) {
+    next(err);
+  }
+};
+
+const postComment = async (req, res, next) => {
+  try {
+    const userID = getCurrUserID();
+    if (userID == null) {
+      res.sendStatus(401);
+    }
+
+    const comment = {
+      owner: userID,
+      text: req.body.text,
+      date: Timestamp.fromDate(new Date())
+    };
+
+    res.sendStatus(200);
+    await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), comment);
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+// View folders
 const getUserFolders = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
@@ -188,98 +327,6 @@ const getUserFolders = async (req, res, next) => {
     const userSnap = await getDoc(doc(db, 'users', userID));
     const folders = userSnap.data().folders;
     res.send(folders);
-  } catch (err) {
-    next(err);
-  }
-};
-
-/* NOTE: this is very similar to getUserContent
-         we could actually refactor these into one to use it for every folders
-         but will need to update urls and routes (too much work ughh)
-*/
-// Get user content a specific folder (there will just be photos no more folders)
-const getPhotosInFolder = async (req, res, next) => {
-  try {
-    const userID = getCurrUserID();
-
-    if (!userID) {
-      res.sendStatus(404);
-    }
-
-    const userSnap = await getDoc(doc(db, 'users', userID));
-    const userData = userSnap.data();
-    const userPhotos = [];
-
-    for (const photoID of userData.photos) {
-      const photoSnap = await getDoc(doc(db, 'photos', photoID));
-      if (photoSnap.data().folder == req.params.id) {
-        userPhotos.push({ ...photoSnap.data(), photoID });
-      }
-    }
-
-    res.send(userPhotos);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getUserContent = async (req, res, next) => {
-  try {
-    const userID = getCurrUserID();
-
-    if (!userID) {
-      res.sendStatus(404);
-    }
-
-    const userSnap = await getDoc(doc(db, 'users', userID));
-    const userData = userSnap.data();
-    const userPhotos = [];
-
-    for (const photoID of userData.photos) {
-      const photoSnap = await getDoc(doc(db, 'photos', photoID));
-      if (photoSnap.data().folder == 'root') {
-        userPhotos.push({ ...photoSnap.data(), photoID });
-      }
-    }
-
-    const content = {
-      folders: userData.folders,
-      photos: userPhotos
-    };
-
-    res.send(content);
-  } catch (err) {
-    next(err);
-  }
-};
-
-const getOtherContent = async (req, res, next) => {
-  try {
-    const userID = getCurrUserID();
-    if (!userID) {
-      res.sendStatus(404);
-    }
-    const folderSnap = await getDocs(
-      query(collection(db, 'folders'), where('owner', '!=', userID))
-    );
-    const photoSnap = await getDocs(
-      query(collection(db, 'photos'), where('owner', '!=', userID), where('folder', '==', 'root'))
-    );
-    const otherFolders = [];
-    const otherPhotos = [];
-
-    folderSnap.forEach((doc) => {
-      otherFolders.push(doc.data());
-    });
-    photoSnap.forEach((doc) => {
-      otherPhotos.push(doc.data());
-    });
-
-    const content = {
-      folders: otherFolders,
-      photos: otherPhotos
-    };
-    res.send(content);
   } catch (err) {
     next(err);
   }
@@ -401,7 +448,7 @@ const deletePhoto = async (req, res, next) => {
       console.log('upadate photo');
     });
     // 2. update users
-    const userID = getCurUserID();
+    const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
@@ -443,7 +490,7 @@ const likePost = async (req, res, next) => {
 
 const createFolder = async (req, res, next) => {
   try {
-    const userID = getCurUserID();
+    const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
@@ -503,5 +550,8 @@ export default {
   moveToDifferentFolder,
   postComment,
   getUserByID,
-  getNameByID
+  getNameByID,
+  getOwnContent,
+  getSharedContent,
+  getPhotoPage
 };

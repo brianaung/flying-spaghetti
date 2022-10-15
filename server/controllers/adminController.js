@@ -1,5 +1,4 @@
-// import * as fs from "firebase/firestore";
-import { setDoc, updateDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
+import { query, setDoc, updateDoc, doc, getDoc, Timestamp, collection, orderBy } from 'firebase/firestore';
 import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
 import { createTransport } from 'nodemailer';
@@ -105,7 +104,74 @@ const acceptUser = async (req, res, next) => {
   }
 };
 
+const getAllUsers = async (req, res, next) => {
+  try {
+    const usersSnap = query(collection(db, 'users'), orderBy('lastName', 'asc'));
+    const users = [];
+    usersSnap.forEach((doc) => {
+      users.push({
+        id: doc.id,
+        data: doc.data()
+      })
+    });
+    return users;
+  } catch (err) {
+    next(err);
+  }
+}
+
+// const getPhotoForAdmin = async (photoID) => {
+//   const userID = getCurrUserID(); 
+//   const userSnap = await getDoc(doc(db, 'users', userID));
+//   const userData = userSnap.data();
+//   if (userData.role !== 'admin') {
+//     return null;
+//   }
+//   const photoSnap = await getDoc(doc(db, 'photos', photoID));
+//   if (!photoSnap.exists()) {
+//     return null;
+//   }
+
+//   const photoData = photoSnap.data();
+//   let userLiked = false;
+
+//   // Check if photo is private or liked by user
+//   if (userID) {
+//     userLiked = photoData.likes.includes(userID);
+//   }
+//   const photo = {
+//     id: photoSnap.id,
+//     data: photoData,
+//     isLiked: userLiked
+//   }
+//   return photo;
+// };
+
+// const getOtherDashboard = async (req, res, next) => {
+//   try {
+//     const userSnap = await getDoc(doc(db, 'users', req.params.id));
+//     const userData = userSnap.data();
+//     const userPhotos = [];
+
+//     for (const photoID of userData.photos) {
+//       if (photoSnap.data().folder === "root") {
+//         userPhotos.push(getPhotoForAdmin(photoID));
+//       }
+//     }
+
+//     const content = {
+//       folders: userData.folders,
+//       photos: userPhotos
+//     };
+
+//     res.send(content);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 export default {
   banUser,
-  acceptUser
+  acceptUser,
+  getAllUsers
 };

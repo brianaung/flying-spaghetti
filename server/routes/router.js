@@ -13,14 +13,16 @@ const upload = multer({ memoStorage });
 const router = Router();
 
 // Content (photos and folders)
-router.get('/', contentController.getUserContent);
-router.get('/photo/:id', contentController.getPhotoByID);
+router.get('/dashboard', contentController.getOwnContent);
+router.get('/shared', contentController.getSharedContent);
+router.get('/dashboard/user/:id', contentController.getUserContent);    // admin only
+router.get('/photo/:id', contentController.getPhotoPage);
 router.get('/folder/:id', contentController.getPhotosInFolder);
 
 router.get('/user/:id', contentController.getUserByID);
 router.get('/folders', contentController.getUserFolders);
 router.get('/liked', contentController.getLikedPhotos);
-router.get('/recents', contentController.getRecentPhotos);
+router.get('/recent', contentController.getRecentPhotos);
 
 router.get('/comments/:photoID', contentController.getPhotoComments);
 router.post('/comments/:photoID', contentController.postComment);
