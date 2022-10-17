@@ -17,7 +17,8 @@ export default (state = { isLoading: true, photos: [], folders: [] }, action) =>
     case FETCH_PHOTO:
       return action.payload;
     case FETCH_PHOTOS_IN_FOLDERS:
-      return { ...state, photos: action.payload };
+      // always return an empty folder since we wont have nested folders in our case
+      return { ...state, photos: action.payload, folders: [] };
     case MOVE_PHOTO_TO_BIN:
       return {
         ...state,
