@@ -23,6 +23,7 @@ export const getPhoto = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
     const { data } = await api.fetchPhoto(id);
+    console.log(data);
 
     dispatch({ type: FETCH_PHOTO, payload: data.data });
     dispatch({ type: END_LOADING });

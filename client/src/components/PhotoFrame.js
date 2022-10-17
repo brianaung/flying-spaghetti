@@ -23,7 +23,7 @@ export default function PhotoFrame(props) {
           ? props.photos
               .filter((photo) => photo.name.toLowerCase().includes(props.query))
               .map((aPhoto) => {
-                return <Photo key={aPhoto.photoID} aPhoto={aPhoto}></Photo>;
+                return <Photo key={aPhoto.id} aPhoto={aPhoto}></Photo>;
               })
           : ''}
       </PhotoContainer>

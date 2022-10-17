@@ -73,12 +73,17 @@ export default function Photo(props) {
   const dispatch = useDispatch();
 
   const openPhoto = () => {
-    navigate(`/photo/${props.aPhoto.photoID}`);
+    navigate(`/photo/${props.aPhoto.id}`);
   };
 
   let folderID = useParams().id;
   if (folderID === 'folders') {
     folderID = 'root';
+  }
+
+  const handleDelPhoto = () => {
+    dispatch(movePhotoToBin(folderID, props.aPhoto.id));
+    handleCloseDel();
   }
 
   return (
@@ -155,7 +160,7 @@ export default function Photo(props) {
               sx={{ border: 'solid 2px black' }}
               variant="contained"
               color="error"
-              onClick={() => dispatch(movePhotoToBin(folderID, props.aPhoto.photoID))}>
+              onClick={handleDelPhoto}>
               Yes
             </Button>
             <Button
