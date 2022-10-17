@@ -1,11 +1,9 @@
-import {
-  FETCH_PHOTO
-} from '../constants/actionTypes';
+import { FETCH_PHOTO } from '../constants/actionTypes';
 
 export default (photo = {}, action) => {
   switch (action.type) {
     case FETCH_PHOTO:
-        return action.payload;
+      return action.payload;
     default:
       return photo;
   }

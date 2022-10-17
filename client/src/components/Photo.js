@@ -84,7 +84,7 @@ export default function Photo(props) {
   const handleDelPhoto = () => {
     dispatch(movePhotoToBin(folderID, props.aPhoto.id));
     handleCloseDel();
-  }
+  };
 
   return (
     <div>

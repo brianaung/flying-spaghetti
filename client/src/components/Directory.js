@@ -17,7 +17,9 @@ export default function Directory(props) {
 
   return (
     <>
-      {props.currFolder == 'folders' || props.currFolder == 'shared' || props.currFolder == 'liked' ? (
+      {props.currFolder == 'folders' ||
+      props.currFolder == 'shared' ||
+      props.currFolder == 'liked' ? (
         <></>
       ) : (
         <Breadcrumbs fontSize="large">

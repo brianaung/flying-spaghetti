@@ -80,7 +80,7 @@ export default function Feed(props) {
   const [imageUrl, setImageUrl] = useState(null);
   const [open, setOpen] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -102,7 +102,6 @@ export default function Feed(props) {
 
   // var bodyFormData = new FormData();
   const handleUpload = (e) => {
-
     e.preventDefault();
 
     handleClose();
@@ -119,15 +118,14 @@ export default function Feed(props) {
     axios
       .post(API, formData)
       .then((res) => {
-        dispatch({type: 'UPLOAD_PHOTO', payload: res.data})
-        
+        dispatch({ type: 'UPLOAD_PHOTO', payload: res.data });
+
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
 
   return (
     <FeedContainer>
@@ -168,16 +166,18 @@ export default function Feed(props) {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={["root"].concat(folders)}
-            defaultValue={"root"}
+            options={['root'].concat(folders)}
+            defaultValue={'root'}
             sx={{ width: 200 }}
             renderInput={(params) => <TextField name="folder" {...params} label="Select Folder" />}
           />
 
           <FormGroup>
-            <FormControlLabel name="isPrivate" label="private" control={
-              <Switch inputProps={{ 'aria-label': 'controlled' }} />
-            } />
+            <FormControlLabel
+              name="isPrivate"
+              label="private"
+              control={<Switch inputProps={{ 'aria-label': 'controlled' }} />}
+            />
           </FormGroup>
 
           <Button variant="contained" color="primary" type="submit">

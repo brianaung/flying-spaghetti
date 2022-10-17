@@ -50,19 +50,27 @@ export default function Sidebar(props) {
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day {props.user.firstName}</WelcomeMsg>
 
-        <ListItemButton selected={selectedIndex === 'folders'} onClick={() => handleListItemClick('folders')}>
+        <ListItemButton
+          selected={selectedIndex === 'folders'}
+          onClick={() => handleListItemClick('folders')}>
           <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
 
-        <ListItemButton selected={selectedIndex === 'shared'} onClick={() => handleListItemClick('shared')}>
+        <ListItemButton
+          selected={selectedIndex === 'shared'}
+          onClick={() => handleListItemClick('shared')}>
           <ListItemText primary="Shared With Me" onClick={() => navigate('/dashboard/shared')} />
         </ListItemButton>
 
-        <ListItemButton selected={selectedIndex === 'liked'} onClick={() => handleListItemClick('liked')}>
+        <ListItemButton
+          selected={selectedIndex === 'liked'}
+          onClick={() => handleListItemClick('liked')}>
           <ListItemText primary="Liked" onClick={() => navigate('/dashboard/liked')} />
         </ListItemButton>
 
-        <ListItemButton selected={selectedIndex === 'trash'} onClick={() => handleListItemClick('trash')}>
+        <ListItemButton
+          selected={selectedIndex === 'trash'}
+          onClick={() => handleListItemClick('trash')}>
           <ListItemText primary="Trash" onClick={() => navigate('/dashboard/trash')} />
         </ListItemButton>
       </Stack>
