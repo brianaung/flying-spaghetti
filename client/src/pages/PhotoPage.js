@@ -112,7 +112,7 @@ export default function PhotoPage(props) {
     dispatch(getPhoto(id));
   }, [id]);
 
-  const photo = useSelector((state) => state.photos);
+  const photo = useSelector((state) => state.photo);
 
   useEffect(() => {
     setImgHeight(container.current.height);

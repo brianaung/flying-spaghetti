@@ -73,7 +73,7 @@ export default function Photo(props) {
   const dispatch = useDispatch();
 
   const openPhoto = () => {
-    navigate(`/photo/${props.aPhoto.photoID}`);
+    navigate(`/photo/${props.aPhoto.id}`);
   };
 
   let folderID = useParams().id;
