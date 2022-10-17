@@ -355,7 +355,7 @@ const uploadPhoto = async (req, res, next) => {
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
       folder: req.params.folder,
-      isPrivate: false,
+      isPrivate: req.body.isPrivate,
       likes: [],
       link: imageUrl,
       owner: userID

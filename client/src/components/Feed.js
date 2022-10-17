@@ -12,8 +12,11 @@ import {
   TextField,
   Typography,
   Stack,
-  // Skeleton,
+  Switch,
   Fab,
+  FormGroup,
+  FormControlLabel,
+  Autocomplete,
   Skeleton
 } from '@mui/material';
 // mui icons
@@ -109,8 +112,8 @@ export default function Feed(props) {
     // TODO: do not hardcode target folder (give user option to choose)
     const API =
       process.env.NODE_ENV === 'production'
-        ? 'https://flyingspaghetti-server.herokuapp.com/folder/root'
-        : 'http://localhost:9000/folder/root';
+        ? `https://flyingspaghetti-server.herokuapp.com/folder/${e.target.folder}`
+        : `http://localhost:9000/folder/${e.target.folder}`;
 
     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     axios
@@ -124,6 +127,7 @@ export default function Feed(props) {
         console.log(err);
       });
   };
+
 
   return (
     <FeedContainer>
@@ -160,6 +164,21 @@ export default function Feed(props) {
             variant="outlined"
             label="Description"
             fullWidth></TextField>
+
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={["root"].concat(folders)}
+            defaultValue={"root"}
+            sx={{ width: 200 }}
+            renderInput={(params) => <TextField name="folder" {...params} label="Select Folder" />}
+          />
+
+          <FormGroup>
+            <FormControlLabel name="isPrivate" label="private" control={
+              <Switch inputProps={{ 'aria-label': 'controlled' }} />
+            } />
+          </FormGroup>
 
           <Button variant="contained" color="primary" type="submit">
             Upload
