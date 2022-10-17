@@ -77,8 +77,10 @@ export default function Photo(props) {
   };
 
   let folderID = useParams().id;
+  let canDelete = false;
   if (folderID === 'folders') {
     folderID = 'root';
+    canDelete = true;
   }
 
   const handleDelPhoto = () => {
@@ -115,13 +117,25 @@ export default function Photo(props) {
             <Comment size="30" />
           </IconButton>
 
-          <IconButton size="small" color="primary" onClick={handleOpenShare}>
-            <Link size="30" />
-          </IconButton>
+          {/* only show delete button if the user hv rights to delete 
+            * right align share button if delete button is not available
+            */}
+          {canDelete ? (
+            <>
+              <IconButton size="small" color="primary" onClick={handleOpenShare}>
+                <Link size="30" />
+              </IconButton>
 
-          <IconButton sx={{ marginLeft: 'auto' }} color="primary" onClick={handleOpenDel}>
-            <Trash size="30" />
-          </IconButton>
+              <IconButton sx={{ marginLeft: 'auto' }} color="primary" onClick={handleOpenDel}>
+                <Trash size="30" />
+              </IconButton>
+            </>
+          ) : (
+            <IconButton sx={{ marginLeft: 'auto' }} size="small" color="primary" onClick={handleOpenShare}>
+              <Link size="30" />
+            </IconButton>
+          )}
+
         </Stack>
       </PhotoContainer>
 
