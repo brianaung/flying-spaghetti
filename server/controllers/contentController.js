@@ -415,7 +415,7 @@ const moveToBin = async (req, res, next) => {
     }).then(() => {
       console.log('delete photo from folder');
     });
-    res.send({ photoID: req.params.id });
+    res.send({ id: req.params.id });
   } catch (error) {
     next(error);
   }

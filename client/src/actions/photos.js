@@ -46,7 +46,6 @@ export const getPhotosInFolder = (id) => async (dispatch) => {
 export const movePhotoToBin = (folderID, photoID) => async (dispatch) => {
   try {
     const { data } = await api.movePhotoToBin(folderID, photoID);
-    console.log(data);
     dispatch({ type: MOVE_PHOTO_TO_BIN, payload: data });
   } catch (error) {
     console.log(error.message);
