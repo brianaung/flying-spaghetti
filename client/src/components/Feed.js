@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import FormData from 'form-data';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // mui components
 import {
   styled,
@@ -76,6 +76,9 @@ export default function Feed(props) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch()
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -96,7 +99,10 @@ export default function Feed(props) {
 
   // var bodyFormData = new FormData();
   const handleUpload = (e) => {
-    //e.preventDefault();
+
+    e.preventDefault();
+
+    handleClose();
 
     var formData = new FormData(e.target);
 
@@ -110,6 +116,8 @@ export default function Feed(props) {
     axios
       .post(API, formData)
       .then((res) => {
+        dispatch({type: 'UPLOAD_PHOTO', payload: res.data})
+        
         console.log(res);
       })
       .catch((err) => {

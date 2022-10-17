@@ -364,7 +364,7 @@ const uploadPhoto = async (req, res, next) => {
     const docRef = await addDoc(collection(db, 'photos'), photo);
     if (docRef) {
       // console.log(photo);
-      res.send(photo);
+      res.send({...photo, id: docRef.id});
       console.log('sending docRef');
     }
 
@@ -381,6 +381,7 @@ const uploadPhoto = async (req, res, next) => {
         photos: arrayUnion(docRef.id)
       });
     }
+    
   } catch (err) {
     next(err);
   }
