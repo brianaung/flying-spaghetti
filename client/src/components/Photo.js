@@ -81,6 +81,11 @@ export default function Photo(props) {
     folderID = 'root';
   }
 
+  const handleDelPhoto = () => {
+    dispatch(movePhotoToBin(folderID, props.aPhoto.id));
+    handleCloseDel();
+  }
+
   return (
     <div>
       <PhotoContainer>
@@ -155,7 +160,7 @@ export default function Photo(props) {
               sx={{ border: 'solid 2px black' }}
               variant="contained"
               color="error"
-              onClick={() => dispatch(movePhotoToBin(folderID, props.aPhoto.photoID))}>
+              onClick={handleDelPhoto}>
               Yes
             </Button>
             <Button

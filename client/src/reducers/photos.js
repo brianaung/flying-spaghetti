@@ -20,7 +20,7 @@ export default (state = { isLoading: true, photos: [], folders: [], photo: {} },
     case MOVE_PHOTO_TO_BIN:
       return {
         ...state,
-        photos: state.photos.filter((photo) => photo.photoID !== action.payload.photoID)
+        photos: state.photos.filter((photo) => photo.id !== action.payload.id)
       };
     default:
       return state;
