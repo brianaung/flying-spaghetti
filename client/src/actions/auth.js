@@ -10,6 +10,9 @@ export const userLogin = (email, password, navigate) => async (dispatch) => {
       case 'user':
         navigate('/dashboard/folders');
         break;
+      case 'admin':
+        navigate('/dashboard/folders');
+        break;
       case 'pending':
         alert('Please wait for the admin to approve your registration');
         localStorage.clear();

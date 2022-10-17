@@ -10,7 +10,7 @@ import Register from './pages/Register';
 
 // protect routes to only give access to accounts with the role `user`
 const PrivateRoutes = (props) => {
-  return props.user && props.user.role == 'user' ? props.children : <Navigate to="/" />;
+  return props.user && (props.user.role === 'user' || props.user.role === 'admin') ? props.children : <Navigate to="/" />;
 };
 PrivateRoutes.propTypes = {
   user: PropTypes.object,

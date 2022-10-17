@@ -17,7 +17,7 @@ import {
 } from 'firebase/firestore';
 import { db, storage, auth } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { KillOthers } from 'concurrently';
+// import { KillOthers } from 'concurrently';
 // import { onAuthStateChanged } from 'firebase/auth';
 
 // Helper functions
@@ -69,8 +69,8 @@ const getPhotoByID = async (photoID) => {
   }
   const photo = {
     id: photoID,
-    data: photoData,
-    isLiked: userLiked
+    isLiked: userLiked,
+    ...photoData
   }
   // console.log(photoData)
   return photo;

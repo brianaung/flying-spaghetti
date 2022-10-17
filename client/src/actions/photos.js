@@ -35,6 +35,7 @@ export const getPhotosInFolder = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
     const { data } = await api.fetchPhotosInFolder(id);
+    console.log(data);
 
     dispatch({ type: FETCH_PHOTOS_IN_FOLDERS, payload: data });
     dispatch({ type: END_LOADING });
