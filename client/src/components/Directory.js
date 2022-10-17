@@ -17,12 +17,12 @@ export default function Directory(props) {
 
   return (
     <>
-      {props.currFolder == 'folders' ? (
+      {props.currFolder == 'folders' || props.currFolder == 'shared' || props.currFolder == 'liked' ? (
         <></>
       ) : (
         <Breadcrumbs fontSize="large">
           <Link component="button" underline="hover" color="inherit" onClick={handleNavigation}>
-            Home
+            <Typography variant="body1">Home</Typography>
           </Link>
           <Typography variant="h3" color="primary">
             {props.currFolder}

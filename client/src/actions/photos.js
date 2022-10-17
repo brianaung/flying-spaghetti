@@ -2,10 +2,12 @@ import * as api from '../api/photos';
 import {
   END_LOADING,
   FETCH_ALL,
+  FETCH_SHARED,
   FETCH_PHOTO,
   FETCH_PHOTOS_IN_FOLDERS,
   START_LOADING,
-  MOVE_PHOTO_TO_BIN
+  MOVE_PHOTO_TO_BIN,
+  FETCH_LIKED
 } from '../constants/actionTypes';
 
 export const getPhotos = () => async (dispatch) => {
@@ -19,6 +21,32 @@ export const getPhotos = () => async (dispatch) => {
     console.log(error.message);
   }
 };
+
+export const getSharedPhotos = () => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING });
+    const { data } = await api.fetchSharedPhotos();
+    console.log(data);
+
+    dispatch({ type: FETCH_SHARED, payload: data });
+    dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const getLikedPhotos = () => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING });
+    const { data } = await api.fetchLikedPhotos();
+
+    dispatch({ type: FETCH_LIKED, payload: data });
+    dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export const getPhoto = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });

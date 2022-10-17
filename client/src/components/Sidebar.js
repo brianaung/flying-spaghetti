@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -33,12 +33,16 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
+// const selected = localStorage.getItem('selected') ? localStorage.getItem('selected') : '0';
 export default function Sidebar(props) {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const handleListItemClick = (index) => {
-    setSelectedIndex(index);
+  const [selectedIndex, setSelectedIndex] = React.useState(id);
+
+  const handleListItemClick = (idx) => {
+    setSelectedIndex(idx);
   };
 
   return (
@@ -46,20 +50,20 @@ export default function Sidebar(props) {
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day {props.user.firstName}</WelcomeMsg>
 
-        <ListItemButton selected={selectedIndex === 0} onClick={() => handleListItemClick(0)}>
+        <ListItemButton selected={selectedIndex === 'folders'} onClick={() => handleListItemClick('folders')}>
           <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
         </ListItemButton>
 
-        <ListItemButton selected={selectedIndex === 1} onClick={() => handleListItemClick(1)}>
-          <ListItemText primary="Shared With Me" onClick={() => navigate('/dashboard/folders')} />
+        <ListItemButton selected={selectedIndex === 'shared'} onClick={() => handleListItemClick('shared')}>
+          <ListItemText primary="Shared With Me" onClick={() => navigate('/dashboard/shared')} />
         </ListItemButton>
 
-        <ListItemButton selected={selectedIndex === 2} onClick={() => handleListItemClick(2)}>
-          <ListItemText primary="Liked" onClick={() => navigate('/dashboard/folders')} />
+        <ListItemButton selected={selectedIndex === 'liked'} onClick={() => handleListItemClick('liked')}>
+          <ListItemText primary="Liked" onClick={() => navigate('/dashboard/liked')} />
         </ListItemButton>
 
-        <ListItemButton selected={selectedIndex === 3} onClick={() => handleListItemClick(3)}>
-          <ListItemText primary="Trash" onClick={() => navigate('/dashboard/folders')} />
+        <ListItemButton selected={selectedIndex === 'trash'} onClick={() => handleListItemClick('trash')}>
+          <ListItemText primary="Trash" onClick={() => navigate('/dashboard/trash')} />
         </ListItemButton>
       </Stack>
 

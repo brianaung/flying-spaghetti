@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getPhotos, getPhotosInFolder } from '../actions/photos';
+import { getPhotos, getPhotosInFolder, getSharedPhotos, getLikedPhotos } from '../actions/photos';
 // mui components
 import { styled, Box, Stack } from '@mui/material';
 // my components
@@ -32,6 +32,10 @@ export default function Dashboard(props) {
   useEffect(() => {
     if (id === 'folders') {
       dispatch(getPhotos());
+    } else if (id === 'shared') {
+      dispatch(getSharedPhotos());
+    } else if (id === 'liked') {
+      dispatch(getLikedPhotos());
     } else {
       dispatch(getPhotosInFolder(id));
     }

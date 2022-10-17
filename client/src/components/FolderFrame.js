@@ -39,7 +39,7 @@ export default function FolderFrame(props) {
   return (
     <Stack gap={2}>
       <Typography variant="h3">Folders</Typography>
-      {props.folders && props.pageID === 'folders' && (
+      {props.folders && (
         <FolderContainer>
           {props.folders
             .filter((folder) => folder.toLowerCase().includes(props.query))
