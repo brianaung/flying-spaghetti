@@ -5,12 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { styled, Box, Typography, Stack } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 
-const FolderContainer = styled(Stack)({
+const FolderContainer = styled(Stack)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
   gap: '20px',
-  flexWrap: 'wrap'
-});
+  flexWrap: 'wrap',
+  [theme.breakpoints.down('sm')]: {
+    justifyContent: 'center',
+    width: '100%'
+  }
+}));
 
 const Folder = styled(Box)({
   display: 'flex',

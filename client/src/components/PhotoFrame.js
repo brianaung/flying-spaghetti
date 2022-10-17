@@ -5,11 +5,15 @@ import { styled, Stack, Typography, ImageList } from '@mui/material';
 // my components
 import Photo from './Photo';
 
-const PhotoContainer = styled(ImageList)({
+const PhotoContainer = styled(ImageList)(({ theme }) => ({
   justifyItems: 'center',
   display: 'flex',
-  flexWrap: 'wrap'
-});
+  flexWrap: 'wrap',
+  [theme.breakpoints.down('sm')]: {
+    justifyContent: 'center',
+    width: '100%'
+  }
+}));
 
 export default function PhotoFrame(props) {
   return (
