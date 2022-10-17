@@ -5,7 +5,7 @@ import {
   FETCH_PHOTOS_IN_FOLDERS,
   MOVE_PHOTO_TO_BIN
 } from '../constants/actionTypes';
-export default (state = { isLoading: true, photos: [], folders: [], photo: {} }, action) => {
+export default (state = { isLoading: true, photos: [], folders: [] }, action) => {
   switch (action.type) {
     case START_LOADING:
       return { ...state, isLoading: true };
