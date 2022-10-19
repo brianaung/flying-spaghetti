@@ -108,16 +108,14 @@ export default function PhotoPage(props) {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const [comment, setComment] = useState(null)
+  const [comment, setComment] = useState(null);
 
-  const photo = useSelector(state => state.photo)
+  const photo = useSelector((state) => state.photo);
   const comments = photo.comments;
-
-
 
   useEffect(() => {
     dispatch(getPhoto(id));
-    dispatch(getComments(id))
+    dispatch(getComments(id));
   }, [id]);
 
   //const photo = useSelector((state) => state.photo);
@@ -172,15 +170,15 @@ export default function PhotoPage(props) {
 
             {/* comments  */}
             <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
-              {comments && comments.map((comment, id) => {
-
-                return (
-                  <Stack key={id} direction="row" spacing={2}>
-                    <Typography sx={{ fontWeight: '600' }}>{comment.name}</Typography>
-                    <Typography>{comment.text}</Typography>
-                  </Stack>
-                );
-              })}
+              {comments &&
+                comments.map((comment, id) => {
+                  return (
+                    <Stack key={id} direction="row" spacing={2}>
+                      <Typography sx={{ fontWeight: '600' }}>{comment.name}</Typography>
+                      <Typography>{comment.text}</Typography>
+                    </Stack>
+                  );
+                })}
             </StyledBox>
 
             {/* box to write comment */}
@@ -202,12 +200,10 @@ export default function PhotoPage(props) {
                   fullWidth
                   name="comment"
                   label="Add a comment"
-                  onChange={(e) =>
-                    setComment(e.target.value)
-                  }></TextField>
+                  onChange={(e) => setComment(e.target.value)}></TextField>
                 <Button
                   type="submit"
-                  onClick={() => dispatch(postComment(photo.id, {text: comment}))}>
+                  onClick={() => dispatch(postComment(photo.id, { text: comment }))}>
                   Post
                 </Button>
               </Stack>

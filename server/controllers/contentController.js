@@ -37,7 +37,7 @@ const getNameByID = async (userID) => {
   }
   const userData = userSnap.data();
   return userData.firstName + ' ' + userData.lastName;
-}
+};
 
 const getPhotoByID = async (photoID) => {
   const photoSnap = await getDoc(doc(db, 'photos', photoID));
@@ -71,7 +71,7 @@ const getPhotoByID = async (photoID) => {
     id: photoID,
     isLiked: userLiked,
     ...photoData
-  }
+  };
   // console.log(photoData)
   return photo;
 };
@@ -92,7 +92,7 @@ const getContentByUID = async (userID) => {
 
   for (const photoID of userData.photos) {
     const photoSnap = await getDoc(doc(db, 'photos', photoID));
-    if (photoSnap.data().folder === "root") {
+    if (photoSnap.data().folder === 'root') {
       const photo = await getPhotoByID(photoID);
       userPhotos.push(photo);
     }
@@ -148,10 +148,12 @@ const getSharedContent = async (req, res, next) => {
     if (!userID) {
       res.sendStatus(404);
     }
-    const folderSnap = await getDocs(query(collection(db, 'folders'),
-      where('owner', '!=', userID)));       // already ordered by folder ID
-    const photoSnap = await getDocs(query(collection(db, 'photos'),
-      where('owner', '!=', userID), where('folder', '==', 'root')));
+    const folderSnap = await getDocs(
+      query(collection(db, 'folders'), where('owner', '!=', userID))
+    ); // already ordered by folder ID
+    const photoSnap = await getDocs(
+      query(collection(db, 'photos'), where('owner', '!=', userID), where('folder', '==', 'root'))
+    );
     const otherFolders = [];
     const otherPhotos = [];
 
@@ -159,7 +161,7 @@ const getSharedContent = async (req, res, next) => {
       otherFolders.push(doc.id);
     });
 
-    const photoIDs = []
+    const photoIDs = [];
     photoSnap.forEach((doc) => {
       photoIDs.push(doc.id);
     });
@@ -207,17 +209,17 @@ const getRecentPhotos = async (req, res, next) => {
     //   photos.filter((photo) => photo !== null);
     //   res.send(photos);
     // });
-    
-        
+
     // Stop listening to changes
     // unsubscribe();
-    const colSnap = await getDocs(query(collection(db, 'photos'),
-      where('isPrivate', '==', false), orderBy('date', 'desc')));
+    const colSnap = await getDocs(
+      query(collection(db, 'photos'), where('isPrivate', '==', false), orderBy('date', 'desc'))
+    );
     const photoIDs = [];
     const photos = [];
     colSnap.forEach((doc) => {
       photoIDs.push(doc.id);
-    })
+    });
     for (const id of photoIDs) {
       const photo = await getPhotoByID(id);
       photos.push(photo);
@@ -257,7 +259,7 @@ const getPhotosInFolder = async (req, res, next) => {
     }
 
     const folderPhotos = folderSnap.data().photos;
-    const photos = []
+    const photos = [];
     for (let photoID of folderPhotos) {
       const photo = await getPhotoByID(photoID);
       photos.push(photo);
@@ -287,7 +289,10 @@ const getPhotoComments = async (req, res, next) => {
     // res.send(photos);
 
     // Query newest first
-    const colRef = query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date', 'desc'));
+    const colRef = query(
+      collection(db, 'photos', req.params.photoID, 'comments'),
+      orderBy('date', 'desc')
+    );
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
       const comments = [];
       snapshot.forEach(async (doc) => {
@@ -296,13 +301,13 @@ const getPhotoComments = async (req, res, next) => {
         const comment = {
           name: fullName,
           text: commentData.text
-        }
+        };
 
         comments.push(comment);
-      })
+      });
       res.send(comments);
     });
-        
+
     // Stop listening to changes
     // unsubscribe();
   } catch (err) {
@@ -316,7 +321,6 @@ const postComment = async (req, res, next) => {
     if (userID == null) {
       res.sendStatus(401);
     }
-
     const comment = {
       owner: userID,
       text: req.body.text,
@@ -325,11 +329,15 @@ const postComment = async (req, res, next) => {
 
     res.status(200).send(comment);
     await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), comment);
+
+    const name = await getNameByID(userID);
+    comment.owner = name;
+    res.status(200);
+    res.send(comment);
   } catch (err) {
     next(err);
   }
 };
-
 
 // View folders
 const getUserFolders = async (req, res, next) => {
@@ -354,11 +362,11 @@ const uploadPhoto = async (req, res, next) => {
     console.log(req.file);
 
     // upload photo into storage
-    const imageRef = ref(storage, `images/${req.body.name}`);
-    const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-    await uploadBytes(imageRef, req.file.buffer, metatype);
+    // const imageRef = ref(storage, `images/${req.body.name}`);
+    // const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+    // await uploadBytes(imageRef, req.file.buffer, metatype);
 
-    const imageUrl = await getDownloadURL(imageRef);
+    // const imageUrl = await getDownloadURL(imageRef);
 
     // add a new photo in the photos collection of firestore
     const userID = getCurrUserID();
@@ -369,10 +377,9 @@ const uploadPhoto = async (req, res, next) => {
     let isPrivate = false;
 
     if (req.body.isPrivate === 'true') {
-      isPrivate = true
+      isPrivate = true;
     }
 
-    console.log(req.body.isPrivate);
     const photo = {
       name: req.body.name,
       caption: req.body.description,
@@ -381,13 +388,28 @@ const uploadPhoto = async (req, res, next) => {
       isPrivate: isPrivate,
       likes: [],
       link: imageUrl,
-      owner: userID,
+      owner: userID
     };
-    console.log(req.body.isPrivate);
+
     const docRef = await addDoc(collection(db, 'photos'), photo);
+
     if (docRef) {
+      // upload photo into storage
+      const imageRef = ref(storage, `images/${docRef.id}`);
+      const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+      await uploadBytes(imageRef, req.file.buffer, metatype);
+
+      const imageUrl = await getDownloadURL(imageRef);
+
+      const photoRef = doc(db, 'photos', docRef.id);
+
+      // Set the "capital" field of the city 'DC'
+      await updateDoc(photoRef, {
+        links: imageUrl
+      });
+
       // console.log(photo);
-      res.send({...photo, id: docRef.id});
+      //res.send({...photo, id: docRef.id});
       console.log('sending docRef');
     }
 
@@ -404,7 +426,6 @@ const uploadPhoto = async (req, res, next) => {
         photos: arrayUnion(docRef.id)
       });
     }
-    
   } catch (err) {
     next(err);
   }
@@ -441,6 +462,7 @@ const moveToBin = async (req, res, next) => {
     });
 
     // delete photo in storage.
+    console.log(req.body.name);
     const imageRef = ref(storage, `images/${req.body.name}`);
     deleteObject(imageRef)
       .then(() => {
@@ -505,6 +527,20 @@ const deletePhoto = async (req, res, next) => {
   }
 };
 
+const getLikes = async (req, res, next) => {
+  try {
+    const userID = getCurrUserID();
+    if (userID == null) {
+      res.sendStatus(404);
+    }
+    const photoRef = doc(db, 'photos', req.params.id);
+    const photoSnap = await getDoc(photoRef);
+    res.send(photoSnap.data().likes);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const likePost = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
@@ -512,12 +548,25 @@ const likePost = async (req, res, next) => {
       res.sendStatus(404);
     }
 
-    await updateDoc(doc(db, 'users', userID), {
-      liked: arrayUnion(req.params.id)
-    });
-    await updateDoc(doc(db, 'photos', req.params.id), {
-      likes: arrayUnion(userID)
-    });
+    const userRef = doc('db', 'users', userID);
+    const photoRef = doc(db, 'photos', req.params.id);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.data().liked.includes(req.params.id)) {
+      await updateDoc(userRef, {
+        liked: arrayRemove(req.params.id)
+      });
+      await updateDoc(photoRef, {
+        likes: arrayRemove(userID)
+      });
+    } else {
+      await updateDoc(userRef, {
+        liked: arrayUnion(req.params.id)
+      });
+      await updateDoc(photoRef, {
+        likes: arrayUnion(userID)
+      });
+    }
   } catch (err) {
     next(err);
   }
@@ -588,5 +637,6 @@ export default {
   getNameByID,
   getOwnContent,
   getSharedContent,
-  getPhotoPage
+  getPhotoPage,
+  getLikes
 };
