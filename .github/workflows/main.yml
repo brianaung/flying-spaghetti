@@ -23,17 +23,11 @@ jobs:
     environment: 
       name: production
       url: https://photoshare-client.herokuapp.com
+    needs: deploy-server
+    concurrency:
+      group: ${{ format('{0}-{1}', github.workflow, github.job) }}
     steps:
       - uses: actions/checkout@v3
-          
-      - name: Wait for tests to succeed
-        uses: lewagon/wait-on-check-action@v1.0.0
-        with:
-          ref: ${{ github.ref }}
-          check-name: 'Run tests'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
-
       - name: Deploy to Heroku (Client)
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
