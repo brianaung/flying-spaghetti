@@ -353,11 +353,11 @@ const uploadPhoto = async (req, res, next) => {
     console.log(req.file);
 
     // upload photo into storage
-    const imageRef = ref(storage, `images/${req.body.name}`);
-    const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-    await uploadBytes(imageRef, req.file.buffer, metatype);
+    // const imageRef = ref(storage, `images/${req.body.name}`);
+    // const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+    // await uploadBytes(imageRef, req.file.buffer, metatype);
 
-    const imageUrl = await getDownloadURL(imageRef);
+    // const imageUrl = await getDownloadURL(imageRef);
 
     // add a new photo in the photos collection of firestore
     const userID = getCurrUserID();
@@ -371,7 +371,7 @@ const uploadPhoto = async (req, res, next) => {
       isPrivate = true
     }
 
-    console.log(req.body.isPrivate);
+    
     const photo = {
       name: req.body.name,
       caption: req.body.description,
@@ -379,14 +379,31 @@ const uploadPhoto = async (req, res, next) => {
       folder: req.params.folder,
       isPrivate: isPrivate,
       likes: [],
-      link: imageUrl,
+      //link: imageUrl,
       owner: userID
     };
-    console.log(req.body.isPrivate);
+    
     const docRef = await addDoc(collection(db, 'photos'), photo);
+    
+    
+    
     if (docRef) {
+    // upload photo into storage
+    const imageRef = ref(storage, `images/${docRef.id}`);
+    const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+    await uploadBytes(imageRef, req.file.buffer, metatype);
+
+    const imageUrl = await getDownloadURL(imageRef);
+
+    const photoRef = doc(db, "photos", docRef.id);
+
+  // Set the "capital" field of the city 'DC'
+    await updateDoc(photoRef, {
+      links: imageUrl
+    });
+
       // console.log(photo);
-      res.send({...photo, id: docRef.id});
+      //res.send({...photo, id: docRef.id});
       console.log('sending docRef');
     }
 
@@ -440,6 +457,7 @@ const moveToBin = async (req, res, next) => {
     });
 
     // delete photo in storage.
+    console.log(req.body.name);
     const imageRef = ref(storage, `images/${req.body.name}`);
     deleteObject(imageRef)
       .then(() => {
