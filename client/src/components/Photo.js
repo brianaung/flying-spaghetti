@@ -77,10 +77,12 @@ export default function Photo(props) {
   };
 
   let folderID = useParams().id;
-  let canDelete = false;
+  let canDelete = true;
   if (folderID === 'folders') {
     folderID = 'root';
-    canDelete = true;
+  }
+  if (folderID === 'shared' || folderID === 'liked') {
+    canDelete = false;
   }
 
   const handleDelPhoto = () => {
