@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 // my components
-import Progressbar from './Progressbar';
+// import Progressbar from './Progressbar';
 
 const WelcomeMsg = styled(Typography)({
   textAlign: 'center',
@@ -68,14 +68,16 @@ export default function Sidebar(props) {
           <ListItemText primary="Liked" onClick={() => navigate('/dashboard/liked')} />
         </ListItemButton>
 
+      {/*
         <ListItemButton
           selected={selectedIndex === 'trash'}
           onClick={() => handleListItemClick('trash')}>
           <ListItemText primary="Trash" onClick={() => navigate('/dashboard/trash')} />
         </ListItemButton>
+      */}
       </Stack>
 
-      <Progressbar value={props.usage} />
+    {/*<Progressbar value={props.usage} />*/}
     </SidebarContainer>
   );
 }
