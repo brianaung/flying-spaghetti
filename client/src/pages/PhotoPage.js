@@ -108,6 +108,15 @@ export default function PhotoPage(props) {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const [COMMENTS, setCOMMENT] = useState(comments)
+  const [NEWCOMMENT, setNEWCOMMENT] = useState('');
+
+
+  const postCOMMENT=(e) => {
+    e.preventDefault()
+    setCOMMENT([...COMMENTS, {username: 'Admin', user_comment : NEWCOMMENT}])
+  }
+
   useEffect(() => {
     dispatch(getPhoto(id));
   }, [id]);
@@ -164,7 +173,7 @@ export default function PhotoPage(props) {
 
             {/* comments  */}
             <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
-              {comments.map((comment, id) => {
+              {COMMENTS.map((comment, id) => {
                 return (
                   <Stack key={id} direction="row" spacing={2}>
                     <Typography sx={{ fontWeight: '600' }}>{comment.username}</Typography>
@@ -189,8 +198,23 @@ export default function PhotoPage(props) {
                 </Button>
               </Box>
               <Stack direction="row" spacing={2}>
-                <TextField fullWidth name="comment" label="Add a comment"></TextField>
-                <Button type="submit">Post</Button>
+                <form id="comment">
+                
+                <TextField
+                  fullWidth
+                  name="comment"
+                  label="Add a comment"
+                  onChange={(e)=>setNEWCOMMENT(e.target.value)}
+                  ></TextField>
+                <Button
+                  type="submit"
+                  onClick={postCOMMENT
+                  }>
+                  Post
+                  </Button>
+                
+                </form>
+                
               </Stack>
             </StyledBox>
           </CommentSection>
