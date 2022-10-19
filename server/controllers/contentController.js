@@ -327,7 +327,6 @@ const postComment = async (req, res, next) => {
       date: Timestamp.fromDate(new Date())
     };
 
-    res.status(200).send(comment);
     await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), comment);
 
     const name = await getNameByID(userID);

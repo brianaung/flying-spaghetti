@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 // my components
-// import Progressbar from './Progressbar';
+import Progressbar from './Progressbar';
 
 const WelcomeMsg = styled(Typography)({
   textAlign: 'center',

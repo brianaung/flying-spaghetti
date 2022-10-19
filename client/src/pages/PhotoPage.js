@@ -28,7 +28,7 @@ import Navbar from '../components/Navbar';
 //sample data
 //import { comments } from '../data/photo-data';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPhoto, postComment, getComments } from '../actions/photos';
+import { getPhoto, postComment } from '../actions/photos';
 import { useParams } from 'react-router-dom';
 
 const MainSection = styled(Stack)(({ theme }) => ({
@@ -115,7 +115,7 @@ export default function PhotoPage(props) {
 
   useEffect(() => {
     dispatch(getPhoto(id));
-    dispatch(getComments(id));
+    //dispatch(getComments(id));
   }, [id]);
 
   //const photo = useSelector((state) => state.photo);
@@ -174,7 +174,7 @@ export default function PhotoPage(props) {
                 comments.map((comment, id) => {
                   return (
                     <Stack key={id} direction="row" spacing={2}>
-                      <Typography sx={{ fontWeight: '600' }}>{comment.name}</Typography>
+                      <Typography sx={{ fontWeight: '600' }}>{comment.owner}</Typography>
                       <Typography>{comment.text}</Typography>
                     </Stack>
                   );
