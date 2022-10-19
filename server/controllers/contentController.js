@@ -526,7 +526,7 @@ const deletePhoto = async (req, res, next) => {
   }
 };
 
-const getLikes = async (req, res, next) => {
+const getNumLikes = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
     if (userID == null) {
@@ -534,11 +534,22 @@ const getLikes = async (req, res, next) => {
     }
     const photoRef = doc(db, 'photos', req.params.id);
     const photoSnap = await getDoc(photoRef);
-    res.send(photoSnap.data().likes);
+    const photoLikes = photoSnap.data().likes;
+    const users = [];
+    for (const uid of photoLikes) {
+      const name = await getNameByID(uid);
+      users.push(name);
+    }
+    const likes = {
+      nameList: users,
+      num: photoLikes.length
+    };
+    res.send(likes);
+
   } catch (err) {
     next(err);
   }
-};
+}
 
 const likePost = async (req, res, next) => {
   try {
@@ -546,11 +557,10 @@ const likePost = async (req, res, next) => {
     if (userID == null) {
       res.sendStatus(404);
     }
-
-    const userRef = doc('db', 'users', userID);
+    
+    const userRef = doc(db, 'users', userID);
     const photoRef = doc(db, 'photos', req.params.id);
     const userSnap = await getDoc(userRef);
-
     if (userSnap.data().liked.includes(req.params.id)) {
       await updateDoc(userRef, {
         liked: arrayRemove(req.params.id)
@@ -566,6 +576,7 @@ const likePost = async (req, res, next) => {
         likes: arrayUnion(userID)
       });
     }
+    res.sendStatus(200);
   } catch (err) {
     next(err);
   }
@@ -637,5 +648,5 @@ export default {
   getOwnContent,
   getSharedContent,
   getPhotoPage,
-  getLikes
+  getNumLikes
 };
