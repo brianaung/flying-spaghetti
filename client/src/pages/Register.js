@@ -34,7 +34,7 @@ export default function Register() {
 
     const registerApi =
       process.env.NODE_ENV === 'production'
-        ? 'https://flying-spaghetti-server.herokuapp.com/register'
+        ? 'https://photoshare-fs-server.herokuapp.com/register'
         : 'http://localhost:9000/register';
 
     // axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';

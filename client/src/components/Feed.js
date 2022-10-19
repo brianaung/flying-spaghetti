@@ -121,7 +121,7 @@ export default function Feed(props) {
     // TODO: do not hardcode target folder (give user option to choose)
     const API =
       process.env.NODE_ENV === 'production'
-        ? `https://flyingspaghetti-server.herokuapp.com/folder/${e.target.folder.value}`
+        ? `https://photoshare-fs-server.herokuapp.com/folder/${e.target.folder.value}`
         : `http://localhost:9000/folder/${e.target.folder.value}`;
 
     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
