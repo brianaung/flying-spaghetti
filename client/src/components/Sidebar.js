@@ -68,16 +68,14 @@ export default function Sidebar(props) {
           <ListItemText primary="Liked" onClick={() => navigate('/dashboard/liked')} />
         </ListItemButton>
 
-      {/*
         <ListItemButton
           selected={selectedIndex === 'trash'}
           onClick={() => handleListItemClick('trash')}>
           <ListItemText primary="Trash" onClick={() => navigate('/dashboard/trash')} />
         </ListItemButton>
-      */}
       </Stack>
 
-    {/*<Progressbar value={props.usage} />*/}
+    <Progressbar value={props.usage} />
     </SidebarContainer>
   );
 }
