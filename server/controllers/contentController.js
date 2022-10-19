@@ -368,7 +368,7 @@ const uploadPhoto = async (req, res, next) => {
       link: imageUrl,
       owner: userID
     };
-
+    console.log(req.body.isPrivate);
     const docRef = await addDoc(collection(db, 'photos'), photo);
     if (docRef) {
       // console.log(photo);
@@ -402,12 +402,12 @@ const moveToBin = async (req, res, next) => {
       res.sendStatus(404);
     }
     const usersRef = doc(db, 'users', userID);
-    // add photo id into bin array
-    await updateDoc(usersRef, {
-      bin: arrayUnion(req.params.id)
-    }).then(() => {
-      console.log('move photo to the bin');
-    });
+    // // add photo id into bin array
+    // await updateDoc(usersRef, {
+    //   bin: arrayUnion(req.params.id)
+    // }).then(() => {
+    //   console.log('move photo to the bin');
+    // });
 
     // delete photo id in photo array
     await updateDoc(usersRef, {
@@ -424,6 +424,17 @@ const moveToBin = async (req, res, next) => {
     }).then(() => {
       console.log('delete photo from folder');
     });
+
+    // delete photo in storage.
+    const imageRef = ref(storage, `images/${req.body.name}`);
+    deleteObject(imageRef)
+      .then(() => {
+        console.log('Photo deleted successfully');
+      })
+      .catch((err) => {
+        console.log('There is an error, cannot delete photo');
+      });
+
     res.send({ id: req.params.id });
   } catch (error) {
     next(error);
