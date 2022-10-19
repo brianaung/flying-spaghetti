@@ -1,16 +1,16 @@
 import { FETCH_PHOTO, POST_COMMENT, GET_COMMENTS } from '../constants/actionTypes';
 
-export default (photo = {comments: []}, action) => {
+export default (state = {comments: [], photo: {}}, action) => {
   switch (action.type) {
     case FETCH_PHOTO:
-      return action.payload;
+      return {...state, photo: action.payload};
     case POST_COMMENT:
-      console.log(action.payload);
-      photo.comments.push(action.payload)
-      return {...photo};
+      console.log(state);
+      state.comments.push(action.payload)
+      return {...state};
     case GET_COMMENTS:
-      return {...photo};
+      return {...state, comments: action.payload};
     default:
-      return photo;
+      return state;
   }
 };

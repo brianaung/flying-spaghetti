@@ -28,7 +28,7 @@ import Navbar from '../components/Navbar';
 //sample data
 //import { comments } from '../data/photo-data';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPhoto, postComment } from '../actions/photos';
+import { getPhoto, postComment, getComments } from '../actions/photos';
 import { useParams } from 'react-router-dom';
 
 const MainSection = styled(Stack)(({ theme }) => ({
@@ -110,14 +110,14 @@ export default function PhotoPage(props) {
 
   const [comment, setComment] = useState(null);
 
-  const photo = useSelector((state) => state.photo);
-  const comments = photo.comments;
-
   useEffect(() => {
     dispatch(getPhoto(id));
-    //dispatch(getComments(id));
-  }, [id]);
+    dispatch(getComments(id));
+  }, []);
 
+  const { photo, comments } = useSelector((state) => state.photo);
+  console.log(comments);
+  //const comments = photo.comments;
   //const photo = useSelector((state) => state.photo);
 
   useEffect(() => {

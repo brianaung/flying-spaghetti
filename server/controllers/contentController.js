@@ -289,27 +289,21 @@ const getPhotoComments = async (req, res, next) => {
     // res.send(photos);
 
     // Query newest first
-    const colRef = query(
-      collection(db, 'photos', req.params.photoID, 'comments'),
-      orderBy('date', 'desc')
+    const colSnap = await getDocs(
+      query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date', 'desc'))
     );
-    const unsubscribe = onSnapshot(colRef, (snapshot) => {
-      const comments = [];
-      snapshot.forEach(async (doc) => {
-        const commentData = doc.data();
-        const fullName = await getNameByID(commentData.owner);
-        const comment = {
-          name: fullName,
-          text: commentData.text
-        };
-
-        comments.push(comment);
+    const comments = [];
+    colSnap.forEach((doc) => {
+      comments.push({
+        id: doc.id,
+        ...doc.data()
       });
-      res.send(comments);
     });
-
-    // Stop listening to changes
-    // unsubscribe();
+    for (const comment of comments) {
+      const name = await getNameByID(comment.owner);
+      comment.owner = name;
+    }
+    res.send(comments);
   } catch (err) {
     next(err);
   }
