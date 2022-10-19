@@ -28,7 +28,8 @@ router.get('/folders', contentController.getUserFolders);
 router.get('/comments/:photoID', contentController.getPhotoComments);
 router.post('/comments/:photoID', contentController.postComment);
 router.get('/bin/:folder/:id', contentController.moveToBin);
-router.get('/like/:id', contentController.likePost);
+router.get('/like/:id', contentController.getLikes);
+router.patch('/like/:id', contentController.likePost);
 router.delete('emptyBin/:folder/:id', contentController.deletePhoto);
 
 router.post('/createFolder', contentController.createFolder);

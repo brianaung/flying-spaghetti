@@ -301,9 +301,6 @@ const getPhotoComments = async (req, res, next) => {
       comment.owner = name;
     }
     res.send(comments);
-        
-    // Stop listening to changes
-    // unsubscribe();
   } catch (err) {
     next(err);
   }
@@ -315,15 +312,18 @@ const postComment = async (req, res, next) => {
     if (userID == null) {
       res.sendStatus(401);
     }
-
     const comment = {
       owner: userID,
       text: req.body.text,
       date: Timestamp.fromDate(new Date())
     };
 
-    res.sendStatus(200);
     await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), comment);
+
+    const name = await getNameByID(userID);
+    comment.owner = name;
+    res.status(200);
+    res.send(comment);
   } catch (err) {
     next(err);
   }
@@ -522,19 +522,48 @@ const deletePhoto = async (req, res, next) => {
   }
 };
 
+const getLikes = async (req, res, next) => {
+  try {
+    const userID = getCurrUserID();
+    if (userID == null) {
+      res.sendStatus(404);
+    }
+    const photoRef = doc(db, 'photos', req.params.id);
+    const photoSnap = await getDoc(photoRef);
+    res.send(photoSnap.data().likes)
+
+  } catch (err) {
+    next(err);
+  }
+
+}
+
 const likePost = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
     if (userID == null) {
       res.sendStatus(404);
     }
+    
+    const userRef = doc('db', 'users', userID);
+    const photoRef = doc(db, 'photos', req.params.id);
+    const userSnap = await getDoc(userRef);
 
-    await updateDoc(doc(db, 'users', userID), {
-      liked: arrayUnion(req.params.id)
-    });
-    await updateDoc(doc(db, 'photos', req.params.id), {
-      likes: arrayUnion(userID)
-    });
+    if (userSnap.data().liked.includes(req.params.id)) {
+      await updateDoc(userRef, {
+        liked: arrayRemove(req.params.id)
+      });
+      await updateDoc(photoRef, {
+        likes: arrayRemove(userID)
+      });
+    } else {
+      await updateDoc(userRef, {
+        liked: arrayUnion(req.params.id)
+      });
+      await updateDoc(photoRef, {
+        likes: arrayUnion(userID)
+      });
+    }
   } catch (err) {
     next(err);
   }
@@ -605,5 +634,6 @@ export default {
   getNameByID,
   getOwnContent,
   getSharedContent,
-  getPhotoPage
+  getPhotoPage,
+  getLikes
 };
