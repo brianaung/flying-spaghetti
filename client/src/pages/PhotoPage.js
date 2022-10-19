@@ -199,7 +199,6 @@ export default function PhotoPage(props) {
               </Box>
               <Stack direction="row" spacing={2}>
                 <form id="comment">
-                
                 <TextField
                   fullWidth
                   name="comment"
@@ -212,9 +211,7 @@ export default function PhotoPage(props) {
                   }>
                   Post
                   </Button>
-                
                 </form>
-                
               </Stack>
             </StyledBox>
           </CommentSection>
