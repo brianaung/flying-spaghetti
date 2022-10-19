@@ -272,24 +272,38 @@ const getPhotosInFolder = async (req, res, next) => {
 // Comments
 const getPhotoComments = async (req, res, next) => {
   try {
+    // const colSnap = await getDocs(query(collection(db, 'photos'),
+    //   where('isPrivate', '==', false), orderBy('date', 'desc')));
+    // const photoIDs = [];
+    // const photos = [];
+    // colSnap.forEach((doc) => {
+    //   photoIDs.push(doc.id);
+    // })
+    // for (const id of photoIDs) {
+    //   const photo = await getPhotoByID(id);
+    //   photos.push(photo);
+    // }
+    // photos.filter((photo) => photo !== null);
+    // res.send(photos);
+
     // Query newest first
-    const colRef = query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date', 'desc'));
-    const unsubscribe = onSnapshot(colRef, (snapshot) => {
-      const comments = [];
-      snapshot.forEach(async (doc) => {
-        const commentData = doc.data();
-        const fullName = await getNameByID(commentData.owner);
-        const comment = {
-          name: fullName,
-          text: commentData.text
-        }
-        comments.push(comment);
-      })
-      res.send(comments);
-    });
+    const colSnap = await getDocs(query(collection(db, 'photos', req.params.photoID, 'comments'),
+      orderBy('date', 'desc')));
+    const comments = [];
+    colSnap.forEach((doc) => {
+      comments.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    })
+    for (const comment of comments) {
+      const name = await getNameByID(comment.owner);
+      comment.owner = name;
+    }
+    res.send(comments);
         
     // Stop listening to changes
-    unsubscribe();
+    // unsubscribe();
   } catch (err) {
     next(err);
   }
