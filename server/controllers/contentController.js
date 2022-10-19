@@ -350,12 +350,20 @@ const uploadPhoto = async (req, res, next) => {
     if (userID == null) {
       res.sendStatus(404);
     }
+
+    let isPrivate = false;
+
+    if (req.body.isPrivate === 'true') {
+      isPrivate = true
+    }
+
+    console.log(req.body.isPrivate);
     const photo = {
       name: req.body.name,
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
       folder: req.params.folder,
-      isPrivate: req.body.isPrivate,
+      isPrivate: isPrivate,
       likes: [],
       link: imageUrl,
       owner: userID

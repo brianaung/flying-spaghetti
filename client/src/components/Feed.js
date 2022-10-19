@@ -106,13 +106,24 @@ export default function Feed(props) {
 
     handleClose();
 
+
     var formData = new FormData(e.target);
+    if (!formData.has('isPrivate')) {
+      formData.append('isPrivate', false);
+    }
+    else if (formData.get('isPrivate') === 'on') {
+      formData.set('isPrivate', true);
+    }
+    
+    console.log(formData);
+    
+
 
     // TODO: do not hardcode target folder (give user option to choose)
     const API =
       process.env.NODE_ENV === 'production'
-        ? `https://flyingspaghetti-server.herokuapp.com/folder/${e.target.folder}`
-        : `http://localhost:9000/folder/${e.target.folder}`;
+        ? `https://flyingspaghetti-server.herokuapp.com/folder/${e.target.folder.value}`
+        : `http://localhost:9000/folder/${e.target.folder.value}`;
 
     axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     axios
