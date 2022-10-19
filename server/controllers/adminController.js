@@ -1,4 +1,13 @@
-import { query, setDoc, updateDoc, doc, getDoc, Timestamp, collection, orderBy } from 'firebase/firestore';
+import {
+  query,
+  setDoc,
+  updateDoc,
+  doc,
+  getDoc,
+  Timestamp,
+  collection,
+  orderBy
+} from 'firebase/firestore';
 import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
 import { createTransport } from 'nodemailer';
@@ -112,16 +121,16 @@ const getAllUsers = async (req, res, next) => {
       users.push({
         id: doc.id,
         data: doc.data()
-      })
+      });
     });
     return users;
   } catch (err) {
     next(err);
   }
-}
+};
 
 // const getPhotoForAdmin = async (photoID) => {
-//   const userID = getCurrUserID(); 
+//   const userID = getCurrUserID();
 //   const userSnap = await getDoc(doc(db, 'users', userID));
 //   const userData = userSnap.data();
 //   if (userData.role !== 'admin') {

@@ -18,7 +18,7 @@ router.get('/dashboard/shared', contentController.getSharedContent);
 router.get('/dashboard/liked', contentController.getLikedPhotos);
 router.get('/recent', contentController.getRecentPhotos);
 
-router.get('/dashboard/user/:id', contentController.getUserContent);    // admin only
+router.get('/dashboard/user/:id', contentController.getUserContent); // admin only
 router.get('/photo/:id', contentController.getPhotoPage);
 router.get('/folder/:id', contentController.getPhotosInFolder);
 

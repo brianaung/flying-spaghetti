@@ -20,4 +20,3 @@ function login({ setIsAuth }) {
 }
 
 export default login; */
-

@@ -378,7 +378,7 @@ const uploadPhoto = async (req, res, next) => {
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
       folder: req.params.folder,
-      isPrivate: isPrivate,
+      isPrivate,
       likes: [],
       link: imageUrl,
       owner: userID
@@ -402,7 +402,7 @@ const uploadPhoto = async (req, res, next) => {
       });
 
       // console.log(photo);
-      //res.send({...photo, id: docRef.id});
+      // res.send({...photo, id: docRef.id});
       console.log('sending docRef');
     }
 

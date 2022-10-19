@@ -3,46 +3,30 @@ import { describe, expect, jest, test } from '@jest/globals';
 import request from 'supertest';
 
 describe('photos', () => {
-    // getPhotoByID
-    test('should send the correct photo JSON by ID', () => {
-        request(app)
-            .get('/photo/')
-            .expect()
-    })
+  // getPhotoByID
+  test('should send the correct photo JSON by ID', () => {
+    request(app).get('/photo/').expect();
+  });
 
-    // getPhotosInFolder
-    test('should send the correct photos given a folder directory', () => {
-        request(app)
-            .get('/photo/')
-            .expect()
-    })
-
-
-})
+  // getPhotosInFolder
+  test('should send the correct photos given a folder directory', () => {
+    request(app).get('/photo/').expect();
+  });
+});
 
 describe('comments', () => {
-    // getPhotoComments
-    test('should send all comment objects ', () => {
-        request(app)
-            .get('/folder/')
-            .expect()
-    })
-
-
-})
+  // getPhotoComments
+  test('should send all comment objects ', () => {
+    request(app).get('/folder/').expect();
+  });
+});
 
 describe('folders', () => {
-    // getUserFolders
-    test('should send an array of folders owned by user', () => {
-        request(app)
-            .get('/folder/')
-            .expect()
-    })
-
-
-})
-
-
+  // getUserFolders
+  test('should send an array of folders owned by user', () => {
+    request(app).get('/folder/').expect();
+  });
+});
 
 // getRecentPhotos,
 // getLikedPhotos,
