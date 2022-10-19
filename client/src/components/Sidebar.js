@@ -75,7 +75,7 @@ export default function Sidebar(props) {
         </ListItemButton>
       </Stack>
 
-    <Progressbar value={props.usage} />
+      <Progressbar value={props.usage} />
     </SidebarContainer>
   );
 }

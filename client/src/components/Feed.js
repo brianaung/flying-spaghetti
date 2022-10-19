@@ -105,18 +105,14 @@ export default function Feed(props) {
 
     handleClose();
 
-
     var formData = new FormData(e.target);
     if (!formData.has('isPrivate')) {
       formData.append('isPrivate', false);
-    }
-    else if (formData.get('isPrivate') === 'on') {
+    } else if (formData.get('isPrivate') === 'on') {
       formData.set('isPrivate', true);
     }
-    
-    console.log(formData);
-    
 
+    console.log(formData);
 
     // TODO: do not hardcode target folder (give user option to choose)
     const API =

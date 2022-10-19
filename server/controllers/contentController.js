@@ -260,7 +260,7 @@ const getPhotosInFolder = async (req, res, next) => {
 
     const folderPhotos = folderSnap.data().photos;
     const photos = [];
-    for (let photoID of folderPhotos) {
+    for (const photoID of folderPhotos) {
       const photo = await getPhotoByID(photoID);
       photos.push(photo);
     }
@@ -539,11 +539,10 @@ const getNumLikes = async (req, res, next) => {
       num: photoLikes.length
     };
     res.send(likes);
-
   } catch (err) {
     next(err);
   }
-}
+};
 
 const likePost = async (req, res, next) => {
   try {
@@ -551,7 +550,7 @@ const likePost = async (req, res, next) => {
     if (userID == null) {
       res.sendStatus(404);
     }
-    
+
     const userRef = doc(db, 'users', userID);
     const photoRef = doc(db, 'photos', req.params.id);
     const userSnap = await getDoc(userRef);

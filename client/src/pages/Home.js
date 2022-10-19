@@ -62,10 +62,11 @@ export default function Home(props) {
       <Stack alignItems="flex-start" gap={5}>
         <Typography variant="h1">PHOTO SHARE</Typography>
         <p>
-        <Typography variant="h3">
-          Put your memories on display. Show off your photos in a way that’s both beautiful and intuitive,
-          on this very best platform to safely share and organize your family’s photos.<br/>
-        </Typography>
+          <Typography variant="h3">
+            Put your memories on display. Show off your photos in a way that’s both beautiful and
+            intuitive, on this very best platform to safely share and organize your family’s photos.
+            <br />
+          </Typography>
         </p>
 
         {/* popup form for login */}

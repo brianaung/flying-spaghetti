@@ -119,9 +119,9 @@ export default function Photo(props) {
             <Comment size="30" />
           </IconButton>
 
-          {/* only show delete button if the user hv rights to delete 
-            * right align share button if delete button is not available
-            */}
+          {/* only show delete button if the user hv rights to delete
+           * right align share button if delete button is not available
+           */}
           {canDelete ? (
             <>
               <IconButton size="small" color="primary" onClick={handleOpenShare}>
@@ -133,11 +133,14 @@ export default function Photo(props) {
               </IconButton>
             </>
           ) : (
-            <IconButton sx={{ marginLeft: 'auto' }} size="small" color="primary" onClick={handleOpenShare}>
+            <IconButton
+              sx={{ marginLeft: 'auto' }}
+              size="small"
+              color="primary"
+              onClick={handleOpenShare}>
               <Link size="30" />
             </IconButton>
           )}
-
         </Stack>
       </PhotoContainer>
 
