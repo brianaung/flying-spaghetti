@@ -28,7 +28,7 @@ import Navbar from '../components/Navbar';
 //sample data
 import { comments } from '../data/photo-data';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPhoto } from '../actions/photos';
+import { getPhoto, postComment } from '../actions/photos';
 import { useParams } from 'react-router-dom';
 
 const MainSection = styled(Stack)(({ theme }) => ({
@@ -108,11 +108,18 @@ export default function PhotoPage(props) {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const [comment, setComment] = useState(null)
+
+  const photo = useSelector(state => state.photo)
+
+
+
   useEffect(() => {
     dispatch(getPhoto(id));
+    //dispatch(getComments(id))
   }, [id]);
 
-  const photo = useSelector((state) => state.photo);
+  //const photo = useSelector((state) => state.photo);
 
   useEffect(() => {
     setImgHeight(container.current.height);
@@ -165,10 +172,11 @@ export default function PhotoPage(props) {
             {/* comments  */}
             <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
               {comments.map((comment, id) => {
+
                 return (
                   <Stack key={id} direction="row" spacing={2}>
-                    <Typography sx={{ fontWeight: '600' }}>{comment.username}</Typography>
-                    <Typography>{comment.user_comment}</Typography>
+                    <Typography sx={{ fontWeight: '600' }}>{comment.name}</Typography>
+                    <Typography>{comment.text}</Typography>
                   </Stack>
                 );
               })}
@@ -189,8 +197,18 @@ export default function PhotoPage(props) {
                 </Button>
               </Box>
               <Stack direction="row" spacing={2}>
-                <TextField fullWidth name="comment" label="Add a comment"></TextField>
-                <Button type="submit">Post</Button>
+                <TextField
+                  fullWidth
+                  name="comment"
+                  label="Add a comment"
+                  onChange={(e) =>
+                    setComment(e.target.value)
+                  }></TextField>
+                <Button
+                  type="submit"
+                  onClick={() => dispatch(postComment(photo.id, {text: comment}))}>
+                  Post
+                </Button>
               </Stack>
             </StyledBox>
           </CommentSection>

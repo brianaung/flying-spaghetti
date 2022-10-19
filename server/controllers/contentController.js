@@ -283,6 +283,7 @@ const getPhotoComments = async (req, res, next) => {
           name: fullName,
           text: commentData.text
         }
+
         comments.push(comment);
       })
       res.send(comments);
@@ -307,6 +308,7 @@ const postComment = async (req, res, next) => {
       text: req.body.text,
       date: Timestamp.fromDate(new Date())
     };
+    console.log(comment);
 
     res.sendStatus(200);
     await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), comment);
@@ -358,7 +360,7 @@ const uploadPhoto = async (req, res, next) => {
       isPrivate: req.body.isPrivate,
       likes: [],
       link: imageUrl,
-      owner: userID
+      owner: userID,
     };
 
     const docRef = await addDoc(collection(db, 'photos'), photo);
