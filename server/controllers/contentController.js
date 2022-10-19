@@ -322,9 +322,8 @@ const postComment = async (req, res, next) => {
       text: req.body.text,
       date: Timestamp.fromDate(new Date())
     };
-    console.log(comment);
 
-    res.sendStatus(200);
+    res.status(200).send(comment);
     await addDoc(collection(db, 'photos', req.params.photoID, 'comments'), comment);
   } catch (err) {
     next(err);

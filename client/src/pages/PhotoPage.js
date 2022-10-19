@@ -26,9 +26,9 @@ import Navbar from '../components/Navbar';
 // import Sidebar from '../components/Sidebar';
 
 //sample data
-import { comments } from '../data/photo-data';
+//import { comments } from '../data/photo-data';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPhoto, postComment } from '../actions/photos';
+import { getPhoto, postComment, getComments } from '../actions/photos';
 import { useParams } from 'react-router-dom';
 
 const MainSection = styled(Stack)(({ theme }) => ({
@@ -111,12 +111,13 @@ export default function PhotoPage(props) {
   const [comment, setComment] = useState(null)
 
   const photo = useSelector(state => state.photo)
+  const comments = photo.comments;
 
 
 
   useEffect(() => {
     dispatch(getPhoto(id));
-    //dispatch(getComments(id))
+    dispatch(getComments(id))
   }, [id]);
 
   //const photo = useSelector((state) => state.photo);
@@ -171,7 +172,7 @@ export default function PhotoPage(props) {
 
             {/* comments  */}
             <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
-              {comments.map((comment, id) => {
+              {comments && comments.map((comment, id) => {
 
                 return (
                   <Stack key={id} direction="row" spacing={2}>
