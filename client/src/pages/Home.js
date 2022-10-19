@@ -60,15 +60,13 @@ export default function Home(props) {
   return (
     <HomeContainer direction="row">
       <Stack alignItems="flex-start" gap={5}>
-        <Typography variant="h1">SHARE</Typography>
+        <Typography variant="h1">PHOTO SHARE</Typography>
+        <p>
         <Typography variant="h3">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-          est laborum.
+          Put your memories on display. Show off your photos in a way that’s both beautiful and intuitive,
+          on this very best platform to safely share and organize your family’s photos.<br/>
         </Typography>
+        </p>
 
         {/* popup form for login */}
         <Modal open={open} onClose={handleClose}>

@@ -272,6 +272,20 @@ const getPhotosInFolder = async (req, res, next) => {
 // Comments
 const getPhotoComments = async (req, res, next) => {
   try {
+    // const colSnap = await getDocs(query(collection(db, 'photos'),
+    //   where('isPrivate', '==', false), orderBy('date', 'desc')));
+    // const photoIDs = [];
+    // const photos = [];
+    // colSnap.forEach((doc) => {
+    //   photoIDs.push(doc.id);
+    // })
+    // for (const id of photoIDs) {
+    //   const photo = await getPhotoByID(id);
+    //   photos.push(photo);
+    // }
+    // photos.filter((photo) => photo !== null);
+    // res.send(photos);
+
     // Query newest first
     const colRef = query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date', 'desc'));
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
@@ -290,7 +304,7 @@ const getPhotoComments = async (req, res, next) => {
     });
         
     // Stop listening to changes
-    unsubscribe();
+    // unsubscribe();
   } catch (err) {
     next(err);
   }
@@ -352,17 +366,25 @@ const uploadPhoto = async (req, res, next) => {
     if (userID == null) {
       res.sendStatus(404);
     }
+
+    let isPrivate = false;
+
+    if (req.body.isPrivate === 'true') {
+      isPrivate = true
+    }
+
+    console.log(req.body.isPrivate);
     const photo = {
       name: req.body.name,
       caption: req.body.description,
       date: Timestamp.fromDate(new Date()),
       folder: req.params.folder,
-      isPrivate: req.body.isPrivate,
+      isPrivate: isPrivate,
       likes: [],
       link: imageUrl,
       owner: userID,
     };
-
+    console.log(req.body.isPrivate);
     const docRef = await addDoc(collection(db, 'photos'), photo);
     if (docRef) {
       // console.log(photo);
@@ -396,12 +418,12 @@ const moveToBin = async (req, res, next) => {
       res.sendStatus(404);
     }
     const usersRef = doc(db, 'users', userID);
-    // add photo id into bin array
-    await updateDoc(usersRef, {
-      bin: arrayUnion(req.params.id)
-    }).then(() => {
-      console.log('move photo to the bin');
-    });
+    // // add photo id into bin array
+    // await updateDoc(usersRef, {
+    //   bin: arrayUnion(req.params.id)
+    // }).then(() => {
+    //   console.log('move photo to the bin');
+    // });
 
     // delete photo id in photo array
     await updateDoc(usersRef, {
@@ -418,6 +440,17 @@ const moveToBin = async (req, res, next) => {
     }).then(() => {
       console.log('delete photo from folder');
     });
+
+    // delete photo in storage.
+    const imageRef = ref(storage, `images/${req.body.name}`);
+    deleteObject(imageRef)
+      .then(() => {
+        console.log('Photo deleted successfully');
+      })
+      .catch((err) => {
+        console.log('There is an error, cannot delete photo');
+      });
+
     res.send({ id: req.params.id });
   } catch (error) {
     next(error);
