@@ -105,9 +105,11 @@ const signInUser = async (req, res, next) => {
 
 const signOutUser = async (req, res, next) => {
   try {
-    signOut(auth).then(() => {
-      console.log('User signed out');
-    });
+    if (!auth.currentUser) {
+      return res.sendStatus(401);
+    }
+    await signOut(auth);
+    return res.sendStatus(200);
   } catch (error) {
     next(error);
   }

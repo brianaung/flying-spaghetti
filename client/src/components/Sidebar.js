@@ -82,5 +82,5 @@ export default function Sidebar(props) {
 
 Sidebar.propTypes = {
   user: PropTypes.object,
-  usage: PropTypes.number.isRequired
+  usage: PropTypes.number
 };
