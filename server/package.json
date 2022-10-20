@@ -15,9 +15,9 @@
   "description": "Image hosting web app",
   "version": "1.0.0",
   "engine": "18.x",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",

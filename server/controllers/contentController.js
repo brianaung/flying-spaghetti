@@ -190,7 +190,7 @@ const getPhotoPage = async (req, res, next) => {
     if (photo === null) {
       res.sendStatus(404);
     }
-    res.send(photo);
+    return res.status(200).json(photo);
   } catch (err) {
     next(err);
   }
@@ -325,7 +325,7 @@ const postComment = async (req, res, next) => {
 
     const name = await getNameByID(userID);
     comment.owner = name;
-    res.status(200);
+    res.status(201);
     res.send(comment);
   } catch (err) {
     next(err);
@@ -471,55 +471,6 @@ const moveToBin = async (req, res, next) => {
   }
 };
 
-const deletePhoto = async (req, res, next) => {
-  try {
-    // delete photo in storage.
-    const imageRef = ref(storage, `images/${req.body.name}`);
-    deleteObject(imageRef)
-      .then(() => {
-        console.log('Photo deleted successfully');
-      })
-      .catch((err) => {
-        console.log('There is an error, cannot delete photo');
-      });
-
-    // delete photo information in firestore.
-    // 1. update folder
-    const folderRef = doc(db, 'folders', 'animals');
-
-    await updateDoc(folderRef, {
-      photos: arrayRemove(req.params.id)
-    }).then(() => {
-      console.log('update folder');
-    });
-    // 2. update photos
-    const photosRef = doc(db, 'photos', req.params.id);
-    await deleteDoc(photosRef).then(() => {
-      console.log('upadate photo');
-    });
-    // 2. update users
-    const userID = getCurrUserID();
-    if (userID == null) {
-      res.sendStatus(404);
-    }
-    const usersRef = doc(db, 'users', userID);
-    await updateDoc(usersRef, {
-      bin: arrayRemove(req.params.id)
-    }).then(() => {
-      console.log('update user');
-    });
-
-    // send info to frontend
-    const photoDelete = {
-      photoID: req.params.id,
-      photoName: req.body.name
-    };
-    res.send(photoDelete);
-  } catch (err) {
-    next(err);
-  }
-};
-
 const getNumLikes = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
@@ -601,6 +552,7 @@ const createFolder = async (req, res, next) => {
   }
 };
 
+// NOT TESTING
 const moveToDifferentFolder = async (req, res, next) => {
   try {
     // 1. add photo to different folder
@@ -630,7 +582,6 @@ export default {
   getPhotoComments,
   uploadPhoto,
   getPhotoByID,
-  deletePhoto,
   likePost,
   createFolder,
   moveToBin,

@@ -22,8 +22,8 @@ app.use('/', router);
 
 /** ************************************* */
 
-const server = app.listen(process.env.PORT || 9000, () => {
-  console.log('our app is listening on port %d', server.address().port);
-});
+// const server = app.listen(process.env.PORT || 9000, () => {
+//   console.log('our app is listening on port %d', server.address().port);
+// });
 
 export { app };
