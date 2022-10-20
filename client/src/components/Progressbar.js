@@ -15,7 +15,7 @@ const SidebarContainer = styled(Box)({
 });
 
 // LinearProgressWithLabel from MUI
-export default function UsageIndicator(props) {
+export default function Progressbar(props) {
   return (
     <Box>
       <Typography sx={{ textAlign: 'center' }} variant="body1">
@@ -33,6 +33,6 @@ export default function UsageIndicator(props) {
   );
 }
 
-UsageIndicator.propTypes = {
-  value: PropTypes.number.isRequired
+Progressbar.propTypes = {
+  value: PropTypes.number
 };
