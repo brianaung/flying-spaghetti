@@ -4,6 +4,8 @@ import App from '../App';
 
 test('render the main App component', () => {
   <Router>
-    render(<App />);
-  </Router>
-})
+    render(
+    <App />
+    );
+  </Router>;
+});

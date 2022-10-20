@@ -3,6 +3,8 @@ import Home from '../pages/Home';
 
 test('render the home page', () => {
   <Router>
-    render(<Home />);
-  </Router>
-})
+    render(
+    <Home />
+    );
+  </Router>;
+});

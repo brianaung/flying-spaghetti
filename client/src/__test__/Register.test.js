@@ -3,6 +3,8 @@ import Register from '../pages/Register';
 
 test('render the home page', () => {
   <Router>
-    render(<Register />);
-  </Router>
-})
+    render(
+    <Register />
+    );
+  </Router>;
+});

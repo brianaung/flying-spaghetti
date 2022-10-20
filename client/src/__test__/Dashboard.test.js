@@ -3,6 +3,8 @@ import Dashboard from '../pages/Dashboard';
 
 test('render the home page', () => {
   <Router>
-    render(<Dashboard />);
-  </Router>
-})
+    render(
+    <Dashboard />
+    );
+  </Router>;
+});

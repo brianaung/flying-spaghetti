@@ -3,6 +3,8 @@ import PhotoPage from '../pages/PhotoPage';
 
 test('render the photo page', () => {
   <Router>
-    render(<PhotoPage />);
-  </Router>
-})
+    render(
+    <PhotoPage />
+    );
+  </Router>;
+});

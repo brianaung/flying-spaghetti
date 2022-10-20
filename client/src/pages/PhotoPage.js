@@ -205,9 +205,9 @@ export default function PhotoPage(props) {
                 <Button
                   type="submit"
                   onClick={() => {
-                  dispatch(postComment(photo.id, { text: comment }))
-                  setComment('')}
-                  }>
+                    dispatch(postComment(photo.id, { text: comment }));
+                    setComment('');
+                  }}>
                   Post
                 </Button>
               </Stack>
