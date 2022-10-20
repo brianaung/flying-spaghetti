@@ -1,42 +1,41 @@
 import { app } from '../app.js';
 // import request from 'supertest';
 import supertest from 'supertest';
-import { describe, test, beforeAll, afterAll } from '@jest/globals';
+import { jest, describe, test, beforeEach, afterAll } from '@jest/globals';
 
+// const admin = request.agent(app);
 const req = supertest(app);
+// jest.setTimeout(30000);
 
-describe('photos', () => {
-    // test('GET /photo/:id', (done) => {
-    //     request(app)
-    //         .get('/photo/xz1SXB8UtYeIscZs2Qrl')
-    //         .expect("Content-Type", /json/)
-    //         .expect(200)
-    //         .expect((res) => {
-    //             res.body.data = 'bruh';  // why tf this pass?
-    //         })
-    //         .end((err, res) => {
-    //             if (err) return done(err);
-    //             return done();
-    //         });
-    // })
-
-    test('GET /photo/:id (getPhotoPage)', async () => {
-        await req.post('/login').send({
-            email: 'admin@gmail.com',
-            password: 'password'
+describe('POST /login', () => {
+    test('login into admin account', async () => {
+      await req
+        .post('/login')
+        .send({
+          email: 'user3@gmail.com',
+          password: 'password'
         })
-        const res = await req.get('/photo/4LxUxRSxjUMhJR2pID3S');
+        .expect(200);
+    });
+});
+
+describe('GET /photo/:id (getPhotoPage)', () => {
+    test('view public photo', async () => {
+        const photoID = 'xz1SXB8UtYeIscZs2Qrl';
+        const res = await req.get(`/photo/${photoID}`);
         expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
         expect(res.status).toBe(200);
-        expect(res.body.id).toBe('4LxUxRSxjUMhJR2pID3S');
+        expect(res.body.id).toBe(photoID);
+
     })
 
-    // test('GET /photo/:id (getPhotoPage)', async () => {
-    //     const res = await req.get('/photo/xz1SXB8UtYeIscZs2Qrl');
-    //     expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
-    //     expect(res.status).toBe(200);
-    //     expect(res.body).toBe('bruh');
-    // })
+    test('view private photo', async () => {
+        const privateID = '4LxUxRSxjUMhJR2pID3S'
+        const res = await req.get(`/photo/${privateID}`);
+        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+        expect(res.status).toBe(200);
+        expect(res.body.id).toBe(privateID);
+    })
 })
 //     // getPhotosInFolder
 //     test('should send the correct photos given a folder directory', () => {
@@ -70,17 +69,22 @@ describe('photos', () => {
 
 // })
 
-
-
 // getRecentPhotos,
 // getLikedPhotos,
+// getUserFolders,
+// getPhotosInFolder,
 // getUserContent,
+// getPhotoComments,
 // uploadPhoto,
-// deletePhoto,
+// getPhotoByID,
 // likePost,
 // createFolder,
 // moveToBin,
 // moveToDifferentFolder,
 // postComment,
 // getUserByID,
-// getNameByID
+// getNameByID,
+// getOwnContent,
+// getSharedContent,
+// getPhotoPage,
+// getNumLikes

@@ -9,11 +9,12 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm run build --prefix client",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles",
-    "test:watch": "jest --watch"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles",
+    "test:watch": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll --detectOpenHandles"
   },
   "dependencies": {
     "babel-jest": "^29.2.1",
+    "cross-env": "^7.0.3",
     "ts-jest": "^29.0.3"
   }
 }
