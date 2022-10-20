@@ -45,5 +45,12 @@
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
     "supertest": "^6.3.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "transform": {
+      "^.+\\.(ts|tsx)?$": "ts-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
+    }
   }
 }
