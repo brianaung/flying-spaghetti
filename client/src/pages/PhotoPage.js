@@ -200,10 +200,14 @@ export default function PhotoPage(props) {
                   fullWidth
                   name="comment"
                   label="Add a comment"
+                  value={comment}
                   onChange={(e) => setComment(e.target.value)}></TextField>
                 <Button
                   type="submit"
-                  onClick={() => dispatch(postComment(photo.id, { text: comment }))}>
+                  onClick={() => {
+                  dispatch(postComment(photo.id, { text: comment }))
+                  setComment('')}
+                  }>
                   Post
                 </Button>
               </Stack>
