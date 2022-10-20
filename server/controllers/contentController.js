@@ -380,7 +380,7 @@ const uploadPhoto = async (req, res, next) => {
       folder: req.params.folder,
       isPrivate,
       likes: [],
-      link: imageUrl,
+      //link: imageUrl,
       owner: userID
     };
 
@@ -402,7 +402,7 @@ const uploadPhoto = async (req, res, next) => {
       });
 
       // console.log(photo);
-      // res.send({...photo, id: docRef.id});
+      //res.send({...photo, id: docRef.id});
       console.log('sending docRef');
     }
 
@@ -419,6 +419,9 @@ const uploadPhoto = async (req, res, next) => {
         photos: arrayUnion(docRef.id)
       });
     }
+
+    res.send({...photo, id: docRef.id});
+    
   } catch (err) {
     next(err);
   }
@@ -456,7 +459,8 @@ const moveToBin = async (req, res, next) => {
 
     // delete photo in storage.
     console.log(req.body.name);
-    const imageRef = ref(storage, `images/${req.body.name}`);
+    //const imageRef = ref(storage, `images/${req.body.name}`);
+    const imageRef = ref(storage, `images/${req.params.id}`);
     deleteObject(imageRef)
       .then(() => {
         console.log('Photo deleted successfully');
