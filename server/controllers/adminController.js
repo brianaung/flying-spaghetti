@@ -73,11 +73,13 @@ const acceptUser = async (req, res, next) => {
     }
 
     // Allow user access and generate new key
-    await updateDoc(doc(db, 'users', req.params.uid), {
+    const user = {
       role: 'user',
       secretKey: v4()
-    });
-
+    }
+    await updateDoc(doc(db, 'users', req.params.uid), user);
+    res.sendStatus(200);
+    //.json(user);
     // Email user they got accepted and account is activated
     const mailTransport = createTransport({
       service: 'gmail',
@@ -103,11 +105,13 @@ const acceptUser = async (req, res, next) => {
 
     mailTransport.sendMail(content, (err) => {
       if (err) {
-        console.log('Unable to send email', err);
+        //console.log('Unable to send email', err);
       } else {
-        console.log('send email to admin');
+        //console.log('send email to admin');
       }
     });
+
+    
   } catch (err) {
     next(err);
   }
