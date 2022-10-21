@@ -12,13 +12,10 @@ import {
   Timestamp,
   arrayRemove,
   deleteDoc,
-  where,
-  onSnapshot
+  where
 } from 'firebase/firestore';
 import { db, storage, auth } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-// import { KillOthers } from 'concurrently';
-// import { onAuthStateChanged } from 'firebase/auth';
 
 // Helper functions
 const getCurrUserID = () => {
@@ -111,12 +108,11 @@ const getContentByUID = async (userID) => {
 const getOwnContent = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
-    // const userID = 'qMxsw4rNtCYmsaDzjskwZ2iqBmh1';
     if (!userID) {
-      res.sendStatus(404);
+      return res.sendStatus(404);
     }
     const content = await getContentByUID(userID);
-    res.send(content);
+    return res.status(200).json(content);
   } catch (err) {
     next(err);
   }
@@ -126,13 +122,12 @@ const getUserContent = async (req, res, next) => {
   try {
     // Check if logged in as admin
     const adminID = getCurrUserID();
-    // const adminID = 'fvJJwk61OmMiIITjFm7SkRhaYcF2';
     if (!adminID) {
-      res.sendStatus(404);
+      return res.sendStatus(401);
     }
     const adminSnap = await getDoc(doc(db, 'users', adminID));
     if (adminSnap.data().role !== 'admin') {
-      res.sendStatus(404);
+      return res.sendStatus(401);
     }
     const content = await getContentByUID(req.params.id);
     res.send(content);
@@ -188,7 +183,7 @@ const getPhotoPage = async (req, res, next) => {
   try {
     const photo = await getPhotoByID(req.params.id);
     if (photo === null) {
-      res.sendStatus(404);
+      return res.sendStatus(404);
     }
     return res.status(200).json(photo);
   } catch (err) {
