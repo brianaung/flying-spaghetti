@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 // my components
 import Dashboard from './pages/Dashboard';
 import PhotoPage from './pages/PhotoPage';
@@ -26,9 +26,29 @@ const savedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem
 export default function App() {
   const [user, setUser] = useState(savedUser);
 
-  // store current user state on local storage
+  const navigate = useNavigate();
+
+  // redirect user if user state changes
   useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(user));
+    // localStorage.setItem('user', JSON.stringify(user));
+    if (user) {
+      switch (user.role) {
+        case 'user':
+          navigate('/dashboard/folders');
+          break;
+        case 'admin':
+          navigate('/dashboard/folders');
+          break;
+        case 'pending':
+          alert('Please wait for the admin to approve your registration');
+          localStorage.clear();
+          break;
+        case 'banned':
+          alert('You have been banned from using this service');
+          localStorage.clear();
+          break;
+      }
+    }
   }, [user]);
 
   return (

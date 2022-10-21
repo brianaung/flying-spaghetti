@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userLogin } from '../actions/auth';
 // mui components
 import { styled, Stack, Modal, Button, Typography, TextField, Link } from '@mui/material';
@@ -52,10 +52,12 @@ export default function Home(props) {
 
   const postLogin = (e) => {
     e.preventDefault();
-
-    dispatch(userLogin(e.target.email.value, e.target.password.value, navigate));
-    props.handleLogin(localStorage.getItem('user'));
+    dispatch(userLogin(e.target.email.value, e.target.password.value));
   };
+
+  const { user } = useSelector((state) => state.auth);
+  // set user in App.js
+  props.handleLogin(user);
 
   return (
     <HomeContainer direction="row">
