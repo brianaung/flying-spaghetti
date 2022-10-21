@@ -149,8 +149,8 @@ const getSharedContent = async (req, res, next) => {
     const photoSnap = await getDocs(
       query(collection(db, 'photos'), where('owner', '!=', userID), where('folder', '==', 'root'))
     );
-    const otherFolders = [];
-    const otherPhotos = [];
+    let otherFolders = [];
+    let otherPhotos = [];
 
     folderSnap.forEach((doc) => {
       otherFolders.push(doc.id);
@@ -164,7 +164,7 @@ const getSharedContent = async (req, res, next) => {
       const photo = await getPhotoByID(id);
       otherPhotos.push(photo);
     }
-    otherPhotos.filter((photo) => photo !== null);
+    otherPhotos = otherPhotos.filter((photo) => photo !== null);
 
     const content = {
       folders: otherFolders,
@@ -211,7 +211,7 @@ const getRecentPhotos = async (req, res, next) => {
       query(collection(db, 'photos'), where('isPrivate', '==', false), orderBy('date', 'desc'))
     );
     const photoIDs = [];
-    const photos = [];
+    let photos = [];
     colSnap.forEach((doc) => {
       photoIDs.push(doc.id);
     });
@@ -219,7 +219,7 @@ const getRecentPhotos = async (req, res, next) => {
       const photo = await getPhotoByID(id);
       photos.push(photo);
     }
-    photos.filter((photo) => photo !== null);
+    photos = photos.filter((photo) => photo !== null);
     res.send(photos);
   } catch (err) {
     next(err);
@@ -234,12 +234,12 @@ const getLikedPhotos = async (req, res, next) => {
     }
 
     const userSnap = await getDoc(doc(db, 'users', userID));
-    const photos = [];
+    let photos = [];
     for (const photoID of userSnap.data().liked) {
       const photo = await getPhotoByID(photoID);
       photos.push(photo);
     }
-    photos.filter((photo) => photo !== null);
+    photos = photos.filter((photo) => photo !== null);
     res.send(photos);
   } catch (err) {
     next(err);
@@ -254,12 +254,12 @@ const getPhotosInFolder = async (req, res, next) => {
     }
 
     const folderPhotos = folderSnap.data().photos;
-    const photos = [];
+    let photos = [];
     for (const photoID of folderPhotos) {
       const photo = await getPhotoByID(photoID);
       photos.push(photo);
     }
-    photos.filter((photo) => photo !== null);
+    photos = photos.filter((photo) => photo !== null);
     res.send(photos);
   } catch (err) {
     next(err);
