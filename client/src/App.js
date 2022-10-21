@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 // my components
 import Dashboard from './pages/Dashboard';
 import PhotoPage from './pages/PhotoPage';
@@ -26,34 +26,8 @@ const savedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem
 export default function App() {
   const [user, setUser] = useState(savedUser);
 
-  const navigate = useNavigate();
-
-  // redirect user if user state changes
-  useEffect(() => {
-    // localStorage.setItem('user', JSON.stringify(user));
-    if (user) {
-      switch (user.role) {
-        case 'user':
-          navigate('/dashboard/folders');
-          break;
-        case 'admin':
-          navigate('/dashboard/folders');
-          break;
-        case 'pending':
-          alert('Please wait for the admin to approve your registration');
-          localStorage.clear();
-          break;
-        case 'banned':
-          alert('You have been banned from using this service');
-          localStorage.clear();
-          break;
-      }
-    }
-  }, [user]);
-
   return (
     <>
-      {/* NOTE: tmp logout button that clears local storage and navigate back to landing page */}
       <Routes>
         {/* TODO: prevent logged in user from accessing login page? */}
         <Route path="/" exact element={<Home handleLogin={setUser} />} />
@@ -65,8 +39,8 @@ export default function App() {
           path="/dashboard/:id"
           exact
           element={
-            <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
-              <Dashboard user={JSON.parse(localStorage.getItem('user'))} />
+            <PrivateRoutes user={user}>
+              <Dashboard user={user} />
             </PrivateRoutes>
           }
         />
@@ -75,23 +49,12 @@ export default function App() {
           path="/photo/:id"
           exact
           element={
-            <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
-              <PhotoPage user={JSON.parse(localStorage.getItem('user'))} />
+            <PrivateRoutes user={user}>
+              <PhotoPage user={user} />
             </PrivateRoutes>
           }
         />
 
-        {/*
-        <Route
-          path="/dashboard/:id"
-          exact
-          element={
-            <PrivateRoutes user={JSON.parse(localStorage.getItem('user'))}>
-              <FoldersPage user={JSON.parse(localStorage.getItem('user'))} />
-            </PrivateRoutes>
-          }
-        />
-      */}
       </Routes>
     </>
   );
