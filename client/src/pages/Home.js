@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogin } from '../actions/auth';
 // mui components
-import { styled, Stack, Modal, Button, Typography, TextField, Link } from '@mui/material';
+import { styled, Stack, Modal, Button, Typography, TextField, Link, CircularProgress } from '@mui/material';
 // my components
 // import Gallery from '../components/Gallery';
 
@@ -47,6 +47,10 @@ export default function Home(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // loading state
+  // const [loading, isLoading] = useState(false);
+  // const handleLoading = () => setLoading(true);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -55,7 +59,7 @@ export default function Home(props) {
     dispatch(userLogin(e.target.email.value, e.target.password.value));
   };
 
-  const { user } = useSelector((state) => state.auth);
+  const { isLoading, user } = useSelector((state) => state.auth);
   // set user in App.js
   props.handleLogin(user);
 
@@ -85,6 +89,7 @@ export default function Home(props) {
               <Button variant="contained" color="primary" type="submit">
                 Login
               </Button>
+              {isLoading && <CircularProgress />}
             </LoginForm>
             <Typography>
               No account?{' '}
