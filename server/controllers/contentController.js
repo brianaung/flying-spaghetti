@@ -69,7 +69,6 @@ const getPhotoByID = async (photoID) => {
     isLiked: userLiked,
     ...photoData
   };
-  // console.log(photoData)
   return photo;
 };
 
@@ -139,9 +138,8 @@ const getUserContent = async (req, res, next) => {
 const getSharedContent = async (req, res, next) => {
   try {
     const userID = getCurrUserID();
-    // const userID = 'qMxsw4rNtCYmsaDzjskwZ2iqBmh1';
     if (!userID) {
-      res.sendStatus(404);
+      return res.sendStatus(404);
     }
     const folderSnap = await getDocs(
       query(collection(db, 'folders'), where('owner', '!=', userID))
@@ -170,7 +168,7 @@ const getSharedContent = async (req, res, next) => {
       folders: otherFolders,
       photos: otherPhotos
     };
-    res.send(content);
+    return res.status(200).send(content);
   } catch (err) {
     next(err);
   }
@@ -391,9 +389,8 @@ const uploadPhoto = async (req, res, next) => {
 
       const photoRef = doc(db, 'photos', docRef.id);
 
-      // Set the "capital" field of the city 'DC'
       await updateDoc(photoRef, {
-        links: imageUrl
+        link: imageUrl
       });
 
       // console.log(photo);
