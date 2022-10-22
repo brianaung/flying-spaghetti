@@ -16,14 +16,14 @@ const router = Router();
 router.get('/dashboard/folders', contentController.getOwnContent);
 router.get('/dashboard/shared', contentController.getSharedContent);
 router.get('/dashboard/liked', contentController.getLikedPhotos);
-router.get('/recent', contentController.getRecentPhotos);
+// router.get('/recent', contentController.getRecentPhotos);
 
-router.get('/dashboard/user/:id', contentController.getUserContent); // admin only
+// router.get('/dashboard/user/:id', contentController.getUserContent); // admin only
 router.get('/photo/:id', contentController.getPhotoPage);
 router.get('/folder/:id', contentController.getPhotosInFolder);
 
-router.get('/user/:id', contentController.getUserByID);
-router.get('/folders', contentController.getUserFolders);
+// router.get('/user/:id', contentController.getUserByID);
+// router.get('/folders', contentController.getUserFolders);
 
 router.get('/comments/:photoID', contentController.getPhotoComments);
 router.post('/comments/:photoID', contentController.postComment);

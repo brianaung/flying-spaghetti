@@ -11,7 +11,6 @@ import {
   orderBy,
   Timestamp,
   arrayRemove,
-  deleteDoc,
   where
 } from 'firebase/firestore';
 import { db, storage, auth } from '../config/firebase.js';
@@ -192,19 +191,6 @@ const getPhotoPage = async (req, res, next) => {
 const getRecentPhotos = async (req, res, next) => {
   try {
     // Query newest first
-    // const colRef = query(collection(db, 'photos'), orderBy('date', 'desc'), where('isPrivate', '==', false));
-    // const unsubscribe = onSnapshot(colRef, (snapshot) => {
-    //   const photos = [];
-    //   snapshot.forEach(async (doc) => {
-    //     const photo = await getPhotoByID(doc.id);
-    //     photos.push(photo);
-    //   })
-    //   photos.filter((photo) => photo !== null);
-    //   res.send(photos);
-    // });
-
-    // Stop listening to changes
-    // unsubscribe();
     const colSnap = await getDocs(
       query(collection(db, 'photos'), where('isPrivate', '==', false), orderBy('date', 'desc'))
     );
