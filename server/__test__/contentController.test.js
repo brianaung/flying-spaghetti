@@ -52,7 +52,7 @@ describe('GET /photo/:id (getPhotoPage)', () => {
         await req.post('/login').send({
             email: 'user3@gmail.com',
             password: 'password'
-          })
+        })
         const privateID = 'jDcE1FrQcfXss93GZkTR'
         const res = await req.get(`/photo/${privateID}`);
         expect(res.status).toBe(404);
@@ -72,26 +72,48 @@ describe('GET /dashboard/folders (getOwnContent)', () => {
         await req.post('/logout');
     })
 
-    test('view public photo - logged in', async () => {
-        const photoID = 'xz1SXB8UtYeIscZs2Qrl';
-        const res = await req.get(`/photo/${photoID}`);
-        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+    test('view personal dashboard - logged in', async () => {
+        await req.post('/login').send({
+            email: 'user3@gmail.com',
+            password: 'password'
+        })
+        const res = await req.get(`/dashboard/folders`);
         expect(res.status).toBe(200);
-        expect(res.body.id).toBe(photoID);
-
+        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+        expect(res.body.folders.length).toBeGreaterThan(0);
+        expect(res.body.photos.length).toBeGreaterThan(0);
     })
 
-    test('view public photo - not logged in', async () => {
-        const photoID = 'xz1SXB8UtYeIscZs2Qrl';
-        const res = await req.get(`/photo/${photoID}`);
-        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
-        expect(res.status).toBe(200);
-        expect(res.body.id).toBe(photoID);
-
+    test('view personal dashboard - not logged in', async () => {
+        const res = await req.get(`/dashboard/folders`);
+        expect(res.status).toBe(404);
+        expect(res.body).toEqual({});
     })
 })
 
+describe('GET /dashboard/folders (getOtherContent)', () => {
+    beforeEach(async () => {
+        await req.post('/logout');
+    })
 
+    test('view personal dashboard - logged in', async () => {
+        await req.post('/login').send({
+            email: 'user3@gmail.com',
+            password: 'password'
+        })
+        const res = await req.get(`/dashboard/folders`);
+        expect(res.status).toBe(200);
+        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+        expect(res.body.folders.length).toBeGreaterThan(0);
+        expect(res.body.photos.length).toBeGreaterThan(0);
+    })
+
+    test('view personal dashboard - not logged in', async () => {
+        const res = await req.get(`/dashboard/folders`);
+        expect(res.status).toBe(404);
+        expect(res.body).toEqual({});
+    })
+})
 
 //     // getPhotosInFolder
 //     test('should send the correct photos given a folder directory', () => {
