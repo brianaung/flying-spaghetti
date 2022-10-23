@@ -50,9 +50,9 @@ const banUser = async (req, res, next) => {
 
     mailTransport.sendMail(content, (err) => {
       if (err) {
-        console.log('Unable to send email', err);
+        //console.log('Unable to send email', err);
       } else {
-        console.log('send email to admin');
+        //console.log('send email to admin');
       }
     });
   } catch (err) {

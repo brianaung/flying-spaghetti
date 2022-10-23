@@ -39,30 +39,48 @@ describe('accept a user', () => {
 describe('ban a user', () => {
 
     test('user do not exist and key is not correct', async () => {
-        const res = await req.get('/accept/ddfdfsdfsdf/sdfsdfdsfdsfs');
+        const res = await req.get('/ban/ddfdfsdfsdf/sdfsdfdsfdsfs');
         expect(res.status).toBe(404);
     })
 
     test('user role is not pending', async () => {
-        const res = await req.get('/accept/0W0zGi4pu6ReJcFRKnyBW33gPPV2/905d3a0a-641f-44d0-8a62-7108e64678db');
+        const res = await req.get('/ban/0W0zGi4pu6ReJcFRKnyBW33gPPV2/905d3a0a-641f-44d0-8a62-7108e64678db');
         expect(res.status).toBe(404);
     })
 
     test('user key is not correct', async () => {
-        const res = await req.get('/accept/b13fBvo1Jlf8fVOpgnaP7IaBchV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf');
+        const res = await req.get('/ban/b13fBvo1Jlf8fVOpgnaP7IaBchV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf');
         expect(res.status).toBe(404);
     })
 
     // test('user is bannd', async () => {
-    //     const res = await req.get('/accept/b13fBvo1Jlf8fVOpgnaP7IaBchV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf');
+    //     const res = await req.get('/ban/b13fBvo1Jlf8fVOpgnaP7IaBchV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf');
     //     expect(res.status).toBe(404); //200
     //     expect(res.body.secretKey).not.toBe('898sdfs8998sdfsdfsdfdsfsdf909sdfsddf')
     // })
 })
 
 describe('get all users', () => {
-    test('get users', async()=>{
-        const res = await req.get('/getAllUsers');
+    test("get users, without login", async()=>{
+        const res = await req.get('/users');
+        expect(res.status).toBe(401);
+    })
+    
+    test('get users, login as other user', async()=>{
+        await req.post('/login').send({
+            email: 'user3@gmail.com',
+            password: 'password'
+        })
+        const res = await req.get('/users');
+        expect(res.status).toBe(401);
+    })
+
+    test('get users, login as admin', async()=>{
+        await req.post('/login').send({
+            email: 'admin@gmail.com',
+            password: 'password'
+        })
+        const res = await req.get('/users');
         expect(res.status).toBe(200);
     })
 })
