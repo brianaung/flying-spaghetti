@@ -69,6 +69,18 @@ describe('GET /photo/:id (getPhotoPage)', () => {
         expect(res.body).toEqual({});
     })
 
+    test('view private photo - admin', async () => {
+        await req.post('/login').send({
+            email: 'admin@gmail.com',
+            password: 'password'
+        })
+        const privateID = 'vB4IlkKhesCWJbKX2SHQ'
+        const res = await req.get(`/photo/${privateID}`);
+        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+        expect(res.status).toBe(200);
+        expect(res.body.id).toBe(privateID);
+    })
+
     test('view private photo - not logged in', async () => {
         const privateID = 'vB4IlkKhesCWJbKX2SHQ'
         const res = await req.get(`/photo/${privateID}`);
