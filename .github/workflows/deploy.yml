@@ -2,12 +2,16 @@ name: Deploy App
 
 # Controls when the workflow will run
 on:
-  push:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: [Testing]
+    types:
+      - completed
 
 jobs:
   deploy-server:
     runs-on: ubuntu-latest
+    # only run if testing is successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v3
       - name: Deploy to Heroku (Server)
@@ -25,6 +29,7 @@ jobs:
       url: https://photoshare-client.herokuapp.com
     needs: deploy-server
     concurrency:
+      # wait for server to finish deploying
       group: ${{ format('{0}-{1}', github.workflow, github.job) }}
     steps:
       - uses: actions/checkout@v3
