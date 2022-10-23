@@ -40,17 +40,17 @@ describe('ban a user', () => {
 
     test('user do not exist and key is not correct', async () => {
         const res = await req.get('/ban/ddfdfsdfsdf/sdfsdfdsfdsfs');
-        expect(res.status).toBe(404);
+        expect(res.status).toBe(401);
     })
 
     test('user role is not pending', async () => {
         const res = await req.get('/ban/0W0zGi4pu6ReJcFRKnyBW33gPPV2/905d3a0a-641f-44d0-8a62-7108e64678db');
-        expect(res.status).toBe(404);
+        expect(res.status).toBe(401);
     })
 
     test('user key is not correct', async () => {
         const res = await req.get('/ban/b13fBvo1Jlf8fVOpgnaP7IaBchV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf');
-        expect(res.status).toBe(404);
+        expect(res.status).toBe(401);
     })
 
     // test('user is bannd', async () => {

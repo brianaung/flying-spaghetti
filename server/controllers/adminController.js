@@ -16,7 +16,7 @@ const banUser = async (req, res, next) => {
   try {
     const userSnap = await getDoc(doc(db, 'users', req.params.uid));
     if (!userSnap.exists() || req.params.key !== userSnap.data().secretKey) {
-      res.sendStatus(404);
+      return res.sendStatus(401);
     }
     // const key = userSnap.data().secretKey;
 

@@ -47,8 +47,7 @@ const getPhotoByID = async (photoID) => {
   // Check if photo needs to be hidden
   if (userID) {
     const userSnap = await getDoc(doc(db, 'users', userID));
-    const userRole = userSnap.data().role;
-    if (userRole === 'admin') {
+    if (userSnap.data().role === 'admin') {
       // Admin can see private photos
       userLiked = photoData.likes.includes(userID);
     } else {

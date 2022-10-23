@@ -53,8 +53,8 @@ describe('GET /photo/:id (getPhotoPage)', () => {
         })
         const privateID = 'vB4IlkKhesCWJbKX2SHQ'
         const res = await req.get(`/photo/${privateID}`);
-        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
         expect(res.status).toBe(200);
+        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
         expect(res.body.id).toBe(privateID);
     })
 
