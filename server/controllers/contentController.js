@@ -574,5 +574,6 @@ export default {
   getOwnContent,
   getSharedContent,
   getPhotoPage,
-  getNumLikes
+  getNumLikes,
+  getCurrUserID
 };

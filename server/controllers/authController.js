@@ -4,11 +4,11 @@ import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
 import { createTransport } from 'nodemailer';
 
-// Create a new account
+// Create a new account and tested
 const registerUser = async (req, res, next) => {
   try {
-    console.log(req.body.email);
-    console.log(req.body.password);
+    // console.log(req.body.email);
+    // console.log(req.body.password);
 
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -62,17 +62,20 @@ const registerUser = async (req, res, next) => {
 
     mailTransport.sendMail(content, (err) => {
       if (err) {
-        console.log('Unable to send email', err);
+        return res.status(404)//console.log('Unable to send email', err);
       } else {
-        console.log('Email sent to admin.');
+        //console.log('Email sent to admin.');
       }
+    
     });
+    return res.status(200);
   } catch (err) {
     res.send(err);
     next(err);
   }
 };
 
+// testing in progress
 const signInUser = async (req, res, next) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
@@ -83,20 +86,21 @@ const signInUser = async (req, res, next) => {
 
     const user = await getDoc(doc(db, 'users', userCredential.user.uid));
     const role = user.data().role;
-    res.send(user.data());
+
     if (role !== 'user' && role !== 'admin') {
       if (role === 'banned') {
         // res.send({code: 'You have been banned from accessing your account.'});
-        console.log('You have been banned from accessing your account.');
+        // console.log('You have been banned from accessing your account.');
       } else if (role === 'pending') {
         // res.send({code:'Please wait until an admin approves your account.'});
-        console.log('Please wait until an admin approves your account.');
+        // console.log('Please wait until an admin approves your account.');
       }
 
-      await signOut(auth).then(() => {
-        console.log('User signed out');
-      });
+      await signOut(auth)
+
+      return res.status(200).send(null)
     }
+    return res.status(200).json(user.data());
   } catch (error) {
     // next(error);
     console.log(error);
