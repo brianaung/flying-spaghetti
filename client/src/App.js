@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 // my components
 import Dashboard from './pages/Dashboard';
 import PhotoPage from './pages/PhotoPage';
@@ -25,6 +25,30 @@ const savedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem
 
 export default function App() {
   const [user, setUser] = useState(savedUser);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // redirect user after login
+    if (user) {
+      switch (user.role) {
+        case 'user':
+          navigate('/dashboard/folders');
+          break;
+        case 'admin':
+          navigate('/dashboard/folders');
+          break;
+        case 'pending':
+          alert('Please wait for the admin to approve your registration');
+          localStorage.clear();
+          break;
+        case 'banned':
+          alert('You have been banned from using this service');
+          localStorage.clear();
+          break;
+      }
+    }
+  }, [user]);
 
   return (
     <>

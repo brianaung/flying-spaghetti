@@ -58,23 +58,6 @@ export default function Home(props) {
   const { isLoading, user } = useSelector((state) => state.auth);
   // set user in App.js
   props.handleLogin(user);
-  // redirect user after login
-  switch (user.role) {
-    case 'user':
-      navigate('/dashboard/folders');
-      break;
-    case 'admin':
-      navigate('/dashboard/folders');
-      break;
-    case 'pending':
-      alert('Please wait for the admin to approve your registration');
-      localStorage.clear();
-      break;
-    case 'banned':
-      alert('You have been banned from using this service');
-      localStorage.clear();
-      break;
-  }
 
   return (
     <HomeContainer direction="row">
