@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPhotos, getPhotosInFolder, getSharedPhotos, getLikedPhotos } from '../actions/photos';
@@ -23,7 +22,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
   }
 }));
 
-export default function Dashboard(props) {
+export default function Dashboard() {
   const [query, setQuery] = useState('');
   const dispatch = useDispatch();
 
@@ -43,15 +42,11 @@ export default function Dashboard(props) {
 
   return (
     <Container container>
-      <Navbar query={query} setQuery={setQuery} user={props.user} />
+      <Navbar query={query} setQuery={setQuery} />
       <StyledStack direction="row">
-        <Sidebar usage={90} user={props.user} />
+        <Sidebar usage={90} />
         <Feed query={query} pageID={id} />
       </StyledStack>
     </Container>
   );
 }
-
-Dashboard.propTypes = {
-  user: PropTypes.object
-};

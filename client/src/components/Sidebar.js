@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
+// data
+import { UserContext } from '../App';
 // mui components
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -36,6 +38,7 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
 // const selected = localStorage.getItem('selected') ? localStorage.getItem('selected') : '0';
 export default function Sidebar(props) {
   const { id } = useParams();
+  const user = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -48,7 +51,7 @@ export default function Sidebar(props) {
   return (
     <SidebarContainer>
       <Stack>
-        <WelcomeMsg variant="h3">G&apos;day {props.user.firstName}</WelcomeMsg>
+        <WelcomeMsg variant="h3">G&apos;day {user.firstName}</WelcomeMsg>
 
         <ListItemButton
           selected={selectedIndex === 'folders'}
@@ -81,6 +84,5 @@ export default function Sidebar(props) {
 }
 
 Sidebar.propTypes = {
-  user: PropTypes.object,
   usage: PropTypes.number
 };

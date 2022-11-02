@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogin } from '../actions/auth';
 // mui components
-import { styled, Stack, Modal, Button, Typography, TextField, Link, CircularProgress } from '@mui/material';
+import {
+  styled,
+  Stack,
+  Modal,
+  Button,
+  Typography,
+  TextField,
+  Link,
+  CircularProgress
+} from '@mui/material';
 // my components
 // import Gallery from '../components/Gallery';
 
@@ -57,7 +66,9 @@ export default function Home(props) {
 
   const { isLoading, user } = useSelector((state) => state.auth);
   // set user in App.js
-  props.handleLogin(user);
+  useEffect(() => {
+    props.handleLogin(user);
+  }, [user]);
 
   return (
     <HomeContainer direction="row">
