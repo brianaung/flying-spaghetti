@@ -28,7 +28,7 @@ export const getSharedPhotos = () => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
     const { data } = await api.fetchSharedPhotos();
-    console.log("SHARED PHOTOS:" + JSON.stringify(data));
+    console.log('SHARED PHOTOS:' + JSON.stringify(data));
 
     dispatch({ type: FETCH_SHARED, payload: data });
     dispatch({ type: END_LOADING });

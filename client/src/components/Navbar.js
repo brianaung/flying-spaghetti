@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+// data
+import { UserContext } from '../App';
 // mui components
 import {
   styled,
@@ -13,7 +15,6 @@ import {
   Toolbar,
   Avatar
 } from '@mui/material';
-// import { deepPurple } from '@mui/material/colors';
 // my components
 import Searchbar from './Searchbar';
 
@@ -95,6 +96,8 @@ export default function Navbar(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const user = useContext(UserContext);
+
   const navigate = useNavigate();
 
   return (
@@ -102,8 +105,8 @@ export default function Navbar(props) {
       <AppBar position="static">
         <StyledToolbar>
           <User>
-            <Avatar {...stringAvatar(`${props.user.firstName} ${props.user.lastName}`)} />
-            {props.user.firstName}
+            <Avatar {...stringAvatar(`${user.firstName} ${user.lastName}`)} />
+            {user.firstName}
           </User>
 
           <Searchbar query={props.query} setQuery={props.setQuery} />
@@ -142,6 +145,5 @@ export default function Navbar(props) {
 
 Navbar.propTypes = {
   query: PropTypes.string,
-  setQuery: PropTypes.func,
-  user: PropTypes.object
+  setQuery: PropTypes.func
 };

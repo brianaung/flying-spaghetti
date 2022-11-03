@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 // import styled from '@emotion/styled';
 // mui components
 import {
@@ -97,7 +96,7 @@ const ImageLink = styled(Box)({
   padding: '20px'
 });
 
-export default function PhotoPage(props) {
+export default function PhotoPage() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -129,7 +128,7 @@ export default function PhotoPage(props) {
   } else {
     return (
       <>
-        <Navbar user={props.user} />
+        <Navbar />
 
         <Stack>
           <Muilink
@@ -244,7 +243,3 @@ export default function PhotoPage(props) {
     );
   }
 }
-
-PhotoPage.propTypes = {
-  user: PropTypes.object
-};

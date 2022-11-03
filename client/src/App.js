@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 // my components
@@ -9,27 +9,44 @@ import Register from './pages/Register';
 
 // protect routes to only give access to accounts with the role `user`
 const PrivateRoutes = (props) => {
-  return props.user && (props.user.role === 'user' || props.user.role === 'admin') ? (
+  const user = useContext(UserContext);
+  return user && (user.role === 'user' || user.role === 'admin') ? (
     props.children
   ) : (
     <Navigate to="/" />
   );
 };
 PrivateRoutes.propTypes = {
-  user: PropTypes.object,
+  children: PropTypes.element
+};
+
+/* prevent loggedin users from accessing the home page */
+const PublicRoutes = (props) => {
+  const user = useContext(UserContext);
+  const session = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+  // if user is logged in (or session has user info), then go to dashboard
+  // else show the home page
+  return session && user && (user.role === 'user' || user.role === 'admin') ? (
+    <Navigate to="/dashboard/folders" />
+  ) : (
+    props.children
+  );
+};
+PublicRoutes.propTypes = {
   children: PropTypes.element
 };
 
 // get the current logged in user
-const savedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+let savedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+
+export const UserContext = createContext(savedUser);
 
 export default function App() {
   const [user, setUser] = useState(savedUser);
-
   const navigate = useNavigate();
 
+  // navigate user after loggin in
   useEffect(() => {
-    // redirect user after login
     if (user) {
       switch (user.role) {
         case 'user':
@@ -52,34 +69,42 @@ export default function App() {
 
   return (
     <>
-      <Routes>
-        {/* TODO: prevent logged in user from accessing login page? */}
-        <Route path="/" exact element={<Home handleLogin={setUser} />} />
+      <UserContext.Provider value={user}>
+        <Routes>
+          <Route
+            path="/"
+            exact
+            element={
+              <PublicRoutes>
+                <Home handleLogin={setUser} />
+              </PublicRoutes>
+            }
+          />
 
-        <Route path="/register" exact element={<Register />} />
+          <Route path="/register" exact element={<Register />} />
 
-        {/* Protected routes */}
-        <Route
-          path="/dashboard/:id"
-          exact
-          element={
-            <PrivateRoutes user={user}>
-              <Dashboard user={user} />
-            </PrivateRoutes>
-          }
-        />
+          {/* Protected routes */}
+          <Route
+            path="/dashboard/:id"
+            exact
+            element={
+              <PrivateRoutes>
+                <Dashboard />
+              </PrivateRoutes>
+            }
+          />
 
-        <Route
-          path="/photo/:id"
-          exact
-          element={
-            <PrivateRoutes user={user}>
-              <PhotoPage user={user} />
-            </PrivateRoutes>
-          }
-        />
-
-      </Routes>
+          <Route
+            path="/photo/:id"
+            exact
+            element={
+              <PrivateRoutes>
+                <PhotoPage />
+              </PrivateRoutes>
+            }
+          />
+        </Routes>
+      </UserContext.Provider>
     </>
   );
 }
