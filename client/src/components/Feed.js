@@ -26,9 +26,11 @@ import AddIcon from '@mui/icons-material/Add';
 import PhotoFrame from '../components/PhotoFrame';
 import FolderFrame from '../components/FolderFrame';
 import Directory from '../components/Directory';
+import Popup from '../components/Popup';
 //import FoldersPage from '../pages/FoldersPage';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
   gap: '50px',
   justifyContent: 'flex-start',
   padding: '30px',
@@ -37,21 +39,6 @@ const FeedContainer = styled(Stack)(({ theme }) => ({
     width: '100%'
   }
 }));
-
-const SubmitForm = styled('form')({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '20px',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '30%',
-  backgroundColor: 'white',
-  border: '2px solid black',
-  p: 4,
-  padding: '20px'
-});
 
 const FeedSkeleton = () => {
   return (
@@ -136,7 +123,7 @@ export default function Feed(props) {
   return (
     <FeedContainer>
       <Fab
-        sx={{ border: 'solid 2px' }}
+        sx={{ border: 'solid 1px black' }}
         color="secondary"
         size="medium"
         aria-label="add"
@@ -149,7 +136,7 @@ export default function Feed(props) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <SubmitForm id="upload-form" onSubmit={handleUpload} enctype="multipart/form-data">
+        <Popup id="upload-form" onSubmit={handleUpload} enctype="multipart/form-data">
           <input
             accept="image/*"
             type="file"
@@ -186,10 +173,10 @@ export default function Feed(props) {
             />
           </FormGroup>
 
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" type="submit">
             Upload
           </Button>
-        </SubmitForm>
+        </Popup>
       </Modal>
 
       <>

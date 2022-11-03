@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import styled from '@emotion/styled';
 // mui components
 import {
   styled,
@@ -22,7 +21,7 @@ import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutl
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 // my components
 import Navbar from '../components/Navbar';
-// import Sidebar from '../components/Sidebar';
+import Popup from '../components/Popup';
 
 //sample data
 //import { comments } from '../data/photo-data';
@@ -53,12 +52,13 @@ const PhotoSection = styled(Grid)(({ theme }) => ({
 }));
 
 const CommentSection = styled(Box)(({ theme }) => ({
+  border: 'solid 1px',
+  borderColor: theme.palette.divider,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   width: '50%',
   gap: '20px',
-  border: 'solid 2px black',
   [theme.breakpoints.down('sm')]: {
     width: '100%'
   }
@@ -71,30 +71,15 @@ const StyledBox = styled(Box)({
   flexDirection: 'column'
 });
 
-const LinkBox = styled(Box)({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  border: '1px solid #000',
-  boxShadow: 24,
-  p: 4,
-  padding: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '20px',
-  flexDirection: 'column'
-});
-
-const ImageLink = styled(Box)({
-  border: '1px ridge',
+const ImageLink = styled(Box)(({ theme }) => ({
+  border: 'solid 1px',
+  borderColor: theme.palette.divider,
+  borderRadius: theme.shape.borderRadius,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   padding: '20px'
-});
+}));
 
 export default function PhotoPage() {
   const [open, setOpen] = useState(false);
@@ -190,7 +175,7 @@ export default function PhotoPage() {
                   icon={<Heart size="30" />}
                   checkedIcon={<Favorite size="30" />}
                 />
-                <Button sx={{ marginRight: 'auto' }} color="primary" onClick={handleOpen}>
+                <Button sx={{ marginRight: 'auto' }} onClick={handleOpen}>
                   <Link size="30" />
                 </Button>
               </Box>
@@ -220,7 +205,7 @@ export default function PhotoPage() {
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description">
-          <LinkBox>
+          <Popup>
             <Typography align="center">Image Link</Typography>
             <ImageLink>
               {photo.link}
@@ -237,7 +222,7 @@ export default function PhotoPage() {
                 </Tooltip>
               </Box>
             </ImageLink>
-          </LinkBox>
+          </Popup>
         </Modal>
       </>
     );

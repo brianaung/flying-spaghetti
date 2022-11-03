@@ -26,9 +26,7 @@ export default function Directory(props) {
           <Link component="button" underline="hover" color="inherit" onClick={handleNavigation}>
             <Typography variant="body1">Home</Typography>
           </Link>
-          <Typography variant="h3" color="primary">
-            {props.currFolder}
-          </Typography>
+          <Typography variant="h3">{props.currFolder}</Typography>
         </Breadcrumbs>
       )}
     </>

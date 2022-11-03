@@ -20,18 +20,20 @@ const WelcomeMsg = styled(Typography)({
 });
 
 const SidebarContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
+  borderColor: theme.palette.divider,
   flexDirection: 'column',
   display: 'flex',
   justifyContent: 'flex-start',
   width: '20%',
   // TODO: toggle off sidebar in mobile view
   minWidth: '300px',
-  borderRight: 'solid 1px lightgrey',
+  borderRight: 'solid 1px',
   padding: '20px',
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     borderRight: '0px',
-    borderBottom: 'solid 1px lightgrey'
+    borderBottom: 'solid 1px'
   }
 }));
 

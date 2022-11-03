@@ -6,7 +6,7 @@ import { UserContext } from '../App';
 // mui components
 import {
   styled,
-  Box,
+  // Box,
   Modal,
   Typography,
   Stack,
@@ -17,48 +17,37 @@ import {
 } from '@mui/material';
 // my components
 import Searchbar from './Searchbar';
+import Popup from './Popup';
 
-const StyledToolbar = styled(Toolbar)({
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
   display: 'flex',
   justifyContent: 'space-between',
-  gap: '50px'
-});
+  gap: '50px',
+  borderBottom: 'solid 1px',
+  borderColor: theme.palette.divider
+}));
 
-const MenuBtn = styled(Button)({
-  color: 'white',
+const MenuBtn = styled(Button)(({ theme }) => ({
+  // todo: use the text palette in theme
+  color: theme.palette.text.primary,
   transition: 'transform 200ms ease 0s, background 200ms ease 0s',
   '&:hover': {
     transform: 'translateY(-2px)'
   }
-});
+}));
 
-const User = styled(Button)({
+const User = styled(Button)(({ theme }) => ({
+  // use the text color specified in theme
+  color: theme.palette.text.primary,
   display: 'flex',
   flexDirection: 'row',
   gap: '15px',
-  color: 'white',
   transition: 'transform 200ms ease 0s, background 200ms ease 0s',
   '&:hover': {
     transform: 'translateY(-2px)'
   }
-});
-
-const LinkBox = styled(Box)({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  border: '1px solid #000',
-  boxShadow: 24,
-  p: 4,
-  padding: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '20px',
-  flexDirection: 'column'
-});
+}));
 
 function stringToColor(string) {
   let hash = 0;
@@ -116,11 +105,11 @@ export default function Navbar(props) {
       </AppBar>
 
       <Modal open={open} onClose={handleClose}>
-        <LinkBox>
+        <Popup>
           <Typography align="center">Are you sure you want to logout?</Typography>
           <Stack direction="row" gap={2}>
             <Button
-              sx={{ border: 'solid 2px black' }}
+              sx={{ border: 'solid 1px black' }}
               variant="contained"
               color="error"
               onClick={() => {
@@ -129,15 +118,11 @@ export default function Navbar(props) {
               }}>
               Yes
             </Button>
-            <Button
-              sx={{ border: 'solid 2px black' }}
-              variant="contained"
-              color="primary"
-              onClick={handleClose}>
+            <Button sx={{ border: 'solid 1px black' }} variant="contained" onClick={handleClose}>
               No
             </Button>
           </Stack>
-        </LinkBox>
+        </Popup>
       </Modal>
     </>
   );

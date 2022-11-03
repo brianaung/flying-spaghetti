@@ -1,3 +1,4 @@
+/* NOTE: dark mode does not affect this page */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,42 +22,32 @@ import { Comment, Trash, Link, Heart } from '@styled-icons/evil';
 import { Favorite } from '@styled-icons/material-rounded';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+// my components
+import Popup from './Popup';
 
 const StyledImgListItem = styled(ImageListItem)({
+  borderBottom: 'solid 1px black',
   width: '250px',
   overflow: 'hidden',
-  borderBottom: 'solid 2px black',
   aspectRatio: '1/1'
 });
 
-const LinkBox = styled(Box)({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  border: '1px solid #000',
-  boxShadow: 24,
-  p: 4,
-  padding: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '20px',
-  flexDirection: 'column'
-});
-
-const ImageLink = styled(Box)({
-  border: '1px ridge',
+const ImageLink = styled(Box)(({ theme }) => ({
+  border: 'solid 1px',
+  borderColor: theme.palette.divider,
+  borderRadius: theme.shape.borderRadius,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   padding: '20px'
-});
+}));
 
-const PhotoContainer = styled(Stack)({
-  border: 'solid 2px black'
-});
+const PhotoContainer = styled(Stack)(({ theme }) => ({
+  // photo area will always be white regardless of dark or light mode?
+  backgroundColor: 'white',
+  borderRadius: theme.shape.borderRadius,
+  border: 'solid 1px black'
+}));
 
 export default function Photo(props) {
   const [copied, setCopied] = useState(false);
@@ -109,7 +100,7 @@ export default function Photo(props) {
         {/* like, comment, share buttons */}
         <Stack direction="row" sx={{ width: '100%' }}>
           <Checkbox
-            sx={{ color: 'black' }}
+            sx={{ color: '#2c2c2c' }}
             color="error"
             icon={<Heart size="30" />}
             checkedIcon={<Favorite size="30" />}
@@ -150,7 +141,7 @@ export default function Photo(props) {
         onClose={handleCloseShare}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <LinkBox>
+        <Popup>
           <Typography align="center">Image Link</Typography>
           <ImageLink>
             {props.aPhoto.link}
@@ -167,30 +158,30 @@ export default function Photo(props) {
               </Tooltip>
             </Box>
           </ImageLink>
-        </LinkBox>
+        </Popup>
       </Modal>
 
       {/* delete confirmation box */}
       <Modal open={openDel} onClose={handleCloseDel}>
-        <LinkBox>
+        <Popup>
           <Typography align="center">Are you sure you want to delete this photo?</Typography>
           <Stack direction="row" gap={2}>
             <Button
-              sx={{ border: 'solid 2px black' }}
+              sx={{ border: 'solid 1px black' }}
               variant="contained"
               color="error"
               onClick={handleDelPhoto}>
               Yes
             </Button>
             <Button
-              sx={{ border: 'solid 2px black' }}
+              sx={{ border: 'solid 1px black' }}
               variant="contained"
               color="primary"
               onClick={handleCloseDel}>
               No
             </Button>
           </Stack>
-        </LinkBox>
+        </Popup>
       </Modal>
     </div>
   );

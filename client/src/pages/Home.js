@@ -15,33 +15,13 @@ import {
   CircularProgress
 } from '@mui/material';
 // my components
-// import Gallery from '../components/Gallery';
+import Popup from '../components/Popup';
 
 const HomeContainer = styled(Stack)({
   padding: '0 300px',
   height: '100%',
   alignItems: 'center',
   minHeight: '100vh'
-});
-
-/* const TextGrid = styled(Grid)({
-  padding: '30px',
-  border: 'solid 2px black',
-  backgroundColor: 'white'
-}); */
-
-const LoginBox = styled(Stack)({
-  alignItems: 'center',
-  padding: '20px',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  backgroundColor: 'white',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4
 });
 
 const LoginForm = styled('form')({
@@ -84,7 +64,7 @@ export default function Home(props) {
 
         {/* popup form for login */}
         <Modal open={open} onClose={handleClose}>
-          <LoginBox gap={2}>
+          <Popup gap={2}>
             <LoginForm id="login-form" onSubmit={postLogin}>
               <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
               <TextField
@@ -93,7 +73,7 @@ export default function Home(props) {
                 variant="outlined"
                 label="Password"
                 type="password"></TextField>
-              <Button variant="contained" color="primary" type="submit">
+              <Button variant="contained" type="submit">
                 Login
               </Button>
               {isLoading && <CircularProgress />}
@@ -104,17 +84,16 @@ export default function Home(props) {
                 Register here
               </Link>
             </Typography>
-          </LoginBox>
+          </Popup>
         </Modal>
 
         {/* Login/Register buttons */}
         <Stack direction="row" spacing={2}>
-          <Button variant="contained" color="primary" onClick={handleOpen}>
+          <Button variant="contained" onClick={handleOpen}>
             LOGIN
           </Button>
           <Button
             variant="contained"
-            color="primary"
             onClick={() => {
               navigate('/register');
             }}>

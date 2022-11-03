@@ -72,7 +72,7 @@ export default function Register() {
           variant="outlined"
           label="Password"
           type="password"></TextField>
-        <Button variant="contained" color="primary" type="submit">
+        <Button variant="contained" type="submit">
           Register
         </Button>
       </RegisterForm>

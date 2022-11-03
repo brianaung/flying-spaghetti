@@ -16,10 +16,12 @@ const FolderContainer = styled(Stack)(({ theme }) => ({
   }
 }));
 
-const Folder = styled(Box)({
+const Folder = styled(Box)(({ theme }) => ({
+  backgroundColor: 'white',
+  borderRadius: theme.shape.borderRadius,
+  border: '1px solid',
   display: 'flex',
   flexDirection: 'row',
-  border: '2px solid',
   width: '250px',
   height: '50px',
   padding: '10px',
@@ -31,7 +33,7 @@ const Folder = styled(Box)({
   '&:hover': {
     transform: 'translateY(-2px)'
   }
-});
+}));
 
 export default function FolderFrame(props) {
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ export default function FolderFrame(props) {
             .map((folder) => {
               return (
                 <Folder key={folder} onClick={() => handleOpenFolder(folder)}>
-                  <FolderIcon />
+                  <FolderIcon color="primary" />
                   <Typography>{folder}</Typography>
                 </Folder>
               );
