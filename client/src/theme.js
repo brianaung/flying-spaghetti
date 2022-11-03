@@ -40,6 +40,7 @@ export const theme = createTheme({
       main: '#3b28cc'
     }
   },
+
   typography: {
     fontFamily: ['"Montserrat"', 'Roboto', 'Arial'].join(','),
     h1: {
@@ -63,5 +64,18 @@ export const theme = createTheme({
       fontWeight: '600'
     }
   },
-  shadows: ['none']
+
+  shadows: ['none'],
+
+  components: {
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            backgroundColor: '#27272a',
+          },
+        },
+      },
+    },
+  },
 });
