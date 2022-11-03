@@ -1,15 +1,23 @@
 import { createTheme } from '@mui/material';
 
 export const theme = createTheme({
+  // currently just for light mode
   palette: {
+    // white background and black text and gray divider
+    background: {
+      main: '#ffffff'
+    },
+    divider: '#2c2c2c',
+    text: {
+      primary: '#2c2c2c'
+    },
+    // this will stay the same in darkmode??
+    // accent colors
     primary: {
-      main: '#2C2C2C'
+      main: '#2c2c2c'
     },
     secondary: {
       main: '#E8DB7D'
-    },
-    success: {
-      main: '#499f68'
     }
   },
   typography: {
