@@ -22,8 +22,8 @@ export default function Progressbar(props) {
         Usage
       </Typography>
       <SidebarContainer>
-        <Box sx={{ width: '80%', mr: 1 }}>
-          <LinearProgress variant="determinate" {...props} />
+        <Box sx={{ width: '80%', mr: 1, border: 'solid 1px', borderRadius: '5px' }}>
+          <LinearProgress sx={{backgroundColor: 'white'}} color="secondary" variant="determinate" {...props} />
         </Box>
         <Box sx={{ minWidth: 35 }}>
           <Typography variant="body2">{`${Math.round(props.value)}%`}</Typography>
