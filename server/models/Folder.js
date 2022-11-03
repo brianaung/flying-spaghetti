@@ -1,7 +1,7 @@
 export default class Folder {
-  constructor(username, name, parentFolder, date) {
+  constructor(uid, name, date) {
     this.name = name;
-    this.owner = username;
+    this.owner = uid;
     this.date = date;
     this.photos = [];
   }

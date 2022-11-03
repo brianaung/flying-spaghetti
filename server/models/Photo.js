@@ -1,6 +1,6 @@
 export default class Photo {
-  constructor(username, name, caption, link, isPrivate, folder, date) {
-    this.owner = username;
+  constructor(uid, name, caption, link, isPrivate, folder, date) {
+    this.owner = uid;
     this.name = name;
     this.caption = caption;
     this.link = link;
@@ -8,6 +8,6 @@ export default class Photo {
     this.folder = folder;
     this.date = date;
     this.comments = [];
-    this.likes = 0;
+    this.likes = [];
   }
 }
