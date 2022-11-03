@@ -106,24 +106,31 @@ export default function Navbar(props) {
       </AppBar>
 
       <Modal open={open} onClose={handleClose}>
-        <Popup>
-          <Typography align="center">Are you sure you want to logout?</Typography>
-          <Stack direction="row" gap={2}>
-            <Button
-              sx={{ border: 'solid 1px black' }}
-              variant="contained"
-              color="error"
-              onClick={() => {
-                localStorage.clear();
-                navigate('/');
-              }}>
-              Yes
-            </Button>
-            <Button sx={{ border: 'solid 1px black' }} variant="contained" onClick={handleClose}>
-              No
-            </Button>
-          </Stack>
-        </Popup>
+        <>
+          <Popup>
+            <>
+              <Typography align="center">Are you sure you want to logout?</Typography>
+              <Stack direction="row" gap={2}>
+                <Button
+                  sx={{ border: 'solid 1px black' }}
+                  variant="contained"
+                  color="error"
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate('/');
+                  }}>
+                  Yes
+                </Button>
+                <Button
+                  sx={{ border: 'solid 1px black' }}
+                  variant="contained"
+                  onClick={handleClose}>
+                  No
+                </Button>
+              </Stack>
+            </>
+          </Popup>
+        </>
       </Modal>
     </>
   );

@@ -40,6 +40,13 @@ const FeedContainer = styled(Stack)(({ theme }) => ({
   }
 }));
 
+const UploadForm = styled('form')({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '10px'
+});
+
 const FeedSkeleton = () => {
   return (
     <Stack spacing={3}>
@@ -136,47 +143,55 @@ export default function Feed(props) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <Popup id="upload-form" onSubmit={handleUpload} enctype="multipart/form-data">
-          <input
-            accept="image/*"
-            type="file"
-            onChange={(e) => setSelectedImage(e.target.files[0])}
-            name="selectedImage"
-          />
-          {imageUrl && selectedImage && (
-            <Box mt={2} mb={2} textAlign="center">
-              <img src={imageUrl} alt={selectedImage.name} height="200px" />
-            </Box>
-          )}
+        <>
+          <Popup>
+            <UploadForm id="upload-form" onSubmit={handleUpload} enctype="multipart/form-data">
+              <>
+                <input
+                  accept="image/*"
+                  type="file"
+                  onChange={(e) => setSelectedImage(e.target.files[0])}
+                  name="selectedImage"
+                />
+                {imageUrl && selectedImage && (
+                  <Box mt={2} mb={2} textAlign="center">
+                    <img src={imageUrl} alt={selectedImage.name} height="200px" />
+                  </Box>
+                )}
 
-          <TextField name="name" variant="outlined" label="Name" fullWidth></TextField>
-          <TextField
-            name="description"
-            variant="outlined"
-            label="Description"
-            fullWidth></TextField>
+                <TextField name="name" variant="outlined" label="Name" fullWidth></TextField>
+                <TextField
+                  name="description"
+                  variant="outlined"
+                  label="Description"
+                  fullWidth></TextField>
 
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={['root'].concat(folders)}
-            defaultValue={'root'}
-            sx={{ width: 200 }}
-            renderInput={(params) => <TextField name="folder" {...params} label="Select Folder" />}
-          />
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={['root'].concat(folders)}
+                  defaultValue={'root'}
+                  sx={{ width: 200 }}
+                  renderInput={(params) => (
+                    <TextField name="folder" {...params} label="Select Folder" />
+                  )}
+                />
 
-          <FormGroup>
-            <FormControlLabel
-              name="isPrivate"
-              label="private"
-              control={<Switch inputProps={{ 'aria-label': 'controlled' }} />}
-            />
-          </FormGroup>
+                <FormGroup>
+                  <FormControlLabel
+                    name="isPrivate"
+                    label="private"
+                    control={<Switch inputProps={{ 'aria-label': 'controlled' }} />}
+                  />
+                </FormGroup>
 
-          <Button variant="contained" type="submit">
-            Upload
-          </Button>
-        </Popup>
+                <Button variant="contained" type="submit">
+                  Upload
+                </Button>
+              </>
+            </UploadForm>
+          </Popup>
+        </>
       </Modal>
 
       <>

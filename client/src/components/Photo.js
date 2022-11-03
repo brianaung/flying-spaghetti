@@ -141,47 +141,55 @@ export default function Photo(props) {
         onClose={handleCloseShare}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <Popup>
-          <Typography align="center">Image Link</Typography>
-          <ImageLink>
-            {props.aPhoto.link}
-            <Box display="flex" justifyContent="flex-end" marginTop="1rem">
-              <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
-                <Checkbox
-                  onClick={() => {
-                    navigator.clipboard.writeText(props.aPhoto.link);
-                    setCopied(!copied);
-                  }}
-                  icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
-                  checkedIcon={<LibraryAddCheckIcon />}
-                />
-              </Tooltip>
-            </Box>
-          </ImageLink>
-        </Popup>
+        <>
+          <Popup>
+            <>
+              <Typography align="center">Image Link</Typography>
+              <ImageLink>
+                {props.aPhoto.link}
+                <Box display="flex" justifyContent="flex-end" marginTop="1rem">
+                  <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
+                    <Checkbox
+                      onClick={() => {
+                        navigator.clipboard.writeText(props.aPhoto.link);
+                        setCopied(!copied);
+                      }}
+                      icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
+                      checkedIcon={<LibraryAddCheckIcon />}
+                    />
+                  </Tooltip>
+                </Box>
+              </ImageLink>
+            </>
+          </Popup>
+        </>
       </Modal>
 
       {/* delete confirmation box */}
       <Modal open={openDel} onClose={handleCloseDel}>
-        <Popup>
-          <Typography align="center">Are you sure you want to delete this photo?</Typography>
-          <Stack direction="row" gap={2}>
-            <Button
-              sx={{ border: 'solid 1px black' }}
-              variant="contained"
-              color="error"
-              onClick={handleDelPhoto}>
-              Yes
-            </Button>
-            <Button
-              sx={{ border: 'solid 1px black' }}
-              variant="contained"
-              color="primary"
-              onClick={handleCloseDel}>
-              No
-            </Button>
-          </Stack>
-        </Popup>
+        <>
+          <Popup>
+            <>
+              <Typography align="center">Are you sure you want to delete this photo?</Typography>
+              <Stack direction="row" gap={2}>
+                <Button
+                  sx={{ border: 'solid 1px black' }}
+                  variant="contained"
+                  color="error"
+                  onClick={handleDelPhoto}>
+                  Yes
+                </Button>
+                <Button
+                  sx={{ border: 'solid 1px black' }}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleCloseDel}>
+                  No
+                </Button>
+              </Stack>
+            </>
+          </Popup>
+        </>
       </Modal>
     </div>
   );

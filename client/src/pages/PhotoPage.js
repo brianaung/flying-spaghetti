@@ -205,24 +205,28 @@ export default function PhotoPage() {
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description">
-          <Popup>
-            <Typography align="center">Image Link</Typography>
-            <ImageLink>
-              {photo.link}
-              <Box display="flex" justifyContent="flex-end" marginTop="1rem">
-                <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
-                  <Checkbox
-                    onClick={() => {
-                      navigator.clipboard.writeText(photo.link);
-                      setCopied(!copied);
-                    }}
-                    icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
-                    checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
-                  />
-                </Tooltip>
-              </Box>
-            </ImageLink>
-          </Popup>
+          <>
+            <Popup>
+              <>
+                <Typography align="center">Image Link</Typography>
+                <ImageLink>
+                  {photo.link}
+                  <Box display="flex" justifyContent="flex-end" marginTop="1rem">
+                    <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
+                      <Checkbox
+                        onClick={() => {
+                          navigator.clipboard.writeText(photo.link);
+                          setCopied(!copied);
+                        }}
+                        icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
+                        checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
+                      />
+                    </Tooltip>
+                  </Box>
+                </ImageLink>
+              </>
+            </Popup>
+          </>
         </Modal>
       </>
     );

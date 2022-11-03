@@ -64,27 +64,31 @@ export default function Home(props) {
 
         {/* popup form for login */}
         <Modal open={open} onClose={handleClose}>
-          <Popup gap={2}>
-            <LoginForm id="login-form" onSubmit={postLogin}>
-              <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
-              <TextField
-                id="password"
-                name="password"
-                variant="outlined"
-                label="Password"
-                type="password"></TextField>
-              <Button variant="contained" type="submit">
-                Login
-              </Button>
-              {isLoading && <CircularProgress />}
-            </LoginForm>
-            <Typography>
-              No account?{' '}
-              <Link href="/register" underline="none" variant="body2">
-                Register here
-              </Link>
-            </Typography>
-          </Popup>
+          <>
+            <Popup gap={2}>
+              <>
+                <LoginForm id="login-form" onSubmit={postLogin}>
+                  <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
+                  <TextField
+                    id="password"
+                    name="password"
+                    variant="outlined"
+                    label="Password"
+                    type="password"></TextField>
+                  <Button variant="contained" type="submit">
+                    Login
+                  </Button>
+                  {isLoading && <CircularProgress />}
+                </LoginForm>
+                <Typography>
+                  No account?{' '}
+                  <Link href="/register" underline="none" variant="body2">
+                    Register here
+                  </Link>
+                </Typography>
+              </>
+            </Popup>
+          </>
         </Modal>
 
         {/* Login/Register buttons */}
