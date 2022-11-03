@@ -21,6 +21,7 @@ const WelcomeMsg = styled(Typography)({
 
 const SidebarContainer = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.main,
+  borderRight: 'solid 1px',
   borderColor: theme.palette.divider,
   flexDirection: 'column',
   display: 'flex',
@@ -28,12 +29,12 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
   width: '20%',
   // TODO: toggle off sidebar in mobile view
   minWidth: '300px',
-  borderRight: 'solid 1px',
   padding: '20px',
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     borderRight: '0px',
-    borderBottom: 'solid 1px'
+    borderBottom: 'solid 1px',
+    borderColor: theme.palette.divider
   }
 }));
 

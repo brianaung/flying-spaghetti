@@ -17,12 +17,14 @@ import {
 // my components
 import Popup from '../components/Popup';
 
-const HomeContainer = styled(Stack)({
+const HomeContainer = styled(Stack)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
+  color: theme.palette.text.primary,
   padding: '0 300px',
   height: '100%',
   alignItems: 'center',
   minHeight: '100vh'
-});
+}));
 
 const LoginForm = styled('form')({
   display: 'flex',
@@ -68,14 +70,13 @@ export default function Home(props) {
             <Popup gap={2}>
               <>
                 <LoginForm id="login-form" onSubmit={postLogin}>
-                  <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
+                  <TextField id="email" name="email" label="Email"></TextField>
                   <TextField
                     id="password"
                     name="password"
-                    variant="outlined"
                     label="Password"
                     type="password"></TextField>
-                  <Button variant="contained" type="submit">
+                  <Button color="primary" variant="contained" type="submit">
                     Login
                   </Button>
                   {isLoading && <CircularProgress />}
@@ -97,6 +98,7 @@ export default function Home(props) {
             LOGIN
           </Button>
           <Button
+            color="secondary"
             variant="contained"
             onClick={() => {
               navigate('/register');
