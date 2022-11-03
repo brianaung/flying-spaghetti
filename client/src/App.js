@@ -6,6 +6,9 @@ import Dashboard from './pages/Dashboard';
 import PhotoPage from './pages/PhotoPage';
 import Home from './pages/Home';
 import Register from './pages/Register';
+// mui theme
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './theme';
 
 // protect routes to only give access to accounts with the role `user`
 const PrivateRoutes = (props) => {
@@ -69,42 +72,44 @@ export default function App() {
 
   return (
     <>
-      <UserContext.Provider value={user}>
-        <Routes>
-          <Route
-            path="/"
-            exact
-            element={
-              <PublicRoutes>
-                <Home handleLogin={setUser} />
-              </PublicRoutes>
-            }
-          />
+      <ThemeProvider theme={theme}>
+        <UserContext.Provider value={user}>
+          <Routes>
+            <Route
+              path="/"
+              exact
+              element={
+                <PublicRoutes>
+                  <Home handleLogin={setUser} />
+                </PublicRoutes>
+              }
+            />
 
-          <Route path="/register" exact element={<Register />} />
+            <Route path="/register" exact element={<Register />} />
 
-          {/* Protected routes */}
-          <Route
-            path="/dashboard/:id"
-            exact
-            element={
-              <PrivateRoutes>
-                <Dashboard />
-              </PrivateRoutes>
-            }
-          />
+            {/* Protected routes */}
+            <Route
+              path="/dashboard/:id"
+              exact
+              element={
+                <PrivateRoutes>
+                  <Dashboard />
+                </PrivateRoutes>
+              }
+            />
 
-          <Route
-            path="/photo/:id"
-            exact
-            element={
-              <PrivateRoutes>
-                <PhotoPage />
-              </PrivateRoutes>
-            }
-          />
-        </Routes>
-      </UserContext.Provider>
+            <Route
+              path="/photo/:id"
+              exact
+              element={
+                <PrivateRoutes>
+                  <PhotoPage />
+                </PrivateRoutes>
+              }
+            />
+          </Routes>
+        </UserContext.Provider>
+      </ThemeProvider>
     </>
   );
 }

@@ -18,20 +18,17 @@ const SidebarContainer = styled(Box)({
 export default function Progressbar(props) {
   return (
     <Box>
-      <Typography sx={{ textAlign: 'center' }} variant="body1">
-        Usage
-      </Typography>
       <SidebarContainer>
         <Box sx={{ width: '80%', mr: 1, border: 'solid 1px', borderRadius: '5px' }}>
           <LinearProgress
             sx={{ backgroundColor: 'white' }}
-            color="secondary"
+            color="info"
             variant="determinate"
             {...props}
           />
         </Box>
-        <Box sx={{ minWidth: 35 }}>
-          <Typography variant="body2">{`${Math.round(props.value)}%`}</Typography>
+        <Box sx={{ minWidth: '80px' }}>
+          <Typography variant="body2">{`${Math.round(props.value)}% used`}</Typography>
         </Box>
       </SidebarContainer>
     </Box>

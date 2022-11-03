@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userLogin } from '../actions/auth';
 // mui components
 import {
+  useTheme,
   styled,
   Stack,
   Modal,
@@ -38,6 +39,7 @@ export default function Home(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -70,8 +72,25 @@ export default function Home(props) {
             <Popup gap={2}>
               <>
                 <LoginForm id="login-form" onSubmit={postLogin}>
-                  <TextField id="email" name="email" label="Email"></TextField>
                   <TextField
+                    sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                    InputLabelProps={{
+                      style: {
+                        color: theme.palette.text.primary
+                      }
+                    }}
+                    variant="outlined"
+                    id="email"
+                    name="email"
+                    label="Email"></TextField>
+                  <TextField
+                    sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                    InputLabelProps={{
+                      style: {
+                        color: theme.palette.text.primary
+                      }
+                    }}
+                    variant="outlined"
                     id="password"
                     name="password"
                     label="Password"
@@ -83,7 +102,11 @@ export default function Home(props) {
                 </LoginForm>
                 <Typography>
                   No account?{' '}
-                  <Link href="/register" underline="none" variant="body2">
+                  <Link
+                    sx={{ color: theme.palette.text.primary }}
+                    href="/register"
+                    underline="none"
+                    variant="body2">
                     Register here
                   </Link>
                 </Typography>

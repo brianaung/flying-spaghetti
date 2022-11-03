@@ -17,7 +17,7 @@ const FolderContainer = styled(Stack)(({ theme }) => ({
 }));
 
 const Folder = styled(Box)(({ theme }) => ({
-  backgroundColor: 'white',
+  backgroundColor: theme.palette.background.main,
   borderRadius: theme.shape.borderRadius,
   border: '1px solid',
   display: 'flex',
@@ -52,7 +52,7 @@ export default function FolderFrame(props) {
             .map((folder) => {
               return (
                 <Folder key={folder} onClick={() => handleOpenFolder(folder)}>
-                  <FolderIcon color="primary" />
+                  <FolderIcon color="secondary" />
                   <Typography>{folder}</Typography>
                 </Folder>
               );

@@ -31,10 +31,13 @@ export const theme = createTheme({
     },
     // accent colors
     primary: {
-      main: '#2c2c2c'
+      main: '#27272a'
     },
     secondary: {
-      main: '#E8DB7D'
+      main: '#e8db7d'
+    },
+    info: {
+      main: '#3b28cc'
     }
   },
   typography: {

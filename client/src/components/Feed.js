@@ -5,6 +5,7 @@ import FormData from 'form-data';
 import { useDispatch, useSelector } from 'react-redux';
 // mui components
 import {
+  useTheme,
   styled,
   Button,
   Box,
@@ -70,6 +71,8 @@ const FeedSkeleton = () => {
 
 // TODO: add current directory
 export default function Feed(props) {
+  const theme = useTheme();
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -159,22 +162,36 @@ export default function Feed(props) {
                   </Box>
                 )}
 
-                <TextField name="name" variant="outlined" label="Name" fullWidth></TextField>
                 <TextField
-                  name="description"
+                  sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                  InputLabelProps={{
+                    style: {
+                      color: theme.palette.text.primary
+                    }
+                  }}
                   variant="outlined"
+                  name="name"
+                  label="Name"
+                  fullWidth></TextField>
+                <TextField
+                  sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                  InputLabelProps={{
+                    style: {
+                      color: theme.palette.text.primary
+                    }
+                  }}
+                  variant="outlined"
+                  name="description"
                   label="Description"
                   fullWidth></TextField>
 
                 <Autocomplete
+                  sx={{ width: 200, fieldset: { borderColor: theme.palette.divider } }}
                   disablePortal
                   id="combo-box-demo"
                   options={['root'].concat(folders)}
                   defaultValue={'root'}
-                  sx={{ width: 200 }}
-                  renderInput={(params) => (
-                    <TextField name="folder" {...params} label="Select Folder" />
-                  )}
+                  renderInput={(params) => <TextField name="folder" {...params} />}
                 />
 
                 <FormGroup>
@@ -185,7 +202,7 @@ export default function Feed(props) {
                   />
                 </FormGroup>
 
-                <Button variant="contained" type="submit">
+                <Button color="secondary" variant="contained" type="submit">
                   Upload
                 </Button>
               </>

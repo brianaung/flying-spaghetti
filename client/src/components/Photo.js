@@ -5,8 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { movePhotoToBin } from '../actions/photos';
 // mui components
-import { styled } from '@mui/system';
 import {
+  useTheme,
+  styled,
   Stack,
   Typography,
   Box,
@@ -26,7 +27,7 @@ import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import Popup from './Popup';
 
 const StyledImgListItem = styled(ImageListItem)({
-  borderBottom: 'solid 1px black',
+  borderBottom: 'solid 1px',
   width: '250px',
   overflow: 'hidden',
   aspectRatio: '1/1'
@@ -44,12 +45,14 @@ const ImageLink = styled(Box)(({ theme }) => ({
 
 const PhotoContainer = styled(Stack)(({ theme }) => ({
   // photo area will always be white regardless of dark or light mode?
-  backgroundColor: 'white',
+  backgroundColor: theme.palette.background.main,
   borderRadius: theme.shape.borderRadius,
-  border: 'solid 1px black'
+  border: 'solid 1px'
 }));
 
 export default function Photo(props) {
+  const theme = useTheme();
+
   const [copied, setCopied] = useState(false);
 
   const [openShare, setOpenShare] = useState(false);
@@ -89,10 +92,10 @@ export default function Photo(props) {
         </StyledImgListItem>
 
         <Box sx={{ padding: '5px 12px' }}>
-          <Typography variant="body1" color="primary" sx={{ textTransform: 'uppercase' }}>
+          <Typography variant="body1" sx={{ textTransform: 'uppercase' }}>
             {props.aPhoto.name}
           </Typography>
-          <Typography variant="body2" color="primary" sx={{ textTransform: 'lowercase' }}>
+          <Typography variant="body2" sx={{ textTransform: 'lowercase' }}>
             {props.aPhoto.caption}
           </Typography>
         </Box>
@@ -100,13 +103,13 @@ export default function Photo(props) {
         {/* like, comment, share buttons */}
         <Stack direction="row" sx={{ width: '100%' }}>
           <Checkbox
-            sx={{ color: '#2c2c2c' }}
+            sx={{ color: theme.palette.text.primary }}
             color="error"
             icon={<Heart size="30" />}
             checkedIcon={<Favorite size="30" />}
           />
 
-          <IconButton size="small" color="primary" onClick={() => {}}>
+          <IconButton sx={{ color: theme.palette.text.primary }} size="small" onClick={() => {}}>
             <Comment size="30" />
           </IconButton>
 
@@ -115,11 +118,16 @@ export default function Photo(props) {
            */}
           {canDelete ? (
             <>
-              <IconButton size="small" color="primary" onClick={handleOpenShare}>
+              <IconButton
+                sx={{ color: theme.palette.text.primary }}
+                size="small"
+                onClick={handleOpenShare}>
                 <Link size="30" />
               </IconButton>
 
-              <IconButton sx={{ marginLeft: 'auto' }} color="primary" onClick={handleOpenDel}>
+              <IconButton
+                sx={{ marginLeft: 'auto', color: theme.palette.text.primary }}
+                onClick={handleOpenDel}>
                 <Trash size="30" />
               </IconButton>
             </>
