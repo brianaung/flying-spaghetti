@@ -4,61 +4,41 @@ import { useNavigate } from 'react-router-dom';
 // data
 import { UserContext } from '../App';
 // mui components
-import {
-  styled,
-  Box,
-  Modal,
-  Typography,
-  Stack,
-  Button,
-  AppBar,
-  Toolbar,
-  Avatar
-} from '@mui/material';
+import { styled, Modal, Typography, Stack, Button, AppBar, Toolbar, Avatar } from '@mui/material';
 // my components
 import Searchbar from './Searchbar';
+import Popup from './Popup';
+import ColorModeToggle from './ColorModeToggle';
 
-const StyledToolbar = styled(Toolbar)({
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
   display: 'flex',
   justifyContent: 'space-between',
-  gap: '50px'
-});
+  gap: '50px',
+  borderBottom: 'solid 1px',
+  borderColor: theme.palette.divider
+}));
 
-const MenuBtn = styled(Button)({
-  color: 'white',
+const MenuBtn = styled(Button)(({ theme }) => ({
+  // todo: use the text palette in theme
+  color: theme.palette.text.primary,
   transition: 'transform 200ms ease 0s, background 200ms ease 0s',
   '&:hover': {
     transform: 'translateY(-2px)'
   }
-});
+}));
 
-const User = styled(Button)({
+const User = styled(Button)(({ theme }) => ({
+  // use the text color specified in theme
+  color: theme.palette.text.primary,
   display: 'flex',
   flexDirection: 'row',
   gap: '15px',
-  color: 'white',
   transition: 'transform 200ms ease 0s, background 200ms ease 0s',
   '&:hover': {
     transform: 'translateY(-2px)'
   }
-});
-
-const LinkBox = styled(Box)({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  border: '1px solid #000',
-  boxShadow: 24,
-  p: 4,
-  padding: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '20px',
-  flexDirection: 'column'
-});
+}));
 
 function stringToColor(string) {
   let hash = 0;
@@ -84,6 +64,7 @@ function stringAvatar(name) {
   return {
     sx: {
       color: 'black',
+      border: 'solid 1px black',
       bgcolor: stringToColor(name)
     },
     children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
@@ -111,33 +92,39 @@ export default function Navbar(props) {
 
           <Searchbar query={props.query} setQuery={props.setQuery} />
 
+          {/* TODO: move logout into a user profile dropdown? */}
           <MenuBtn onClick={handleOpen}>Logout</MenuBtn>
+
+          <ColorModeToggle />
         </StyledToolbar>
       </AppBar>
 
       <Modal open={open} onClose={handleClose}>
-        <LinkBox>
-          <Typography align="center">Are you sure you want to logout?</Typography>
-          <Stack direction="row" gap={2}>
-            <Button
-              sx={{ border: 'solid 2px black' }}
-              variant="contained"
-              color="error"
-              onClick={() => {
-                localStorage.clear();
-                navigate('/');
-              }}>
-              Yes
-            </Button>
-            <Button
-              sx={{ border: 'solid 2px black' }}
-              variant="contained"
-              color="primary"
-              onClick={handleClose}>
-              No
-            </Button>
-          </Stack>
-        </LinkBox>
+        <>
+          <Popup>
+            <>
+              <Typography align="center">Are you sure you want to logout?</Typography>
+              <Stack direction="row" gap={2}>
+                <Button
+                  sx={{ border: 'solid 1px black' }}
+                  variant="contained"
+                  color="error"
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate('/');
+                  }}>
+                  Yes
+                </Button>
+                <Button
+                  sx={{ border: 'solid 1px black' }}
+                  variant="contained"
+                  onClick={handleClose}>
+                  No
+                </Button>
+              </Stack>
+            </>
+          </Popup>
+        </>
       </Modal>
     </>
   );

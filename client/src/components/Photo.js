@@ -1,11 +1,13 @@
+/* NOTE: dark mode does not affect this page */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { movePhotoToBin } from '../actions/photos';
 // mui components
-import { styled } from '@mui/system';
 import {
+  useTheme,
+  styled,
   Stack,
   Typography,
   Box,
@@ -21,44 +23,36 @@ import { Comment, Trash, Link, Heart } from '@styled-icons/evil';
 import { Favorite } from '@styled-icons/material-rounded';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+// my components
+import Popup from './Popup';
 
 const StyledImgListItem = styled(ImageListItem)({
+  borderBottom: 'solid 1px',
   width: '250px',
   overflow: 'hidden',
-  borderBottom: 'solid 2px black',
   aspectRatio: '1/1'
 });
 
-const LinkBox = styled(Box)({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  border: '1px solid #000',
-  boxShadow: 24,
-  p: 4,
-  padding: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '20px',
-  flexDirection: 'column'
-});
-
-const ImageLink = styled(Box)({
-  border: '1px ridge',
+const ImageLink = styled(Box)(({ theme }) => ({
+  border: 'solid 1px',
+  borderColor: theme.palette.divider,
+  borderRadius: theme.shape.borderRadius,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   padding: '20px'
-});
+}));
 
-const PhotoContainer = styled(Stack)({
-  border: 'solid 2px black'
-});
+const PhotoContainer = styled(Stack)(({ theme }) => ({
+  // photo area will always be white regardless of dark or light mode?
+  backgroundColor: theme.palette.background.main,
+  borderRadius: theme.shape.borderRadius,
+  border: 'solid 1px'
+}));
 
 export default function Photo(props) {
+  const theme = useTheme();
+
   const [copied, setCopied] = useState(false);
 
   const [openShare, setOpenShare] = useState(false);
@@ -98,10 +92,10 @@ export default function Photo(props) {
         </StyledImgListItem>
 
         <Box sx={{ padding: '5px 12px' }}>
-          <Typography variant="body1" color="primary" sx={{ textTransform: 'uppercase' }}>
+          <Typography variant="body1" sx={{ textTransform: 'uppercase' }}>
             {props.aPhoto.name}
           </Typography>
-          <Typography variant="body2" color="primary" sx={{ textTransform: 'lowercase' }}>
+          <Typography variant="body2" sx={{ textTransform: 'lowercase' }}>
             {props.aPhoto.caption}
           </Typography>
         </Box>
@@ -109,13 +103,13 @@ export default function Photo(props) {
         {/* like, comment, share buttons */}
         <Stack direction="row" sx={{ width: '100%' }}>
           <Checkbox
-            sx={{ color: 'black' }}
+            sx={{ color: theme.palette.text.primary }}
             color="error"
             icon={<Heart size="30" />}
             checkedIcon={<Favorite size="30" />}
           />
 
-          <IconButton size="small" color="primary" onClick={() => {}}>
+          <IconButton sx={{ color: theme.palette.text.primary }} size="small" onClick={() => {}}>
             <Comment size="30" />
           </IconButton>
 
@@ -124,11 +118,16 @@ export default function Photo(props) {
            */}
           {canDelete ? (
             <>
-              <IconButton size="small" color="primary" onClick={handleOpenShare}>
+              <IconButton
+                sx={{ color: theme.palette.text.primary }}
+                size="small"
+                onClick={handleOpenShare}>
                 <Link size="30" />
               </IconButton>
 
-              <IconButton sx={{ marginLeft: 'auto' }} color="primary" onClick={handleOpenDel}>
+              <IconButton
+                sx={{ marginLeft: 'auto', color: theme.palette.text.primary }}
+                onClick={handleOpenDel}>
                 <Trash size="30" />
               </IconButton>
             </>
@@ -150,47 +149,55 @@ export default function Photo(props) {
         onClose={handleCloseShare}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <LinkBox>
-          <Typography align="center">Image Link</Typography>
-          <ImageLink>
-            {props.aPhoto.link}
-            <Box display="flex" justifyContent="flex-end" marginTop="1rem">
-              <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
-                <Checkbox
-                  onClick={() => {
-                    navigator.clipboard.writeText(props.aPhoto.link);
-                    setCopied(!copied);
-                  }}
-                  icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
-                  checkedIcon={<LibraryAddCheckIcon />}
-                />
-              </Tooltip>
-            </Box>
-          </ImageLink>
-        </LinkBox>
+        <>
+          <Popup>
+            <>
+              <Typography align="center">Image Link</Typography>
+              <ImageLink>
+                {props.aPhoto.link}
+                <Box display="flex" justifyContent="flex-end" marginTop="1rem">
+                  <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
+                    <Checkbox
+                      onClick={() => {
+                        navigator.clipboard.writeText(props.aPhoto.link);
+                        setCopied(!copied);
+                      }}
+                      icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
+                      checkedIcon={<LibraryAddCheckIcon />}
+                    />
+                  </Tooltip>
+                </Box>
+              </ImageLink>
+            </>
+          </Popup>
+        </>
       </Modal>
 
       {/* delete confirmation box */}
       <Modal open={openDel} onClose={handleCloseDel}>
-        <LinkBox>
-          <Typography align="center">Are you sure you want to delete this photo?</Typography>
-          <Stack direction="row" gap={2}>
-            <Button
-              sx={{ border: 'solid 2px black' }}
-              variant="contained"
-              color="error"
-              onClick={handleDelPhoto}>
-              Yes
-            </Button>
-            <Button
-              sx={{ border: 'solid 2px black' }}
-              variant="contained"
-              color="primary"
-              onClick={handleCloseDel}>
-              No
-            </Button>
-          </Stack>
-        </LinkBox>
+        <>
+          <Popup>
+            <>
+              <Typography align="center">Are you sure you want to delete this photo?</Typography>
+              <Stack direction="row" gap={2}>
+                <Button
+                  sx={{ border: 'solid 1px black' }}
+                  variant="contained"
+                  color="error"
+                  onClick={handleDelPhoto}>
+                  Yes
+                </Button>
+                <Button
+                  sx={{ border: 'solid 1px black' }}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleCloseDel}>
+                  No
+                </Button>
+              </Stack>
+            </>
+          </Popup>
+        </>
       </Modal>
     </div>
   );

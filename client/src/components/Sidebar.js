@@ -20,18 +20,29 @@ const WelcomeMsg = styled(Typography)({
 });
 
 const SidebarContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
+  borderRight: 'solid 1px',
+  borderColor: theme.palette.divider,
   flexDirection: 'column',
   display: 'flex',
   justifyContent: 'flex-start',
   width: '20%',
   // TODO: toggle off sidebar in mobile view
   minWidth: '300px',
-  borderRight: 'solid 1px lightgrey',
   padding: '20px',
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     borderRight: '0px',
-    borderBottom: 'solid 1px lightgrey'
+    borderBottom: 'solid 1px',
+    borderColor: theme.palette.divider
+  }
+}));
+
+const StyledListItemBtn = styled(ListItemButton)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  '&.Mui-selected': {
+    backgroundColor: theme.palette.secondary.main,
+    color: 'black'
   }
 }));
 
@@ -53,29 +64,29 @@ export default function Sidebar(props) {
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day {user.firstName}</WelcomeMsg>
 
-        <ListItemButton
+        <StyledListItemBtn
           selected={selectedIndex === 'folders'}
           onClick={() => handleListItemClick('folders')}>
           <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
-        </ListItemButton>
+        </StyledListItemBtn>
 
-        <ListItemButton
+        <StyledListItemBtn
           selected={selectedIndex === 'shared'}
           onClick={() => handleListItemClick('shared')}>
           <ListItemText primary="Shared With Me" onClick={() => navigate('/dashboard/shared')} />
-        </ListItemButton>
+        </StyledListItemBtn>
 
-        <ListItemButton
+        <StyledListItemBtn
           selected={selectedIndex === 'liked'}
           onClick={() => handleListItemClick('liked')}>
           <ListItemText primary="Liked" onClick={() => navigate('/dashboard/liked')} />
-        </ListItemButton>
+        </StyledListItemBtn>
 
-        <ListItemButton
+        <StyledListItemBtn
           selected={selectedIndex === 'trash'}
           onClick={() => handleListItemClick('trash')}>
           <ListItemText primary="Trash" onClick={() => navigate('/dashboard/trash')} />
-        </ListItemButton>
+        </StyledListItemBtn>
       </Stack>
 
       <Progressbar value={props.usage} />

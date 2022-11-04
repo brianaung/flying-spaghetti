@@ -2,21 +2,37 @@ import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // mui components
-import { styled, Button, TextField } from '@mui/material';
+import { useTheme, styled, Toolbar, Button, TextField } from '@mui/material';
+// my components
+import ColorModeToggle from '../components/ColorModeToggle';
 
 // TODO: make it a seperate component
 function Logo() {
   const navigate = useNavigate();
+  const theme = useTheme();
   return (
     <Button
+      sx={{
+        width: '100px',
+        color: theme.palette.text.primary
+      }}
       variant="text"
       onClick={() => {
         navigate('/');
       }}>
-      Share
+      Photo Share
     </Button>
   );
 }
+
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
+  display: 'flex',
+  justifyContent: 'space-between',
+  gap: '50px',
+  borderBottom: 'solid 1px',
+  borderColor: theme.palette.divider
+}));
 
 const RegisterForm = styled('form')({
   display: 'flex',
@@ -29,6 +45,8 @@ const RegisterForm = styled('form')({
 
 // TODO: style it
 export default function Register() {
+  const theme = useTheme();
+
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -56,26 +74,68 @@ export default function Register() {
   };
 
   return (
-    <>
-      <Logo />
+    <div
+      style={{
+        backgroundColor: theme.palette.background.main,
+        color: theme.palette.text.primary,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh'
+      }}>
+      <StyledToolbar>
+        <Logo />
+        <ColorModeToggle />
+      </StyledToolbar>
       <RegisterForm id="register-form" onSubmit={handleRegister}>
         <TextField
+          sx={{ fieldset: { borderColor: theme.palette.divider } }}
+          InputLabelProps={{
+            style: {
+              color: theme.palette.text.primary
+            }
+          }}
           id="firstName"
           name="firstName"
           variant="outlined"
           label="First Name"></TextField>
-        <TextField id="lastName" name="lastName" variant="outlined" label="Last Name"></TextField>
-        <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
         <TextField
+          sx={{ fieldset: { borderColor: theme.palette.divider } }}
+          InputLabelProps={{
+            style: {
+              color: theme.palette.text.primary
+            }
+          }}
+          id="lastName"
+          name="lastName"
+          variant="outlined"
+          label="Last Name"></TextField>
+        <TextField
+          sx={{ fieldset: { borderColor: theme.palette.divider } }}
+          InputLabelProps={{
+            style: {
+              color: theme.palette.text.primary
+            }
+          }}
+          id="email"
+          name="email"
+          variant="outlined"
+          label="Email"></TextField>
+        <TextField
+          sx={{ fieldset: { borderColor: theme.palette.divider } }}
+          InputLabelProps={{
+            style: {
+              color: theme.palette.text.primary
+            }
+          }}
           id="password"
           name="password"
           variant="outlined"
           label="Password"
           type="password"></TextField>
-        <Button variant="contained" color="primary" type="submit">
+        <Button color="secondary" variant="contained" type="submit">
           Register
         </Button>
       </RegisterForm>
-    </>
+    </div>
   );
 }

@@ -1,17 +1,57 @@
-import { createTheme } from '@mui/material';
+// import { createTheme } from '@mui/material';
 
-export const theme = createTheme({
+export const getDesignTokens = (mode) => ({
   palette: {
-    primary: {
-      main: '#2C2C2C'
-    },
-    secondary: {
-      main: '#E8DB7D'
-    },
-    success: {
-      main: '#499f68'
-    }
+    mode,
+    ...(mode === 'light'
+      ? {
+          // light mode
+          background: {
+            main: '#fbfefb'
+          },
+          divider: '#2f2f35',
+          text: {
+            primary: '#18181b'
+          },
+          // accent colors
+          primary: {
+            main: '#27272a'
+          },
+          secondary: {
+            main: '#E8DB7D'
+          },
+          error: {
+            main: '#ce2d4f'
+          },
+          info: {
+            main: '#1c77c3'
+          }
+        }
+      : {
+          // dark mode
+          background: {
+            main: '#18181b'
+          },
+          divider: '#2f2f35',
+          text: {
+            primary: '#fbfefb'
+          },
+          // accent colors
+          primary: {
+            main: '#27272a'
+          },
+          secondary: {
+            main: '#E8DB7D'
+          },
+          error: {
+            main: '#ce2d4f'
+          },
+          info: {
+            main: '#39a9db'
+          }
+        })
   },
+
   typography: {
     fontFamily: ['"Montserrat"', 'Roboto', 'Arial'].join(','),
     h1: {
@@ -35,5 +75,32 @@ export const theme = createTheme({
       fontWeight: '600'
     }
   },
-  shadows: ['none']
+
+  shadows: Array(25).fill('none'),
+
+  components: {
+    // you can set global styles here
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          // use class names or regular css properties
+          // e.g.
+          // '&.Mui-selected': {
+          //   backgroundColor: 'grey',
+          // },
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '&.MuiButton-contained': {
+            border: 'solid 1px black'
+          }
+        }
+      }
+    }
+  }
 });
+
+// export const theme = createTheme(getDesignTokens('light'));

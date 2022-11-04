@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userLogin } from '../actions/auth';
 // mui components
 import {
+  useTheme,
   styled,
   Stack,
   Modal,
@@ -15,34 +16,15 @@ import {
   CircularProgress
 } from '@mui/material';
 // my components
-// import Gallery from '../components/Gallery';
+import Popup from '../components/Popup';
+import ColorModeToggle from '../components/ColorModeToggle';
 
-const HomeContainer = styled(Stack)({
+const HomeContainer = styled(Stack)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
+  color: theme.palette.text.primary,
   padding: '0 300px',
-  height: '100%',
-  alignItems: 'center',
-  minHeight: '100vh'
-});
-
-/* const TextGrid = styled(Grid)({
-  padding: '30px',
-  border: 'solid 2px black',
-  backgroundColor: 'white'
-}); */
-
-const LoginBox = styled(Stack)({
-  alignItems: 'center',
-  padding: '20px',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  backgroundColor: 'white',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4
-});
+  margin: 'auto'
+}));
 
 const LoginForm = styled('form')({
   display: 'flex',
@@ -56,6 +38,7 @@ export default function Home(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -71,58 +54,94 @@ export default function Home(props) {
   }, [user]);
 
   return (
-    <HomeContainer direction="row">
-      <Stack alignItems="flex-start" gap={5}>
-        <Typography variant="h1">PHOTO SHARE</Typography>
-        <p>
-          <Typography variant="h3">
-            Put your memories on display. Show off your photos in a way that’s both beautiful and
-            intuitive, on this very best platform to safely share and organize your family’s photos.
-            <br />
-          </Typography>
-        </p>
-
-        {/* popup form for login */}
-        <Modal open={open} onClose={handleClose}>
-          <LoginBox gap={2}>
-            <LoginForm id="login-form" onSubmit={postLogin}>
-              <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
-              <TextField
-                id="password"
-                name="password"
-                variant="outlined"
-                label="Password"
-                type="password"></TextField>
-              <Button variant="contained" color="primary" type="submit">
-                Login
-              </Button>
-              {isLoading && <CircularProgress />}
-            </LoginForm>
-            <Typography>
-              No account?{' '}
-              <Link href="/register" underline="none" variant="body2">
-                Register here
-              </Link>
+    <div
+      style={{
+        backgroundColor: theme.palette.background.main,
+        color: theme.palette.text.primary,
+        padding: '10px',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh'
+      }}>
+      <ColorModeToggle />
+      <HomeContainer direction="row">
+        <Stack alignItems="flex-start" gap={5}>
+          <Typography variant="h1">PHOTO SHARE</Typography>
+          <p>
+            <Typography variant="h3">
+              Put your memories on display. Show off your photos in a way that’s both beautiful and
+              intuitive, on this very best platform to safely share and organize your family’s
+              photos.
+              <br />
             </Typography>
-          </LoginBox>
-        </Modal>
+          </p>
 
-        {/* Login/Register buttons */}
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" color="primary" onClick={handleOpen}>
-            LOGIN
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              navigate('/register');
-            }}>
-            GET STARTED
-          </Button>
+          {/* popup form for login */}
+          <Modal open={open} onClose={handleClose}>
+            <>
+              <Popup gap={2}>
+                <>
+                  <LoginForm id="login-form" onSubmit={postLogin}>
+                    <TextField
+                      sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                      InputLabelProps={{
+                        style: {
+                          color: theme.palette.text.primary
+                        }
+                      }}
+                      variant="outlined"
+                      id="email"
+                      name="email"
+                      label="Email"></TextField>
+                    <TextField
+                      sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                      InputLabelProps={{
+                        style: {
+                          color: theme.palette.text.primary
+                        }
+                      }}
+                      variant="outlined"
+                      id="password"
+                      name="password"
+                      label="Password"
+                      type="password"></TextField>
+                    <Button color="primary" variant="contained" type="submit">
+                      Login
+                    </Button>
+                    {isLoading && <CircularProgress color="secondary" />}
+                  </LoginForm>
+                  <Typography>
+                    No account?{' '}
+                    <Link
+                      sx={{ color: theme.palette.text.primary }}
+                      href="/register"
+                      underline="none"
+                      variant="body2">
+                      Register here
+                    </Link>
+                  </Typography>
+                </>
+              </Popup>
+            </>
+          </Modal>
+
+          {/* Login/Register buttons */}
+          <Stack direction="row" spacing={2}>
+            <Button variant="contained" onClick={handleOpen}>
+              LOGIN
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={() => {
+                navigate('/register');
+              }}>
+              GET STARTED
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </HomeContainer>
+      </HomeContainer>
+    </div>
   );
 }
 

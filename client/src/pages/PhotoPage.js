@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import styled from '@emotion/styled';
 // mui components
 import {
+  useTheme,
   styled,
   Link as Muilink,
   Checkbox,
@@ -22,7 +22,7 @@ import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutl
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 // my components
 import Navbar from '../components/Navbar';
-// import Sidebar from '../components/Sidebar';
+import Popup from '../components/Popup';
 
 //sample data
 //import { comments } from '../data/photo-data';
@@ -45,6 +45,8 @@ const MainSection = styled(Stack)(({ theme }) => ({
 
 const PhotoSection = styled(Grid)(({ theme }) => ({
   display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   flexDirection: 'column',
   width: '50%',
   [theme.breakpoints.down('sm')]: {
@@ -53,12 +55,13 @@ const PhotoSection = styled(Grid)(({ theme }) => ({
 }));
 
 const CommentSection = styled(Box)(({ theme }) => ({
+  border: 'solid 1px',
+  borderColor: theme.palette.divider,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   width: '50%',
   gap: '20px',
-  border: 'solid 2px black',
   [theme.breakpoints.down('sm')]: {
     width: '100%'
   }
@@ -71,32 +74,19 @@ const StyledBox = styled(Box)({
   flexDirection: 'column'
 });
 
-const LinkBox = styled(Box)({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  backgroundColor: 'white',
-  border: '1px solid #000',
-  boxShadow: 24,
-  p: 4,
-  padding: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '20px',
-  flexDirection: 'column'
-});
-
-const ImageLink = styled(Box)({
-  border: '1px ridge',
+const ImageLink = styled(Box)(({ theme }) => ({
+  border: 'solid 1px',
+  borderColor: theme.palette.divider,
+  borderRadius: theme.shape.borderRadius,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   padding: '20px'
-});
+}));
 
 export default function PhotoPage() {
+  const theme = useTheme();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -127,7 +117,11 @@ export default function PhotoPage() {
     return null;
   } else {
     return (
-      <>
+      <Box
+        sx={{
+          backgroundColor: theme.palette.background.main,
+          color: theme.palette.text.primary
+        }}>
         <Navbar />
 
         <Stack>
@@ -147,7 +141,7 @@ export default function PhotoPage() {
             <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`} ref={container1}></Box>
             <img
               ref={container}
-              width="100%"
+              width="80%"
               style={{ maxHeight: '40rem' }}
               src={photo.link}
               alt={photo.caption}
@@ -165,7 +159,7 @@ export default function PhotoPage() {
               </Typography>
             </StyledBox>
 
-            <Divider style={{ width: '80%' }}></Divider>
+            <Divider style={{ width: '90%' }}></Divider>
 
             {/* comments  */}
             <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
@@ -185,23 +179,37 @@ export default function PhotoPage() {
               {/* icons */}
               <Box display="flex" justifyContent="space-between">
                 <Checkbox
+                  sx={{ color: theme.palette.text.primary }}
                   color="error"
                   size="medium"
                   icon={<Heart size="30" />}
                   checkedIcon={<Favorite size="30" />}
                 />
-                <Button sx={{ marginRight: 'auto' }} color="primary" onClick={handleOpen}>
+                <Button
+                  sx={{
+                    color: theme.palette.text.primary,
+                    marginRight: 'auto'
+                  }}
+                  onClick={handleOpen}>
                   <Link size="30" />
                 </Button>
               </Box>
               <Stack direction="row" spacing={2}>
                 <TextField
+                  sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                  InputLabelProps={{
+                    style: {
+                      color: theme.palette.text.primary
+                    }
+                  }}
                   fullWidth
                   name="comment"
                   label="Add a comment"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}></TextField>
                 <Button
+                  variant="contained"
+                  color="secondary"
                   type="submit"
                   onClick={() => {
                     dispatch(postComment(photo.id, { text: comment }));
@@ -220,26 +228,30 @@ export default function PhotoPage() {
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description">
-          <LinkBox>
-            <Typography align="center">Image Link</Typography>
-            <ImageLink>
-              {photo.link}
-              <Box display="flex" justifyContent="flex-end" marginTop="1rem">
-                <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
-                  <Checkbox
-                    onClick={() => {
-                      navigator.clipboard.writeText(photo.link);
-                      setCopied(!copied);
-                    }}
-                    icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
-                    checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
-                  />
-                </Tooltip>
-              </Box>
-            </ImageLink>
-          </LinkBox>
+          <>
+            <Popup>
+              <>
+                <Typography align="center">Image Link</Typography>
+                <ImageLink>
+                  {photo.link}
+                  <Box display="flex" justifyContent="flex-end" marginTop="1rem">
+                    <Tooltip title={copied ? 'Link copied!' : 'Click to copy'} placement="left">
+                      <Checkbox
+                        onClick={() => {
+                          navigator.clipboard.writeText(photo.link);
+                          setCopied(!copied);
+                        }}
+                        icon={<LibraryAddCheckOutlinedIcon fontSize="medium" />}
+                        checkedIcon={<LibraryAddCheckIcon sx={{ color: 'green' }} />}
+                      />
+                    </Tooltip>
+                  </Box>
+                </ImageLink>
+              </>
+            </Popup>
+          </>
         </Modal>
-      </>
+      </Box>
     );
   }
 }

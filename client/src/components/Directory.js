@@ -22,11 +22,13 @@ export default function Directory(props) {
       props.currFolder == 'liked' ? (
         <></>
       ) : (
-        <Breadcrumbs fontSize="large">
+        <Breadcrumbs color="textPrimary" fontSize="large">
           <Link component="button" underline="hover" color="inherit" onClick={handleNavigation}>
-            <Typography variant="body1">Home</Typography>
+            <Typography color="textPrimary" variant="body1">
+              Home
+            </Typography>
           </Link>
-          <Typography variant="h3" color="primary">
+          <Typography color="textPrimary" variant="h3">
             {props.currFolder}
           </Typography>
         </Breadcrumbs>

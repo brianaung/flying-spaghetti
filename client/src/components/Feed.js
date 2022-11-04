@@ -5,6 +5,7 @@ import FormData from 'form-data';
 import { useDispatch, useSelector } from 'react-redux';
 // mui components
 import {
+  useTheme,
   styled,
   Button,
   Box,
@@ -26,9 +27,11 @@ import AddIcon from '@mui/icons-material/Add';
 import PhotoFrame from '../components/PhotoFrame';
 import FolderFrame from '../components/FolderFrame';
 import Directory from '../components/Directory';
+import Popup from '../components/Popup';
 //import FoldersPage from '../pages/FoldersPage';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
   gap: '50px',
   justifyContent: 'flex-start',
   padding: '30px',
@@ -38,19 +41,11 @@ const FeedContainer = styled(Stack)(({ theme }) => ({
   }
 }));
 
-const SubmitForm = styled('form')({
+const UploadForm = styled('form')({
   display: 'flex',
   flexDirection: 'column',
-  gap: '20px',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '30%',
-  backgroundColor: 'white',
-  border: '2px solid black',
-  p: 4,
-  padding: '20px'
+  alignItems: 'center',
+  gap: '10px'
 });
 
 const FeedSkeleton = () => {
@@ -76,6 +71,8 @@ const FeedSkeleton = () => {
 
 // TODO: add current directory
 export default function Feed(props) {
+  const theme = useTheme();
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -136,7 +133,7 @@ export default function Feed(props) {
   return (
     <FeedContainer>
       <Fab
-        sx={{ border: 'solid 2px' }}
+        sx={{ border: 'solid 1px black' }}
         color="secondary"
         size="medium"
         aria-label="add"
@@ -149,47 +146,69 @@ export default function Feed(props) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
-        <SubmitForm id="upload-form" onSubmit={handleUpload} enctype="multipart/form-data">
-          <input
-            accept="image/*"
-            type="file"
-            onChange={(e) => setSelectedImage(e.target.files[0])}
-            name="selectedImage"
-          />
-          {imageUrl && selectedImage && (
-            <Box mt={2} mb={2} textAlign="center">
-              <img src={imageUrl} alt={selectedImage.name} height="200px" />
-            </Box>
-          )}
+        <>
+          <Popup>
+            <UploadForm id="upload-form" onSubmit={handleUpload} enctype="multipart/form-data">
+              <>
+                <input
+                  accept="image/*"
+                  type="file"
+                  onChange={(e) => setSelectedImage(e.target.files[0])}
+                  name="selectedImage"
+                />
+                {imageUrl && selectedImage && (
+                  <Box mt={2} mb={2} textAlign="center">
+                    <img src={imageUrl} alt={selectedImage.name} height="200px" />
+                  </Box>
+                )}
 
-          <TextField name="name" variant="outlined" label="Name" fullWidth></TextField>
-          <TextField
-            name="description"
-            variant="outlined"
-            label="Description"
-            fullWidth></TextField>
+                <TextField
+                  sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                  InputLabelProps={{
+                    style: {
+                      color: theme.palette.text.primary
+                    }
+                  }}
+                  variant="outlined"
+                  name="name"
+                  label="Name"
+                  fullWidth></TextField>
+                <TextField
+                  sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                  InputLabelProps={{
+                    style: {
+                      color: theme.palette.text.primary
+                    }
+                  }}
+                  variant="outlined"
+                  name="description"
+                  label="Description"
+                  fullWidth></TextField>
 
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={['root'].concat(folders)}
-            defaultValue={'root'}
-            sx={{ width: 200 }}
-            renderInput={(params) => <TextField name="folder" {...params} label="Select Folder" />}
-          />
+                <Autocomplete
+                  sx={{ width: 200, fieldset: { borderColor: theme.palette.divider } }}
+                  disablePortal
+                  id="combo-box-demo"
+                  options={['root'].concat(folders)}
+                  defaultValue={'root'}
+                  renderInput={(params) => <TextField name="folder" {...params} />}
+                />
 
-          <FormGroup>
-            <FormControlLabel
-              name="isPrivate"
-              label="private"
-              control={<Switch inputProps={{ 'aria-label': 'controlled' }} />}
-            />
-          </FormGroup>
+                <FormGroup>
+                  <FormControlLabel
+                    name="isPrivate"
+                    label="private"
+                    control={<Switch inputProps={{ 'aria-label': 'controlled' }} />}
+                  />
+                </FormGroup>
 
-          <Button variant="contained" color="primary" type="submit">
-            Upload
-          </Button>
-        </SubmitForm>
+                <Button color="secondary" variant="contained" type="submit">
+                  Upload
+                </Button>
+              </>
+            </UploadForm>
+          </Popup>
+        </>
       </Modal>
 
       <>
