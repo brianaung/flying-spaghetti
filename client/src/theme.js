@@ -1,43 +1,51 @@
 import { createTheme } from '@mui/material';
 
 export const theme = createTheme({
-  // for light mode
-  /* palette: {
-    // white background and black text and gray divider
-    background: {
-      main: '#ffffff'
-    },
-    divider: '#2c2c2c',
-    text: {
-      primary: '#2c2c2c'
-    },
-    // accent colors
-    primary: {
-      main: '#2c2c2c'
-    },
-    secondary: {
-      main: '#E8DB7D'
-    }
-  }, */
-  // for dark mode
+  /* // for light mode
   palette: {
     // white background and black text and gray divider
     background: {
-      main: '#18181b'
+      main: '#fbfefb',
     },
     divider: '#2f2f35',
     text: {
-      primary: '#d4d4d8'
+      primary: '#18181b'
     },
     // accent colors
     primary: {
       main: '#27272a'
     },
     secondary: {
-      main: '#e8db7d'
+      main: '#E8DB7D'
+    },
+    error: {
+      main: '#ce2d4f'
     },
     info: {
-      main: '#3b28cc'
+      main: '#1c77c3'
+    }
+  }, */
+  // for dark mode
+  palette: {
+    background: {
+      main: '#18181b'
+    },
+    divider: '#2f2f35',
+    text: {
+      primary: '#fbfefb'
+    },
+    // accent colors
+    primary: {
+      main: '#27272a'
+    },
+    secondary: {
+      main: '#E8DB7D'
+    },
+    error: {
+      main: '#ce2d4f'
+    },
+    info: {
+      main: '#39a9db'
     }
   },
 
@@ -68,14 +76,17 @@ export const theme = createTheme({
   shadows: ['none'],
 
   components: {
+    // you can set global styles here
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          '&.Mui-selected': {
-            backgroundColor: '#27272a',
-          },
-        },
-      },
-    },
-  },
+          // use class names or regular css properties
+          // e.g.
+          // '&.Mui-selected': {
+          //   backgroundColor: 'grey',
+          // },
+        }
+      }
+    }
+  }
 });

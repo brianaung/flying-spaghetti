@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 // mui components
 import {
+  useTheme,
   styled,
   Link as Muilink,
   Checkbox,
@@ -44,6 +45,8 @@ const MainSection = styled(Stack)(({ theme }) => ({
 
 const PhotoSection = styled(Grid)(({ theme }) => ({
   display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   flexDirection: 'column',
   width: '50%',
   [theme.breakpoints.down('sm')]: {
@@ -82,6 +85,8 @@ const ImageLink = styled(Box)(({ theme }) => ({
 }));
 
 export default function PhotoPage() {
+  const theme = useTheme();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -112,7 +117,11 @@ export default function PhotoPage() {
     return null;
   } else {
     return (
-      <>
+      <Box
+        sx={{
+          backgroundColor: theme.palette.background.main,
+          color: theme.palette.text.primary
+        }}>
         <Navbar />
 
         <Stack>
@@ -132,7 +141,7 @@ export default function PhotoPage() {
             <Box bgcolor="black" height={`calc((100% - ${imgHeight}px)/2)`} ref={container1}></Box>
             <img
               ref={container}
-              width="100%"
+              width="80%"
               style={{ maxHeight: '40rem' }}
               src={photo.link}
               alt={photo.caption}
@@ -150,7 +159,7 @@ export default function PhotoPage() {
               </Typography>
             </StyledBox>
 
-            <Divider style={{ width: '80%' }}></Divider>
+            <Divider style={{ width: '90%' }}></Divider>
 
             {/* comments  */}
             <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
@@ -170,23 +179,37 @@ export default function PhotoPage() {
               {/* icons */}
               <Box display="flex" justifyContent="space-between">
                 <Checkbox
+                  sx={{ color: theme.palette.text.primary }}
                   color="error"
                   size="medium"
                   icon={<Heart size="30" />}
                   checkedIcon={<Favorite size="30" />}
                 />
-                <Button sx={{ marginRight: 'auto' }} onClick={handleOpen}>
+                <Button
+                  sx={{
+                    color: theme.palette.text.primary,
+                    marginRight: 'auto'
+                  }}
+                  onClick={handleOpen}>
                   <Link size="30" />
                 </Button>
               </Box>
               <Stack direction="row" spacing={2}>
                 <TextField
+                  sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                  InputLabelProps={{
+                    style: {
+                      color: theme.palette.text.primary
+                    }
+                  }}
                   fullWidth
                   name="comment"
                   label="Add a comment"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}></TextField>
                 <Button
+                  variant="contained"
+                  color="secondary"
                   type="submit"
                   onClick={() => {
                     dispatch(postComment(photo.id, { text: comment }));
@@ -228,7 +251,7 @@ export default function PhotoPage() {
             </Popup>
           </>
         </Modal>
-      </>
+      </Box>
     );
   }
 }

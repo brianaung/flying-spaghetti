@@ -2,13 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // mui components
-import { styled, Button, TextField } from '@mui/material';
+import { useTheme, styled, Box, Button, TextField } from '@mui/material';
 
 // TODO: make it a seperate component
 function Logo() {
   const navigate = useNavigate();
   return (
     <Button
+      color="secondary"
       variant="text"
       onClick={() => {
         navigate('/');
@@ -29,6 +30,8 @@ const RegisterForm = styled('form')({
 
 // TODO: style it
 export default function Register() {
+  const theme = useTheme();
+
   const handleRegister = (e) => {
     e.preventDefault();
 
@@ -56,26 +59,63 @@ export default function Register() {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        backgroundColor: theme.palette.background.main,
+        color: theme.palette.text.primary,
+        height: '100vh'
+      }}>
       <Logo />
       <RegisterForm id="register-form" onSubmit={handleRegister}>
         <TextField
+          sx={{ fieldset: { borderColor: theme.palette.divider } }}
+          InputLabelProps={{
+            style: {
+              color: theme.palette.text.primary
+            }
+          }}
           id="firstName"
           name="firstName"
           variant="outlined"
           label="First Name"></TextField>
-        <TextField id="lastName" name="lastName" variant="outlined" label="Last Name"></TextField>
-        <TextField id="email" name="email" variant="outlined" label="Email"></TextField>
         <TextField
+          sx={{ fieldset: { borderColor: theme.palette.divider } }}
+          InputLabelProps={{
+            style: {
+              color: theme.palette.text.primary
+            }
+          }}
+          id="lastName"
+          name="lastName"
+          variant="outlined"
+          label="Last Name"></TextField>
+        <TextField
+          sx={{ fieldset: { borderColor: theme.palette.divider } }}
+          InputLabelProps={{
+            style: {
+              color: theme.palette.text.primary
+            }
+          }}
+          id="email"
+          name="email"
+          variant="outlined"
+          label="Email"></TextField>
+        <TextField
+          sx={{ fieldset: { borderColor: theme.palette.divider } }}
+          InputLabelProps={{
+            style: {
+              color: theme.palette.text.primary
+            }
+          }}
           id="password"
           name="password"
           variant="outlined"
           label="Password"
           type="password"></TextField>
-        <Button variant="contained" type="submit">
+        <Button color="secondary" variant="contained" type="submit">
           Register
         </Button>
       </RegisterForm>
-    </>
+    </Box>
   );
 }

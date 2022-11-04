@@ -98,7 +98,7 @@ export default function Home(props) {
                   <Button color="primary" variant="contained" type="submit">
                     Login
                   </Button>
-                  {isLoading && <CircularProgress />}
+                  {isLoading && <CircularProgress color="secondary" />}
                 </LoginForm>
                 <Typography>
                   No account?{' '}

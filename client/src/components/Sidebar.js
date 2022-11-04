@@ -38,6 +38,14 @@ const SidebarContainer = styled(Box)(({ theme }) => ({
   }
 }));
 
+const StyledListItemBtn = styled(ListItemButton)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  '&.Mui-selected': {
+    backgroundColor: theme.palette.secondary.main,
+    color: 'black'
+  }
+}));
+
 // const selected = localStorage.getItem('selected') ? localStorage.getItem('selected') : '0';
 export default function Sidebar(props) {
   const { id } = useParams();
@@ -56,29 +64,29 @@ export default function Sidebar(props) {
       <Stack>
         <WelcomeMsg variant="h3">G&apos;day {user.firstName}</WelcomeMsg>
 
-        <ListItemButton
+        <StyledListItemBtn
           selected={selectedIndex === 'folders'}
           onClick={() => handleListItemClick('folders')}>
           <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
-        </ListItemButton>
+        </StyledListItemBtn>
 
-        <ListItemButton
+        <StyledListItemBtn
           selected={selectedIndex === 'shared'}
           onClick={() => handleListItemClick('shared')}>
           <ListItemText primary="Shared With Me" onClick={() => navigate('/dashboard/shared')} />
-        </ListItemButton>
+        </StyledListItemBtn>
 
-        <ListItemButton
+        <StyledListItemBtn
           selected={selectedIndex === 'liked'}
           onClick={() => handleListItemClick('liked')}>
           <ListItemText primary="Liked" onClick={() => navigate('/dashboard/liked')} />
-        </ListItemButton>
+        </StyledListItemBtn>
 
-        <ListItemButton
+        <StyledListItemBtn
           selected={selectedIndex === 'trash'}
           onClick={() => handleListItemClick('trash')}>
           <ListItemText primary="Trash" onClick={() => navigate('/dashboard/trash')} />
-        </ListItemButton>
+        </StyledListItemBtn>
       </Stack>
 
       <Progressbar value={props.usage} />
