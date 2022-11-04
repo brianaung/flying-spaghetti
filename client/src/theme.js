@@ -5,50 +5,51 @@ export const getDesignTokens = (mode) => ({
     mode,
     ...(mode === 'light'
       ? {
-        // light mode
-        background: {
-          main: '#fbfefb',
-        },
-        divider: '#2f2f35',
-        text: {
-          primary: '#18181b'
-        },
-        // accent colors
-        primary: {
-          main: '#27272a'
-        },
-        secondary: {
-          main: '#E8DB7D'
-        },
-        error: {
-          main: '#ce2d4f'
-        },
-        info: {
-          main: '#1c77c3'
-        },
-      } : {
-        // dark mode
-        background: {
-          main: '#18181b'
-        },
-        divider: '#2f2f35',
-        text: {
-          primary: '#fbfefb'
-        },
-        // accent colors
-        primary: {
-          main: '#27272a'
-        },
-        secondary: {
-          main: '#E8DB7D'
-        },
-        error: {
-          main: '#ce2d4f'
-        },
-        info: {
-          main: '#39a9db'
+          // light mode
+          background: {
+            main: '#fbfefb'
+          },
+          divider: '#2f2f35',
+          text: {
+            primary: '#18181b'
+          },
+          // accent colors
+          primary: {
+            main: '#27272a'
+          },
+          secondary: {
+            main: '#E8DB7D'
+          },
+          error: {
+            main: '#ce2d4f'
+          },
+          info: {
+            main: '#1c77c3'
+          }
         }
-      }),
+      : {
+          // dark mode
+          background: {
+            main: '#18181b'
+          },
+          divider: '#2f2f35',
+          text: {
+            primary: '#fbfefb'
+          },
+          // accent colors
+          primary: {
+            main: '#27272a'
+          },
+          secondary: {
+            main: '#E8DB7D'
+          },
+          error: {
+            main: '#ce2d4f'
+          },
+          info: {
+            main: '#39a9db'
+          }
+        })
   },
 
   typography: {
@@ -91,7 +92,6 @@ export const getDesignTokens = (mode) => ({
       }
     }
   }
-
 });
 
 // export const theme = createTheme(getDesignTokens('light'));

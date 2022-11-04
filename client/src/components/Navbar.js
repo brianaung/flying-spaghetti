@@ -110,9 +110,11 @@ export default function Navbar(props) {
 
           <Searchbar query={props.query} setQuery={props.setQuery} />
 
-          {/* TODO: move logout into a user profile dropdown? */} 
+          {/* TODO: move logout into a user profile dropdown? */}
           <MenuBtn onClick={handleOpen}>Logout</MenuBtn>
-          <IconButton sx={{ ml: 1, color: theme.palette.text.primary }} onClick={colorMode.toggleColorMode}>
+          <IconButton
+            sx={{ ml: 1, color: theme.palette.text.primary }}
+            onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </StyledToolbar>

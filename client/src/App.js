@@ -52,12 +52,10 @@ export default function App() {
     () => ({
       // The dark mode switch would invoke this method
       toggleColorMode: () => {
-        setMode((prevMode) =>
-          prevMode === 'light' ? 'dark' : 'light',
-        );
-      },
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      }
     }),
-    [],
+    []
   );
   const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   useEffect(() => {
