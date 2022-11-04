@@ -4,26 +4,11 @@ import { useNavigate } from 'react-router-dom';
 // data
 import { UserContext } from '../App';
 // mui components
-import {
-  useTheme,
-  styled,
-  IconButton,
-  // Box,
-  Modal,
-  Typography,
-  Stack,
-  Button,
-  AppBar,
-  Toolbar,
-  Avatar
-} from '@mui/material';
+import { styled, Modal, Typography, Stack, Button, AppBar, Toolbar, Avatar } from '@mui/material';
 // my components
 import Searchbar from './Searchbar';
 import Popup from './Popup';
-// ---------
-import { ColorModeContext } from '../App';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import ColorModeToggle from './ColorModeToggle';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   backgroundColor: theme.palette.background.main,
@@ -88,9 +73,6 @@ function stringAvatar(name) {
 
 // TODO: replace username with prop.username
 export default function Navbar(props) {
-  const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
-
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -112,11 +94,8 @@ export default function Navbar(props) {
 
           {/* TODO: move logout into a user profile dropdown? */}
           <MenuBtn onClick={handleOpen}>Logout</MenuBtn>
-          <IconButton
-            sx={{ ml: 1, color: theme.palette.text.primary }}
-            onClick={colorMode.toggleColorMode}>
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
+
+          <ColorModeToggle />
         </StyledToolbar>
       </AppBar>
 

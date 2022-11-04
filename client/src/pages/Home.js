@@ -17,14 +17,13 @@ import {
 } from '@mui/material';
 // my components
 import Popup from '../components/Popup';
+import ColorModeToggle from '../components/ColorModeToggle';
 
 const HomeContainer = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.background.main,
   color: theme.palette.text.primary,
   padding: '0 300px',
-  height: '100%',
-  alignItems: 'center',
-  minHeight: '100vh'
+  margin: 'auto'
 }));
 
 const LoginForm = styled('form')({
@@ -55,82 +54,94 @@ export default function Home(props) {
   }, [user]);
 
   return (
-    <HomeContainer direction="row">
-      <Stack alignItems="flex-start" gap={5}>
-        <Typography variant="h1">PHOTO SHARE</Typography>
-        <p>
-          <Typography variant="h3">
-            Put your memories on display. Show off your photos in a way that’s both beautiful and
-            intuitive, on this very best platform to safely share and organize your family’s photos.
-            <br />
-          </Typography>
-        </p>
+    <div
+      style={{
+        backgroundColor: theme.palette.background.main,
+        color: theme.palette.text.primary,
+        padding: '10px',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh'
+      }}>
+      <ColorModeToggle />
+      <HomeContainer direction="row">
+        <Stack alignItems="flex-start" gap={5}>
+          <Typography variant="h1">PHOTO SHARE</Typography>
+          <p>
+            <Typography variant="h3">
+              Put your memories on display. Show off your photos in a way that’s both beautiful and
+              intuitive, on this very best platform to safely share and organize your family’s
+              photos.
+              <br />
+            </Typography>
+          </p>
 
-        {/* popup form for login */}
-        <Modal open={open} onClose={handleClose}>
-          <>
-            <Popup gap={2}>
-              <>
-                <LoginForm id="login-form" onSubmit={postLogin}>
-                  <TextField
-                    sx={{ fieldset: { borderColor: theme.palette.divider } }}
-                    InputLabelProps={{
-                      style: {
-                        color: theme.palette.text.primary
-                      }
-                    }}
-                    variant="outlined"
-                    id="email"
-                    name="email"
-                    label="Email"></TextField>
-                  <TextField
-                    sx={{ fieldset: { borderColor: theme.palette.divider } }}
-                    InputLabelProps={{
-                      style: {
-                        color: theme.palette.text.primary
-                      }
-                    }}
-                    variant="outlined"
-                    id="password"
-                    name="password"
-                    label="Password"
-                    type="password"></TextField>
-                  <Button color="primary" variant="contained" type="submit">
-                    Login
-                  </Button>
-                  {isLoading && <CircularProgress color="secondary" />}
-                </LoginForm>
-                <Typography>
-                  No account?{' '}
-                  <Link
-                    sx={{ color: theme.palette.text.primary }}
-                    href="/register"
-                    underline="none"
-                    variant="body2">
-                    Register here
-                  </Link>
-                </Typography>
-              </>
-            </Popup>
-          </>
-        </Modal>
+          {/* popup form for login */}
+          <Modal open={open} onClose={handleClose}>
+            <>
+              <Popup gap={2}>
+                <>
+                  <LoginForm id="login-form" onSubmit={postLogin}>
+                    <TextField
+                      sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                      InputLabelProps={{
+                        style: {
+                          color: theme.palette.text.primary
+                        }
+                      }}
+                      variant="outlined"
+                      id="email"
+                      name="email"
+                      label="Email"></TextField>
+                    <TextField
+                      sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                      InputLabelProps={{
+                        style: {
+                          color: theme.palette.text.primary
+                        }
+                      }}
+                      variant="outlined"
+                      id="password"
+                      name="password"
+                      label="Password"
+                      type="password"></TextField>
+                    <Button color="primary" variant="contained" type="submit">
+                      Login
+                    </Button>
+                    {isLoading && <CircularProgress color="secondary" />}
+                  </LoginForm>
+                  <Typography>
+                    No account?{' '}
+                    <Link
+                      sx={{ color: theme.palette.text.primary }}
+                      href="/register"
+                      underline="none"
+                      variant="body2">
+                      Register here
+                    </Link>
+                  </Typography>
+                </>
+              </Popup>
+            </>
+          </Modal>
 
-        {/* Login/Register buttons */}
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={handleOpen}>
-            LOGIN
-          </Button>
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={() => {
-              navigate('/register');
-            }}>
-            GET STARTED
-          </Button>
+          {/* Login/Register buttons */}
+          <Stack direction="row" spacing={2}>
+            <Button variant="contained" onClick={handleOpen}>
+              LOGIN
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={() => {
+                navigate('/register');
+              }}>
+              GET STARTED
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </HomeContainer>
+      </HomeContainer>
+    </div>
   );
 }
 

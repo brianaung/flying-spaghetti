@@ -90,6 +90,15 @@ export const getDesignTokens = (mode) => ({
           // },
         }
       }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '&.MuiButton-contained': {
+            border: 'solid 1px black'
+          }
+        }
+      }
     }
   }
 });

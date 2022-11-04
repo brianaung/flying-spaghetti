@@ -2,22 +2,37 @@ import React from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 // mui components
-import { useTheme, styled, Box, Button, TextField } from '@mui/material';
+import { useTheme, styled, Toolbar, Button, TextField } from '@mui/material';
+// my components
+import ColorModeToggle from '../components/ColorModeToggle';
 
 // TODO: make it a seperate component
 function Logo() {
   const navigate = useNavigate();
+  const theme = useTheme();
   return (
     <Button
-      color="secondary"
+      sx={{
+        width: '100px',
+        color: theme.palette.text.primary
+      }}
       variant="text"
       onClick={() => {
         navigate('/');
       }}>
-      Share
+      Photo Share
     </Button>
   );
 }
+
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  backgroundColor: theme.palette.background.main,
+  display: 'flex',
+  justifyContent: 'space-between',
+  gap: '50px',
+  borderBottom: 'solid 1px',
+  borderColor: theme.palette.divider
+}));
 
 const RegisterForm = styled('form')({
   display: 'flex',
@@ -59,13 +74,18 @@ export default function Register() {
   };
 
   return (
-    <Box
-      sx={{
+    <div
+      style={{
         backgroundColor: theme.palette.background.main,
         color: theme.palette.text.primary,
+        display: 'flex',
+        flexDirection: 'column',
         height: '100vh'
       }}>
-      <Logo />
+      <StyledToolbar>
+        <Logo />
+        <ColorModeToggle />
+      </StyledToolbar>
       <RegisterForm id="register-form" onSubmit={handleRegister}>
         <TextField
           sx={{ fieldset: { borderColor: theme.palette.divider } }}
@@ -116,6 +136,6 @@ export default function Register() {
           Register
         </Button>
       </RegisterForm>
-    </Box>
+    </div>
   );
 }
