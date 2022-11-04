@@ -1,4 +1,4 @@
-import { React, useState, useEffect, createContext, useContext } from 'react';
+import { React, useState, useMemo, useEffect, createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 // my components
@@ -7,10 +7,9 @@ import PhotoPage from './pages/PhotoPage';
 import Home from './pages/Home';
 import Register from './pages/Register';
 // mui theme
-import { ThemeProvider } from '@mui/material/styles';
-import { theme } from './theme';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { getDesignTokens } from './theme';
 
-// protect routes to only give access to accounts with the role `user`
 const PrivateRoutes = (props) => {
   const user = useContext(UserContext);
   return user && (user.role === 'user' || user.role === 'admin') ? (
@@ -42,12 +41,32 @@ PublicRoutes.propTypes = {
 // get the current logged in user
 let savedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
 
+// contexts
 export const UserContext = createContext(savedUser);
+export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 export default function App() {
+  const savedMode = localStorage.getItem('colorMode') ? localStorage.getItem('colorMode') : 'light';
+  const [mode, setMode] = useState(savedMode);
+  const colorMode = useMemo(
+    () => ({
+      // The dark mode switch would invoke this method
+      toggleColorMode: () => {
+        setMode((prevMode) =>
+          prevMode === 'light' ? 'dark' : 'light',
+        );
+      },
+    }),
+    [],
+  );
+  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  useEffect(() => {
+    localStorage.setItem('colorMode', mode);
+  }, [mode]);
+
+  // Auth ----------------------------------------
   const [user, setUser] = useState(savedUser);
   const navigate = useNavigate();
-
   // navigate user after loggin in
   useEffect(() => {
     if (user) {
@@ -71,7 +90,7 @@ export default function App() {
   }, [user]);
 
   return (
-    <>
+    <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <UserContext.Provider value={user}>
           <Routes>
@@ -110,6 +129,6 @@ export default function App() {
           </Routes>
         </UserContext.Provider>
       </ThemeProvider>
-    </>
+    </ColorModeContext.Provider>
   );
 }

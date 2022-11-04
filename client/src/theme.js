@@ -1,52 +1,54 @@
-import { createTheme } from '@mui/material';
+// import { createTheme } from '@mui/material';
 
-export const theme = createTheme({
-  /* // for light mode
+export const getDesignTokens = (mode) => ({
   palette: {
-    // white background and black text and gray divider
-    background: {
-      main: '#fbfefb',
-    },
-    divider: '#2f2f35',
-    text: {
-      primary: '#18181b'
-    },
-    // accent colors
-    primary: {
-      main: '#27272a'
-    },
-    secondary: {
-      main: '#E8DB7D'
-    },
-    error: {
-      main: '#ce2d4f'
-    },
-    info: {
-      main: '#1c77c3'
-    }
-  }, */
-  // for dark mode
-  palette: {
-    background: {
-      main: '#18181b'
-    },
-    divider: '#2f2f35',
-    text: {
-      primary: '#fbfefb'
-    },
-    // accent colors
-    primary: {
-      main: '#27272a'
-    },
-    secondary: {
-      main: '#E8DB7D'
-    },
-    error: {
-      main: '#ce2d4f'
-    },
-    info: {
-      main: '#39a9db'
-    }
+    mode,
+    ...(mode === 'light'
+      ? {
+        // light mode
+        background: {
+          main: '#fbfefb',
+        },
+        divider: '#2f2f35',
+        text: {
+          primary: '#18181b'
+        },
+        // accent colors
+        primary: {
+          main: '#27272a'
+        },
+        secondary: {
+          main: '#E8DB7D'
+        },
+        error: {
+          main: '#ce2d4f'
+        },
+        info: {
+          main: '#1c77c3'
+        },
+      } : {
+        // dark mode
+        background: {
+          main: '#18181b'
+        },
+        divider: '#2f2f35',
+        text: {
+          primary: '#fbfefb'
+        },
+        // accent colors
+        primary: {
+          main: '#27272a'
+        },
+        secondary: {
+          main: '#E8DB7D'
+        },
+        error: {
+          main: '#ce2d4f'
+        },
+        info: {
+          main: '#39a9db'
+        }
+      }),
   },
 
   typography: {
@@ -73,7 +75,7 @@ export const theme = createTheme({
     }
   },
 
-  shadows: ['none'],
+  shadows: Array(25).fill('none'),
 
   components: {
     // you can set global styles here
@@ -89,4 +91,7 @@ export const theme = createTheme({
       }
     }
   }
+
 });
+
+// export const theme = createTheme(getDesignTokens('light'));
