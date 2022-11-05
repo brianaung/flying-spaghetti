@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPhotos, getPhotosInFolder, getSharedPhotos, getLikedPhotos } from '../actions/photos';
+import { getAllUsers } from '../actions/users';
 // mui components
 import { styled, Box, Stack } from '@mui/material';
 // my components
 import Sidebar from '../components/Sidebar';
 import Feed from '../components/Feed';
 import Navbar from '../components/Navbar';
+import UsersList from '../components/UsersList';
 
 const Container = styled(Box)(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -36,6 +38,8 @@ export default function Dashboard() {
       dispatch(getSharedPhotos());
     } else if (id === 'liked') {
       dispatch(getLikedPhotos());
+    } else if (id === 'users') {
+      dispatch(getAllUsers());
     } else {
       dispatch(getPhotosInFolder(id));
     }
@@ -46,7 +50,11 @@ export default function Dashboard() {
       <Navbar query={query} setQuery={setQuery} />
       <StyledStack direction="row">
         <Sidebar />
-        <Feed query={query} pageID={id} />
+        {id === 'users' ? (
+          <UsersList />
+        ) : (
+          <Feed query={query} pageID={id} />
+        )}
       </StyledStack>
     </Container>
   );

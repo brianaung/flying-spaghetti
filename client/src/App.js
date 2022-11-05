@@ -85,7 +85,7 @@ export default function App() {
           break;
       }
     }
-  }, [user]);
+  }, []);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
