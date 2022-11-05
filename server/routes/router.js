@@ -41,8 +41,8 @@ router.post('/folder/:folder', upload.single('selectedImage'), contentController
 // Admin
 router.get('/accept/:uid/:key', adminController.acceptUser);
 router.get('/ban/:uid/:key', adminController.banUser);
-router.get('/users', adminController.getAllUsers);
 router.post('/addCapacity', adminController.addCapacity);
+router.get('/dashboard/users', adminController.getAllUsers);
 
 // Authentication
 router.post('/register', authController.registerUser);

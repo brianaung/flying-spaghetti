@@ -138,6 +138,7 @@ const getAllUsers = async (req, res, next) => {
         ...doc.data()
       });
     });
+    console.log(users);
     return res.status(200).send(users);
   } catch (err) {
     next(err);
