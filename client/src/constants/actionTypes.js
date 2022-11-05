@@ -9,3 +9,4 @@ export const LOGIN = 'LOGIN';
 export const MOVE_PHOTO_TO_BIN = 'MOVE_PHOTO_TO_BIN';
 export const POST_COMMENT = 'POST_COMMENT';
 export const GET_COMMENTS = 'GET_COMMENTS';
+export const GET_USERS = 'GET_USERS';
