@@ -6,7 +6,8 @@ import {
   getDoc,
   Timestamp,
   collection,
-  orderBy
+  orderBy,
+  increment
 } from 'firebase/firestore';
 import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
@@ -143,8 +144,24 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+const addCapacity = async (req, res, next) => {
+  //check if current user is admin
+  if (!auth.currentUser) {
+    return res.sendStatus(401);
+  }
+  //add capacity to the user
+  const usersRef = doc(db, 'users', req.body.userID);
+  await updateDoc(usersRef, {
+    capacity: increment(100)
+  }).then(() => {
+    console.log('update capacity');
+  });
+
+}
+
 export default {
   banUser,
   acceptUser,
-  getAllUsers
+  getAllUsers,
+  addCapacity
 };
