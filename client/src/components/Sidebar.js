@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router-dom';
 // data
 import { UserContext } from '../App';
@@ -47,7 +46,7 @@ const StyledListItemBtn = styled(ListItemButton)(({ theme }) => ({
 }));
 
 // const selected = localStorage.getItem('selected') ? localStorage.getItem('selected') : '0';
-export default function Sidebar(props) {
+export default function Sidebar() {
   const { id } = useParams();
   const user = useContext(UserContext);
 
@@ -56,6 +55,7 @@ export default function Sidebar(props) {
   const [selectedIndex, setSelectedIndex] = React.useState(id);
 
   const handleListItemClick = (idx) => {
+    console.log(user);
     setSelectedIndex(idx);
   };
 
@@ -87,13 +87,17 @@ export default function Sidebar(props) {
           onClick={() => handleListItemClick('trash')}>
           <ListItemText primary="Trash" onClick={() => navigate('/dashboard/trash')} />
         </StyledListItemBtn>
+
+        {user.role === 'admin' && (
+          <StyledListItemBtn
+            selected={selectedIndex === 'users'}
+            onClick={() => handleListItemClick('users')}>
+            <ListItemText primary="Manage Users" onClick={() => navigate('/dashboard/users')} />
+          </StyledListItemBtn>
+        )}
       </Stack>
 
-      <Progressbar value={props.usage} />
+      <Progressbar value={100 - user.capacity} />
     </SidebarContainer>
   );
 }
-
-Sidebar.propTypes = {
-  usage: PropTypes.number
-};

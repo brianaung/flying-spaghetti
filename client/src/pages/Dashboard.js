@@ -45,7 +45,7 @@ export default function Dashboard() {
     <Container container>
       <Navbar query={query} setQuery={setQuery} />
       <StyledStack direction="row">
-        <Sidebar usage={90} />
+        <Sidebar />
         <Feed query={query} pageID={id} />
       </StyledStack>
     </Container>
