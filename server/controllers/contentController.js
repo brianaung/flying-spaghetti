@@ -382,8 +382,9 @@ const uploadPhoto = async (req, res, next) => {
       
       const userRef = doc(db, "users", userID);
       const userSnap = await getDoc(userRef);
-      const currCap = await userSnap.get('capacity');
-      
+      const used = await userSnap.get('used');
+      const capacity = await userSnap.get('capacity');
+      const currCap = capacity-used;
       //if capacity is less then 0, delete all updates
       
       if (currCap<(imageData.size/1000000)) {
@@ -412,7 +413,7 @@ const uploadPhoto = async (req, res, next) => {
         await updateDoc(doc(db, 'users', userID), {
           photos: arrayUnion(docRef.id),
           // update capacity
-          capacity: increment(-(imageData.size/1000000))
+          used: increment((imageData.size/1000000))
         });
 
         // update folder
@@ -464,7 +465,7 @@ const moveToBin = async (req, res, next) => {
     // delete photo id in photo array
     await updateDoc(usersRef, {
       photos: arrayRemove(req.params.id),
-      capacity: increment(imageData.size/1000000)
+      used: increment(-(imageData.size/1000000))
     }).then(() => {
       console.log('delete photo from user photos');
     });
