@@ -28,7 +28,7 @@ export default function Progressbar(props) {
           />
         </Box>
         <Box sx={{ minWidth: '80px' }}>
-          <Typography variant="body2">{`${Math.round(props.value)}% used`}</Typography>
+          <Typography variant="body2">{`${props.value.toFixed(2)}% used`}</Typography>
         </Box>
       </SidebarContainer>
     </Box>
