@@ -63,6 +63,7 @@ const banAllSpecUser = async (req, res, next) => {
     allBan.forEach((doc) => {
       banneSpecUser(doc.id, doc.sk);
     });
+    res.sendStatus(200);
 
   } catch (err) {
     next(err);

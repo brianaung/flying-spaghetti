@@ -1,8 +1,8 @@
-import React, { useState }from 'react';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
+import React, { useState, useEffect }from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllUsers, banUser } from '../actions/users';
 // mui
-import { styled, Box, Button } from '@mui/material';
+import { styled, Alert, Box, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 const Container = styled(Box)(({ theme }) => ({
@@ -53,6 +53,13 @@ const columns = [
 
 
 export default function UsersList() {
+  const dispatch = useDispatch();
+  const [alert, setAlert] = useState(false);
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
+
   const { users } = useSelector((state) => state.users);
 
   // TODO: use the fetched data to construct rows
@@ -75,26 +82,18 @@ export default function UsersList() {
         }
       });
     });
-    const API =
-      process.env.NODE_ENV === 'production'
-        ? `https://photoshare-fs-server.herokuapp.com/adminban`
-        : `http://localhost:9000/adminban`;
 
-    axios
-      .post(API, {
-        data: ret,
-      })
-      .then((res) => {
-        // dispatch({ type: 'UPLOAD_PHOTO', payload: res.data });
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(banUser({data: ret}));
+    setAlert(true);
+
+    setSelectionModel([]);
   }
 
   return (
     <Container>
+      {alert &&
+        <Alert severity="success">This is a success alert — check it out!</Alert>
+      }
       <DataGrid
         sx={{
           height: '80%',
