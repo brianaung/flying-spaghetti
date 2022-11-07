@@ -59,9 +59,9 @@ const banneSpecUser = async (userID, sKey) => {
 
 const banAllSpecUser = async (req, res, next) => {
   try {
-    const allBan = req.params.user;
+    const allBan = req.params.data;
     allBan.forEach((doc) => {
-      banneSpecUser(doc.uid, doc.secretKey);
+      banneSpecUser(doc.id, doc.sk);
     });
 
   } catch (err) {
