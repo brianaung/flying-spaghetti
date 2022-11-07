@@ -77,8 +77,8 @@ export default function UsersList() {
     });
     const API =
       process.env.NODE_ENV === 'production'
-        ? `https://photoshare-fs-server.herokuapp.com/banUser`
-        : `http://localhost:9000/banUser`;
+        ? `https://photoshare-fs-server.herokuapp.com/adminban`
+        : `http://localhost:9000/adminban`;
 
     axios
       .post(API, {
