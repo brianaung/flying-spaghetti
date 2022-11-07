@@ -84,16 +84,20 @@ export default function UsersList() {
     });
 
     dispatch(banUser({data: ret}));
-    setAlert(true);
 
+    // TODO: should consider a case for fail ban
+    // show an ban event alert
+    setAlert(true);
+    setTimeout(() => {
+      setAlert(false);
+    }, 6000);
+
+    // clear selection
     setSelectionModel([]);
   }
 
   return (
     <Container>
-      {alert &&
-        <Alert severity="success">This is a success alert — check it out!</Alert>
-      }
       <DataGrid
         sx={{
           height: '80%',
@@ -109,6 +113,9 @@ export default function UsersList() {
         pageSize={9}
       />
       <Button color="error" variant="contained" onClick={handleBan}>Ban</Button>
+      {alert &&
+        <Alert severity="success">You have successfully banned the user.</Alert>
+      }
     </Container>
   )
 }
