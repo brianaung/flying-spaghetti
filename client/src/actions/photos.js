@@ -51,11 +51,11 @@ export const getLikedPhotos = () => async (dispatch) => {
 
 export const getPhoto = (id) => async (dispatch) => {
   try {
-    dispatch({ type: START_LOADING });
+    // dispatch({ type: START_LOADING });
     const { data } = await api.fetchPhoto(id);
 
     dispatch({ type: FETCH_PHOTO, payload: data });
-    dispatch({ type: END_LOADING });
+    // dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error.message);
   }
@@ -94,9 +94,12 @@ export const postComment = (photoID, newComment) => async (dispatch) => {
 
 export const getComments = (photoID) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const { data } = await api.getComments(photoID);
-    console.log(data);
     dispatch({ type: GET_COMMENTS, payload: data });
+
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error.message);
   }

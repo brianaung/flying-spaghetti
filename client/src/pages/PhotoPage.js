@@ -13,6 +13,7 @@ import {
   Modal,
   Tooltip,
   Stack,
+  Skeleton,
   Box
 } from '@mui/material';
 // icons
@@ -29,6 +30,33 @@ import Popup from '../components/Popup';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPhoto, postComment, getComments } from '../actions/photos';
 import { useParams } from 'react-router-dom';
+
+const CommentSkeleton = () => {
+  return (
+    <Stack spacing={1}>
+      <Stack direction="row" justifyContent="center" gap={5}>
+        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+      </Stack>
+      <Stack direction="row" justifyContent="center" gap={5}>
+        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+      </Stack>
+      <Stack direction="row" justifyContent="center" gap={5}>
+        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+      </Stack>
+      <Stack direction="row" justifyContent="center" gap={5}>
+        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+      </Stack>
+    </Stack>
+  );
+};
 
 const MainSection = styled(Stack)(({ theme }) => ({
   display: 'flex',
@@ -104,8 +132,7 @@ export default function PhotoPage() {
     dispatch(getComments(id));
   }, []);
 
-  const { photo, comments } = useSelector((state) => state.photo);
-  console.log(comments);
+  const { isLoading, photo, comments } = useSelector((state) => state.photo);
   //const comments = photo.comments;
   //const photo = useSelector((state) => state.photo);
 
@@ -118,8 +145,7 @@ export default function PhotoPage() {
   } else {
     return (
       <Box
-        sx={{
-          backgroundColor: theme.palette.background.main,
+        sx={{ backgroundColor: theme.palette.background.main,
           color: theme.palette.text.primary
         }}>
         <Navbar />
@@ -163,15 +189,29 @@ export default function PhotoPage() {
 
             {/* comments  */}
             <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
-              {comments &&
-                comments.map((comment, id) => {
-                  return (
-                    <Stack key={id} direction="row" spacing={2}>
-                      <Typography sx={{ fontWeight: '600' }}>{comment.owner}</Typography>
-                      <Typography>{comment.text}</Typography>
-                    </Stack>
-                  );
-                })}
+              {isLoading ? (
+                // skeleton
+                <CommentSkeleton />
+              ) : (
+                // data
+                <>
+                {comments &&
+                  comments.map((comment, id) => {
+                    return (
+                      <div style={{
+                        display: 'flex',
+                        gap: '20px',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                      }} key={id} >
+                        <Typography sx={{ fontWeight: '600' }}>{comment.owner}</Typography>
+                        <Typography>{comment.text}</Typography>
+                        <Typography sx={{ marginLeft: 'auto' }}>{comment.formattedDate}</Typography>
+                      </div>
+                    );
+                  })}
+                  </>
+              )}
             </StyledBox>
 
             {/* box to write comment */}
@@ -206,14 +246,17 @@ export default function PhotoPage() {
                   name="comment"
                   label="Add a comment"
                   value={comment}
-                  onChange={(e) => setComment(e.target.value)}></TextField>
+                  onChange={(e) => setComment(e.target.value)}>
+                </TextField>
                 <Button
                   variant="contained"
                   color="secondary"
                   type="submit"
                   onClick={() => {
-                    dispatch(postComment(photo.id, { text: comment }));
-                    setComment('');
+                    if (comment !== '') {
+                      dispatch(postComment(photo.id, { text: comment }));
+                      setComment('');
+                    }
                   }}>
                   Post
                 </Button>

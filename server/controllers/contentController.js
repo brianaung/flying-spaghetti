@@ -270,14 +270,15 @@ const getPhotoComments = async (req, res, next) => {
     // photos.filter((photo) => photo !== null);
     // res.send(photos);
 
-    // Query newest first
+    // order oldest to newest (so in frontend latest comment appears at the bottom and oldest at top)
     const colSnap = await getDocs(
-      query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date', 'desc'))
+      query(collection(db, 'photos', req.params.photoID, 'comments'), orderBy('date'))
     );
     const comments = [];
     colSnap.forEach((doc) => {
       comments.push({
         id: doc.id,
+        formattedDate: doc.data().date.toDate().toDateString(),
         ...doc.data()
       });
     });
