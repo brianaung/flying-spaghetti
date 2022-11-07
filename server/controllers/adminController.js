@@ -13,6 +13,62 @@ import { db, auth } from '../config/firebase.js';
 import { v4 } from 'uuid';
 import { createTransport } from 'nodemailer';
 
+const banneSpecUser = async (userID, sKey) => {
+  const userSnap = await getDoc(doc(db, 'users', userID));
+    if (!userSnap.exists() || sKey !== userSnap.data().secretKey) {
+      return res.sendStatus(401);
+    }
+    // Ban user and generate new key
+    await updateDoc(doc(db, 'users', req.params.uid), {
+      role: 'banned',
+      secretKey: v4()
+    });
+
+    // Inform user they got rejected and banned, provide admin's email to appeal
+    // Email user they got accepted and account is activated
+    const mailTransport = createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'admn1flying@gmail.com',
+        pass: 'pgxzirsraggfdxvh'
+      }
+    });
+
+    const emailText = `
+      Hi ${userSnap.data().firstName},\n\n
+      Your current account has been baned by the admin\n
+      Dev Team
+      `;
+
+    const content = {
+      from: 'admn1flying@gmail.com',
+      to: 'admn1flying@gmail.com',
+      subject: 'Your account has been baned!',
+      text: emailText
+    };
+
+    mailTransport.sendMail(content, (err) => {
+      if (err) {
+        //console.log('Unable to send email', err);
+      } else {
+        //console.log('send email to admin');
+      }
+    });
+
+};
+
+const banAllSpecUser = async (req, res, next) => {
+  try {
+    const allBan = req.params.user;
+    allBan.forEach((doc) => {
+      banneSpecUser(doc.uid, doc.secretKey);
+    });
+
+  } catch (err) {
+    next(err);
+  }
+}
+
 const banUser = async (req, res, next) => {
   try {
     const userSnap = await getDoc(doc(db, 'users', req.params.uid));
@@ -164,5 +220,6 @@ export default {
   banUser,
   acceptUser,
   getAllUsers,
-  addCapacity
+  addCapacity,
+  banAllSpecUser
 };
