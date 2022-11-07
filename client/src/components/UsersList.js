@@ -20,41 +20,48 @@ const Container = styled(Box)(({ theme }) => ({
 const columns = [
   { field: 'id', 
     headerName: 'ID', 
-    width: 110,
+    width: 300,
     editable: true,
   },
   {
     field: 'firstName',
     headerName: 'First Name',
-    width: 200,
+    width: 180,
     editable: false,
   },
   {
     field: 'lastName',
     headerName: 'Last Name',
-    width: 200,
+    width: 180,
     editable: false,
   },
   {
     field: 'role',
     headerName: 'Role',
-    width: 200,
+    width: 120,
     editable: false,
   },
   {
     field: 'capacity',
     headerName: 'Capacity',
     type: 'number',
-    width: 170,
+    width: 100,
     editable: false,
   },
 ];
 
 
 export default function UsersList() {
-  const { data } = useSelector((state) => state.users);
+  const { users } = useSelector((state) => state.users);
 
   // TODO: use the fetched data to construct rows
+  let rows = [];
+ 
+  if (users) {
+    users.map(user => rows.push(user));
+  }
+
+  /*
   const rows = [
     { id: 1, lastName: 'Snow', firstName: 'Jon', capacity: 35, role: null },
     { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
@@ -67,11 +74,12 @@ export default function UsersList() {
     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
     { id: 10, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
   ];
+  */
 
   const [selectionModel, setSelectionModel] = useState([]);
   const handleClick = () => {
     console.log(selectionModel);
-    console.log(data);
+    console.log("LIST OF USERS:" + typeof users);
   }
 
   return (

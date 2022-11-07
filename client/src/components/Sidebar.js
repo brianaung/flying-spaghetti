@@ -55,7 +55,6 @@ export default function Sidebar() {
   const [selectedIndex, setSelectedIndex] = React.useState(id);
 
   const handleListItemClick = (idx) => {
-    console.log(user);
     setSelectedIndex(idx);
   };
 
