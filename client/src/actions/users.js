@@ -8,8 +8,7 @@ export const getAllUsers = () => async (dispatch) => {
   try {
     const { data } = await api.getAllUsers();
     dispatch({ type: GET_USERS, payload: data });
-
-  } catch(error) {
+  } catch (error) {
     console.log(error.message);
   }
 }

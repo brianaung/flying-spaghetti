@@ -1,6 +1,7 @@
 import React, { useState, useEffect }from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers, banUser } from '../actions/users';
+
 // mui
 import { styled, Alert, Box, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -15,7 +16,7 @@ const Container = styled(Box)(({ theme }) => ({
   gap: '10px',
   width: '100%',
   height: '100%',
-  padding: '30px',
+  padding: '30px'
 }));
 
 const columns = [
@@ -51,7 +52,6 @@ const columns = [
   },
 ];
 
-
 export default function UsersList() {
   const dispatch = useDispatch();
   const [alert, setAlert] = useState(false);
@@ -62,7 +62,6 @@ export default function UsersList() {
 
   const { users } = useSelector((state) => state.users);
 
-  // TODO: use the fetched data to construct rows
   let rows = [];
  
   if (users) {
@@ -74,6 +73,7 @@ export default function UsersList() {
   // ret a list of {id, secretKey} of users to ban
   let ret = [];
   const [selectionModel, setSelectionModel] = useState([]);
+
   const handleBan = () => {
     selectionModel.map(id => {
       users.map(user => {
@@ -101,13 +101,13 @@ export default function UsersList() {
       <DataGrid
         sx={{
           height: '80%',
-          width: '80%',
+          width: '80%'
         }}
         rows={rows}
         columns={columns}
         checkboxSelection
         onSelectionModelChange={(newSelection) => {
-          setSelectionModel(newSelection)
+          setSelectionModel(newSelection);
         }}
         selectionModel={selectionModel}
         pageSize={9}
@@ -117,5 +117,5 @@ export default function UsersList() {
         <Alert severity="success">You have successfully banned the user.</Alert>
       }
     </Container>
-  )
+  );
 }

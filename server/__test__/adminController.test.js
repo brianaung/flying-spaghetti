@@ -2,7 +2,6 @@ import { app } from '../app.js';
 // import request from 'supertest';
 import supertest from 'supertest';
 import { describe, test, beforeAll, afterAll } from '@jest/globals';
-import { async } from '@firebase/util';
 
 const req = supertest(app);
 
@@ -62,7 +61,7 @@ describe('ban a user', () => {
 
 describe('get all users', () => {
     test("get users, without login", async()=>{
-        const res = await req.get('/users');
+        const res = await req.get('/dashboard/users');
         expect(res.status).toBe(401);
     })
     
@@ -71,7 +70,7 @@ describe('get all users', () => {
             email: 'user3@gmail.com',
             password: 'password'
         })
-        const res = await req.get('/users');
+        const res = await req.get('/dashboard/users');
         expect(res.status).toBe(401);
     })
 
@@ -80,7 +79,7 @@ describe('get all users', () => {
             email: 'admin@gmail.com',
             password: 'password'
         })
-        const res = await req.get('/users');
+        const res = await req.get('/dashboard/users');
         expect(res.status).toBe(200);
     })
 })

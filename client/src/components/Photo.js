@@ -1,6 +1,7 @@
 /* NOTE: dark mode does not affect this page */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { movePhotoToBin } from '../actions/photos';
@@ -84,6 +85,24 @@ export default function Photo(props) {
     handleCloseDel();
   };
 
+  // backend will check whether the photo is liked or not
+  const handleLike = () => {
+    const API =
+      process.env.NODE_ENV === 'production'
+        ? `https://photoshare-fs-server.herokuapp.com/like/${props.aPhoto.id}`
+        : `http://localhost:9000/like/${props.aPhoto.id}`;
+
+    // sending an empty request is good enough
+    axios
+      .patch(API, {})
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div>
       <PhotoContainer>
@@ -107,6 +126,8 @@ export default function Photo(props) {
             color="error"
             icon={<Heart size="30" />}
             checkedIcon={<Favorite size="30" />}
+            defaultChecked={props.aPhoto.isLiked}
+            onChange={handleLike}
           />
 
           <IconButton sx={{ color: theme.palette.text.primary }} size="small" onClick={() => {}}>

@@ -13,11 +13,11 @@ import {
   Modal,
   Tooltip,
   Stack,
+  Skeleton,
   Box
 } from '@mui/material';
 // icons
-import { Link, Heart, ArrowLeft } from '@styled-icons/evil';
-import { Favorite } from '@styled-icons/material-rounded';
+import { Link, ArrowLeft } from '@styled-icons/evil';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 // my components
@@ -29,6 +29,33 @@ import Popup from '../components/Popup';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPhoto, postComment, getComments } from '../actions/photos';
 import { useParams } from 'react-router-dom';
+
+const CommentSkeleton = () => {
+  return (
+    <Stack spacing={1}>
+      <Stack direction="row" justifyContent="center" gap={5}>
+        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+      </Stack>
+      <Stack direction="row" justifyContent="center" gap={5}>
+        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+      </Stack>
+      <Stack direction="row" justifyContent="center" gap={5}>
+        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+      </Stack>
+      <Stack direction="row" justifyContent="center" gap={5}>
+        <Skeleton variant="circular" width={30} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+        <Skeleton variant="text" width={200} height={30} />
+      </Stack>
+    </Stack>
+  );
+};
 
 const MainSection = styled(Stack)(({ theme }) => ({
   display: 'flex',
@@ -104,10 +131,7 @@ export default function PhotoPage() {
     dispatch(getComments(id));
   }, []);
 
-  const { photo, comments } = useSelector((state) => state.photo);
-  console.log(comments);
-  //const comments = photo.comments;
-  //const photo = useSelector((state) => state.photo);
+  const { isLoading, photo, comments } = useSelector((state) => state.photo);
 
   useEffect(() => {
     setImgHeight(container.current.height);
@@ -118,10 +142,7 @@ export default function PhotoPage() {
   } else {
     return (
       <Box
-        sx={{
-          backgroundColor: theme.palette.background.main,
-          color: theme.palette.text.primary
-        }}>
+        sx={{ backgroundColor: theme.palette.background.main, color: theme.palette.text.primary }}>
         <Navbar />
 
         <Stack>
@@ -163,28 +184,39 @@ export default function PhotoPage() {
 
             {/* comments  */}
             <StyledBox gap="10px" sx={{ overflowY: 'scroll', height: '30rem' }}>
-              {comments &&
-                comments.map((comment, id) => {
-                  return (
-                    <Stack key={id} direction="row" spacing={2}>
-                      <Typography sx={{ fontWeight: '600' }}>{comment.owner}</Typography>
-                      <Typography>{comment.text}</Typography>
-                    </Stack>
-                  );
-                })}
+              {isLoading ? (
+                // skeleton
+                <CommentSkeleton />
+              ) : (
+                // data
+                <>
+                  {comments &&
+                    comments.map((comment, id) => {
+                      return (
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: '20px',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start'
+                          }}
+                          key={id}>
+                          <Typography sx={{ fontWeight: '600' }}>{comment.owner}</Typography>
+                          <Typography>{comment.text}</Typography>
+                          <Typography sx={{ marginLeft: 'auto' }}>
+                            {comment.formattedDate}
+                          </Typography>
+                        </div>
+                      );
+                    })}
+                </>
+              )}
             </StyledBox>
 
             {/* box to write comment */}
             <StyledBox display="flex" flexDirection="column" marginTop="auto" fullWidth>
               {/* icons */}
               <Box display="flex" justifyContent="space-between">
-                <Checkbox
-                  sx={{ color: theme.palette.text.primary }}
-                  color="error"
-                  size="medium"
-                  icon={<Heart size="30" />}
-                  checkedIcon={<Favorite size="30" />}
-                />
                 <Button
                   sx={{
                     color: theme.palette.text.primary,
@@ -212,8 +244,10 @@ export default function PhotoPage() {
                   color="secondary"
                   type="submit"
                   onClick={() => {
-                    dispatch(postComment(photo.id, { text: comment }));
-                    setComment('');
+                    if (comment !== '') {
+                      dispatch(postComment(photo.id, { text: comment }));
+                      setComment('');
+                    }
                   }}>
                   Post
                 </Button>
