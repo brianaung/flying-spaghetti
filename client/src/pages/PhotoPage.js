@@ -17,8 +17,7 @@ import {
   Box
 } from '@mui/material';
 // icons
-import { Link, Heart, ArrowLeft } from '@styled-icons/evil';
-import { Favorite } from '@styled-icons/material-rounded';
+import { Link, ArrowLeft } from '@styled-icons/evil';
 import LibraryAddCheckOutlinedIcon from '@mui/icons-material/LibraryAddCheckOutlined';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 // my components
@@ -133,8 +132,6 @@ export default function PhotoPage() {
   }, []);
 
   const { isLoading, photo, comments } = useSelector((state) => state.photo);
-  //const comments = photo.comments;
-  //const photo = useSelector((state) => state.photo);
 
   useEffect(() => {
     setImgHeight(container.current.height);
@@ -218,13 +215,6 @@ export default function PhotoPage() {
             <StyledBox display="flex" flexDirection="column" marginTop="auto" fullWidth>
               {/* icons */}
               <Box display="flex" justifyContent="space-between">
-                <Checkbox
-                  sx={{ color: theme.palette.text.primary }}
-                  color="error"
-                  size="medium"
-                  icon={<Heart size="30" />}
-                  checkedIcon={<Favorite size="30" />}
-                />
                 <Button
                   sx={{
                     color: theme.palette.text.primary,
