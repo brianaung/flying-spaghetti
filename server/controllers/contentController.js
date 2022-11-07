@@ -17,7 +17,6 @@ import {
 } from 'firebase/firestore';
 import { db, storage, auth } from '../config/firebase.js';
 import { ref, uploadBytes, getDownloadURL, deleteObject, getMetadata } from 'firebase/storage';
-import { async } from '@firebase/util';
 
 // Helper functions
 const getCurrUserID = () => {

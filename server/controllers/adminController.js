@@ -133,10 +133,11 @@ const getAllUsers = async (req, res, next) => {
     const usersSnap = await getDocs(query(collection(db, 'users'), orderBy('lastName', 'asc')));
     const users = [];
     usersSnap.forEach((doc) => {
-      if (doc.data().role !== 'admin') {users.push({
+      if (doc.data().role !== 'admin') {
+        users.push({
           id: doc.id,
           ...doc.data()
-        });}
+        })}
     });
     console.log(users);
     return res.status(200).send(users);
