@@ -142,9 +142,7 @@ export default function PhotoPage() {
   } else {
     return (
       <Box
-        sx={{ backgroundColor: theme.palette.background.main,
-          color: theme.palette.text.primary
-        }}>
+        sx={{ backgroundColor: theme.palette.background.main, color: theme.palette.text.primary }}>
         <Navbar />
 
         <Stack>
@@ -192,22 +190,26 @@ export default function PhotoPage() {
               ) : (
                 // data
                 <>
-                {comments &&
-                  comments.map((comment, id) => {
-                    return (
-                      <div style={{
-                        display: 'flex',
-                        gap: '20px',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                      }} key={id} >
-                        <Typography sx={{ fontWeight: '600' }}>{comment.owner}</Typography>
-                        <Typography>{comment.text}</Typography>
-                        <Typography sx={{ marginLeft: 'auto' }}>{comment.formattedDate}</Typography>
-                      </div>
-                    );
-                  })}
-                  </>
+                  {comments &&
+                    comments.map((comment, id) => {
+                      return (
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: '20px',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start'
+                          }}
+                          key={id}>
+                          <Typography sx={{ fontWeight: '600' }}>{comment.owner}</Typography>
+                          <Typography>{comment.text}</Typography>
+                          <Typography sx={{ marginLeft: 'auto' }}>
+                            {comment.formattedDate}
+                          </Typography>
+                        </div>
+                      );
+                    })}
+                </>
               )}
             </StyledBox>
 
@@ -236,8 +238,7 @@ export default function PhotoPage() {
                   name="comment"
                   label="Add a comment"
                   value={comment}
-                  onChange={(e) => setComment(e.target.value)}>
-                </TextField>
+                  onChange={(e) => setComment(e.target.value)}></TextField>
                 <Button
                   variant="contained"
                   color="secondary"

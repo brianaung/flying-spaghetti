@@ -92,7 +92,7 @@ export default function Sidebar() {
         )}
       </Stack>
 
-      <Progressbar value={ user.used / parseFloat(user.capacity) } />
+      <Progressbar value={user.used / parseFloat(user.capacity)} />
     </SidebarContainer>
   );
 }

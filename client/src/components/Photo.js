@@ -92,7 +92,7 @@ export default function Photo(props) {
         ? `https://photoshare-fs-server.herokuapp.com/like/${props.aPhoto.id}`
         : `http://localhost:9000/like/${props.aPhoto.id}`;
 
-    // sending an empty request is good enough 
+    // sending an empty request is good enough
     axios
       .patch(API, {})
       .then((res) => {
@@ -101,7 +101,7 @@ export default function Photo(props) {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   return (
     <div>

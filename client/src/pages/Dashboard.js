@@ -50,11 +50,7 @@ export default function Dashboard() {
       <Navbar query={query} setQuery={setQuery} />
       <StyledStack direction="row">
         <Sidebar />
-        {id === 'users' ? (
-          <UsersList />
-        ) : (
-          <Feed query={query} pageID={id} />
-        )}
+        {id === 'users' ? <UsersList /> : <Feed query={query} pageID={id} />}
       </StyledStack>
     </Container>
   );

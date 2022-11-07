@@ -1,4 +1,10 @@
-import { FETCH_PHOTO, POST_COMMENT, GET_COMMENTS, START_LOADING, END_LOADING } from '../constants/actionTypes';
+import {
+  FETCH_PHOTO,
+  POST_COMMENT,
+  GET_COMMENTS,
+  START_LOADING,
+  END_LOADING
+} from '../constants/actionTypes';
 
 export default (state = { isLoading: true, comments: [], photo: {} }, action) => {
   switch (action.type) {

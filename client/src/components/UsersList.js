@@ -1,4 +1,4 @@
-import React, { useState }from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 // mui
 import { styled, Box, Button } from '@mui/material';
@@ -14,42 +14,37 @@ const Container = styled(Box)(({ theme }) => ({
   gap: '10px',
   width: '100%',
   height: '100%',
-  padding: '30px',
+  padding: '30px'
 }));
 
 const columns = [
-  { field: 'id', 
-    headerName: 'ID', 
-    width: 110,
-    editable: true,
-  },
+  { field: 'id', headerName: 'ID', width: 110, editable: true },
   {
     field: 'firstName',
     headerName: 'First Name',
     width: 200,
-    editable: false,
+    editable: false
   },
   {
     field: 'lastName',
     headerName: 'Last Name',
     width: 200,
-    editable: false,
+    editable: false
   },
   {
     field: 'role',
     headerName: 'Role',
     width: 200,
-    editable: false,
+    editable: false
   },
   {
     field: 'capacity',
     headerName: 'Capacity',
     type: 'number',
     width: 170,
-    editable: false,
-  },
+    editable: false
+  }
 ];
-
 
 export default function UsersList() {
   const { data } = useSelector((state) => state.users);
@@ -65,32 +60,34 @@ export default function UsersList() {
     { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
     { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-    { id: 10, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+    { id: 10, lastName: 'Roxie', firstName: 'Harvey', age: 65 }
   ];
 
   const [selectionModel, setSelectionModel] = useState([]);
   const handleClick = () => {
     console.log(selectionModel);
     console.log(data);
-  }
+  };
 
   return (
     <Container>
       <DataGrid
         sx={{
           height: '80%',
-          width: '80%',
+          width: '80%'
         }}
         rows={rows}
         columns={columns}
         checkboxSelection
         onSelectionModelChange={(newSelection) => {
-          setSelectionModel(newSelection)
+          setSelectionModel(newSelection);
         }}
         selectionModel={selectionModel}
         pageSize={9}
       />
-      <Button color="error" variant="contained" onClick={handleClick}>Ban</Button>
+      <Button color="error" variant="contained" onClick={handleClick}>
+        Ban
+      </Button>
     </Container>
-  )
+  );
 }
