@@ -1,6 +1,6 @@
 import { React, useState, useMemo, useEffect, createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 // my components
 import Dashboard from './pages/Dashboard';
 import PhotoPage from './pages/PhotoPage';
@@ -12,6 +12,12 @@ import { getDesignTokens } from './theme';
 
 const PrivateRoutes = (props) => {
   const user = useContext(UserContext);
+  // TODO: handle alert for banned and pending users here?
+  /* useEffect(() => {
+    if (user.role === 'admin') {
+      alert("Testing 1 2");
+    }
+  }, []); */
   return user && (user.role === 'user' || user.role === 'admin') ? (
     props.children
   ) : (
@@ -46,6 +52,8 @@ export const UserContext = createContext(savedUser);
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 export default function App() {
+  const [user, setUser] = useState(savedUser);
+
   const savedMode = localStorage.getItem('colorMode') ? localStorage.getItem('colorMode') : 'light';
   const [mode, setMode] = useState(savedMode);
   const colorMode = useMemo(
@@ -62,10 +70,9 @@ export default function App() {
     localStorage.setItem('colorMode', mode);
   }, [mode]);
 
-  // Auth ----------------------------------------
-  const [user, setUser] = useState(savedUser);
-  const navigate = useNavigate();
+  /*
   // navigate user after loggin in
+  const navigate = useNavigate();
   useEffect(() => {
     if (user) {
       switch (user.role) {
@@ -86,6 +93,7 @@ export default function App() {
       }
     }
   }, []);
+  */
 
   return (
     <ColorModeContext.Provider value={colorMode}>

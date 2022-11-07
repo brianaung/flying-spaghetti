@@ -56,6 +56,7 @@ export default function Sidebar() {
 
   const handleListItemClick = (idx) => {
     setSelectedIndex(idx);
+    navigate(`/dashboard/${idx}`);
   };
 
   return (
@@ -66,32 +67,26 @@ export default function Sidebar() {
         <StyledListItemBtn
           selected={selectedIndex === 'folders'}
           onClick={() => handleListItemClick('folders')}>
-          <ListItemText primary="My Photos" onClick={() => navigate('/dashboard/folders')} />
+          <ListItemText primary="My Photos" />
         </StyledListItemBtn>
 
         <StyledListItemBtn
           selected={selectedIndex === 'shared'}
           onClick={() => handleListItemClick('shared')}>
-          <ListItemText primary="Shared With Me" onClick={() => navigate('/dashboard/shared')} />
+          <ListItemText primary="Shared With Me" />
         </StyledListItemBtn>
 
         <StyledListItemBtn
           selected={selectedIndex === 'liked'}
           onClick={() => handleListItemClick('liked')}>
-          <ListItemText primary="Liked" onClick={() => navigate('/dashboard/liked')} />
-        </StyledListItemBtn>
-
-        <StyledListItemBtn
-          selected={selectedIndex === 'trash'}
-          onClick={() => handleListItemClick('trash')}>
-          <ListItemText primary="Trash" onClick={() => navigate('/dashboard/trash')} />
+          <ListItemText primary="Liked" />
         </StyledListItemBtn>
 
         {user.role === 'admin' && (
           <StyledListItemBtn
             selected={selectedIndex === 'users'}
             onClick={() => handleListItemClick('users')}>
-            <ListItemText primary="Manage Users" onClick={() => navigate('/dashboard/users')} />
+            <ListItemText primary="Manage Users" />
           </StyledListItemBtn>
         )}
       </Stack>
