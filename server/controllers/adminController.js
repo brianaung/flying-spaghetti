@@ -16,10 +16,10 @@ import { createTransport } from 'nodemailer';
 const banneSpecUser = async (userID, sKey) => {
   const userSnap = await getDoc(doc(db, 'users', userID));
     if (!userSnap.exists() || sKey !== userSnap.data().secretKey) {
-      return res.sendStatus(401);
+      return null;
     }
     // Ban user and generate new key
-    await updateDoc(doc(db, 'users', req.params.uid), {
+    await updateDoc(doc(db, 'users', userID), {
       role: 'banned',
       secretKey: v4()
     });
