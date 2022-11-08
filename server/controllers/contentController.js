@@ -570,7 +570,6 @@ const createFolder = async (req, res, next) => {
     };
     await setDoc(doc(db, 'folders', req.body.folderName), folder);
     res.send(req.body.folderName);
-    res.sendStatus(200);
   } catch (error) {
     next(error);
   }
