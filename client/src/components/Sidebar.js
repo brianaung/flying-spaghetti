@@ -91,7 +91,11 @@ export default function Sidebar() {
         )}
       </Stack>
 
-      <Progressbar value={user.used / parseFloat(user.capacity)} />
+      {user.role === 'admin' ? (
+        <Typography sx={{margin: '10px'}} align="center" variant="body2">unlimited</Typography>
+      ): (
+        <Progressbar value={((user.used/parseFloat(user.capacity))*100).toFixed(2)} />
+      )}
     </SidebarContainer>
   );
 }
