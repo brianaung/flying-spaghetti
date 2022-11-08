@@ -22,7 +22,9 @@ import {
 } from '@mui/material';
 // mui icons
 // import FolderIcon from '@mui/icons-material/Folder';
-import AddIcon from '@mui/icons-material/Add';
+// import AddIcon from '@mui/icons-material/Add';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 // my components
 import PhotoFrame from '../components/PhotoFrame';
 import FolderFrame from '../components/FolderFrame';
@@ -72,12 +74,12 @@ const FeedSkeleton = () => {
 // TODO: add current directory
 export default function Feed(props) {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [open, setOpen] = useState(false);
-
-  const dispatch = useDispatch();
+  const [openF, setOpenF] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -85,9 +87,11 @@ export default function Feed(props) {
     setImageUrl(null);
     setSelectedImage(null);
   };
+  const handleOpenF = () => setOpenF(true);
+  const handleCloseF = () => {
+    setOpenF(false);
+  }
 
-  // get folders and photos
-  // const { data, isLoading } = useSelector((state) => state.photos);
   const { folders, photos, isLoading } = useSelector((state) => state.photos);
 
   useEffect(() => {
@@ -96,12 +100,12 @@ export default function Feed(props) {
     }
   }, [selectedImage]);
 
-  // var bodyFormData = new FormData();
+  // upload photo
   const handleUpload = (e) => {
     e.preventDefault();
-
+    // close the popup
     handleClose();
-
+    //construct data to post
     var formData = new FormData(e.target);
     if (!formData.has('isPrivate')) {
       formData.append('isPrivate', false);
@@ -109,9 +113,6 @@ export default function Feed(props) {
       formData.set('isPrivate', true);
     }
 
-    console.log(formData);
-
-    // TODO: do not hardcode target folder (give user option to choose)
     const API =
       process.env.NODE_ENV === 'production'
         ? `https://photoshare-fs-server.herokuapp.com/folder/${e.target.folder.value}`
@@ -122,8 +123,29 @@ export default function Feed(props) {
       .post(API, formData)
       .then((res) => {
         dispatch({ type: 'UPLOAD_PHOTO', payload: res.data });
-
         console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleNewFolder = (e) => {
+    e.preventDefault();
+    // close the popup
+    handleCloseF();
+    const API =
+      process.env.NODE_ENV === 'production'
+        ? `https://photoshare-fs-server.herokuapp.com/createFolder`
+        : `http://localhost:9000/createFolder`;
+
+    axios
+      .post(API, {
+        folderName: e.target.folderName.value,
+      })
+      .then((res) => {
+        console.log(res.data);
+        dispatch({ type: 'CREATE_FOLDER', payload: res.data });
       })
       .catch((err) => {
         console.log(err);
@@ -132,15 +154,59 @@ export default function Feed(props) {
 
   return (
     <FeedContainer>
-      <Fab
-        sx={{ border: 'solid 1px black' }}
-        color="secondary"
-        size="medium"
-        aria-label="add"
-        onClick={handleOpen}>
-        <AddIcon />
-      </Fab>
+      <Box sx={{ '& > :not(style)': { m: 1 } }}>
+        <Fab
+          sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
+          color="info"
+          size="medium"
+          variant="extended"
+          aria-label="add"
+          onClick={handleOpen}>
+          <CloudUploadOutlinedIcon sx={{ mr: 1 }} />
+          Upload Photo
+        </Fab>
+        <Fab
+          sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
+          color="error"
+          size="medium"
+          variant="extended"
+          aria-label="add"
+          onClick={handleOpenF}>
+          <CreateNewFolderOutlinedIcon sx={{ mr: 1 }} />
+          New Folder
+        </Fab>
+      </Box>
 
+      {/* create new folder form */}
+      <Modal
+        open={openF}
+        onClose={handleCloseF}
+      >
+        <>
+        <Popup>
+          <UploadForm id="newfolder-form" onSubmit={handleNewFolder}>
+            Enter the folder name:
+            <TextField
+              sx={{ fieldset: { borderColor: theme.palette.divider } }}
+              InputLabelProps={{
+                style: {
+                  color: theme.palette.text.primary
+                }
+              }}
+              variant="outlined"
+              name="folderName"
+              label="Folder Name"
+              fullWidth></TextField>
+
+              <Button color="secondary" variant="contained" type="submit">
+                Create
+              </Button>
+          </UploadForm>
+        </Popup>
+        </>
+      </Modal>
+
+      {/* Popup photo upload form */}
       <Modal
         open={open}
         onClose={handleClose}
@@ -211,6 +277,7 @@ export default function Feed(props) {
         </>
       </Modal>
 
+      {/* Main Feed Area */}
       <>
         {isLoading ? (
           <FeedSkeleton />
