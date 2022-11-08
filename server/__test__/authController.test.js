@@ -52,13 +52,13 @@ describe('authentication', () => {
         
     })
 
+    // DONT CHANGE THE BANNED STATUS OF USER 2!!!
     test('POST /login - ban role (signInUser)', async () => {
         const loginRes = await req.post('/login').send({
             email: 'user2@gmail.com',
             password: 'password'
         })
         // check if login was succesful
-
         expect(loginRes.status).toBe(200);
         expect(loginRes.body).toEqual({});
 
