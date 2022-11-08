@@ -172,16 +172,18 @@ export default function Feed(props) {
       </Snackbar>
 
       <Box sx={{ '& > :not(style)': { m: 1 } }}>
-        <Fab
-          sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
-          color="info"
-          size="medium"
-          variant="extended"
-          aria-label="add"
-          onClick={handleOpen}>
-          <CloudUploadOutlinedIcon sx={{ mr: 1 }} />
-          Upload Photo
-        </Fab>
+        {props.pageID !== 'shared' && props.pageID !== 'liked' && 
+          <Fab
+            sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
+            color="info"
+            size="medium"
+            variant="extended"
+            aria-label="add"
+            onClick={handleOpen}>
+            <CloudUploadOutlinedIcon sx={{ mr: 1 }} />
+            Upload Photo
+          </Fab>
+        }
         {/* only allow folder creation in root folder in my photos tab */}
         {props.pageID === 'folders' && (
           <Fab
