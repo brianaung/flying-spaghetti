@@ -26,7 +26,7 @@ describe('accept a user', () => {
 
   test('user key is not correct', async () => {
     const res = await req.get(
-      '/accept/b13fBvo1Jlf8fVOpgnaP7IaBchV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf'
+      '/accept/0W0zGi4pu6ReJcFRKnyBW33gPPV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf'
     );
     expect(res.status).toBe(404);
   });
@@ -54,7 +54,7 @@ describe('ban a user', () => {
 
   test('user key is not correct', async () => {
     const res = await req.get(
-      '/ban/b13fBvo1Jlf8fVOpgnaP7IaBchV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf'
+      '/ban/0W0zGi4pu6ReJcFRKnyBW33gPPV2/898sdfs8998sdfsdfsdfdsfsdf909sdfsddf'
     );
     expect(res.status).toBe(401);
   });
