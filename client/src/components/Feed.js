@@ -281,8 +281,8 @@ export default function Feed(props) {
                   sx={{ width: 200, fieldset: { borderColor: theme.palette.divider } }}
                   disablePortal
                   id="combo-box-demo"
-                  options={['root'].concat(folders)}
-                  defaultValue={'root'}
+                  options={[`${(props.pageID === 'folders') ? 'root' : props.pageID}`].concat(folders)}
+                  defaultValue={`${(props.pageID === 'folders') ? 'root' : props.pageID}`}
                   renderInput={(params) => <TextField name="folder" {...params} />}
                 />
 
