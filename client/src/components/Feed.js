@@ -188,16 +188,19 @@ export default function Feed(props) {
           <CloudUploadOutlinedIcon sx={{ mr: 1 }} />
           Upload Photo
         </Fab>
-        <Fab
-          sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
-          color="error"
-          size="medium"
-          variant="extended"
-          aria-label="add"
-          onClick={handleOpenF}>
-          <CreateNewFolderOutlinedIcon sx={{ mr: 1 }} />
-          New Folder
-        </Fab>
+        {/* only allow folder creation in root folder in my photos tab */}
+        {props.pageID === 'folders' &&
+          <Fab
+            sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
+            color="error"
+            size="medium"
+            variant="extended"
+            aria-label="add"
+            onClick={handleOpenF}>
+            <CreateNewFolderOutlinedIcon sx={{ mr: 1 }} />
+            New Folder
+          </Fab>
+        }
       </Box>
 
       {/* create new folder form */}
