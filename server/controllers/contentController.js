@@ -562,6 +562,7 @@ const createFolder = async (req, res, next) => {
       photos: []
     };
     await setDoc(doc(db, 'folders', req.body.folderName), folder);
+    res.send(req.body.folderName);
   } catch (error) {
     next(error);
   }

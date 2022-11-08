@@ -26,6 +26,9 @@ export default (state = { isLoading: true, photos: [], folders: [] }, action) =>
     case 'UPLOAD_PHOTO':
       state.photos.push(action.payload);
       return { ...state };
+    case 'CREATE_FOLDER':
+      state.folders.push(action.payload);
+      return { ...state };
     case MOVE_PHOTO_TO_BIN:
       return {
         ...state,
