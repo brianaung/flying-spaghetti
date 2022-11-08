@@ -18,12 +18,17 @@ import {
 // my components
 import Popup from '../components/Popup';
 import ColorModeToggle from '../components/ColorModeToggle';
+import Gallery from '../components/Gallery';
 
 const HomeContainer = styled(Stack)(({ theme }) => ({
+  // you actually dont need these
   backgroundColor: theme.palette.background.main,
   color: theme.palette.text.primary,
-  padding: '0 300px',
-  margin: 'auto'
+  // ---------------------
+  minHeight: '100vh',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '0 100px',
 }));
 
 const LoginForm = styled('form')({
@@ -56,15 +61,16 @@ export default function Home(props) {
   return (
     <div
       style={{
+        // handle background color
         backgroundColor: theme.palette.background.main,
         color: theme.palette.text.primary,
         padding: '10px',
         display: 'flex',
         flexDirection: 'column',
-        height: '100vh'
+        minHeight: '100vh'
       }}>
       <ColorModeToggle />
-      <HomeContainer direction="row">
+      <HomeContainer gap={10} direction="column">
         <Stack alignItems="flex-start" gap={5}>
           <Typography variant="h1">PHOTO SHARE</Typography>
           <p>
@@ -75,55 +81,6 @@ export default function Home(props) {
               <br />
             </Typography>
           </p>
-
-          {/* popup form for login */}
-          <Modal open={open} onClose={handleClose}>
-            <>
-              <Popup gap={2}>
-                <>
-                  <LoginForm id="login-form" onSubmit={postLogin}>
-                    <TextField
-                      sx={{ fieldset: { borderColor: theme.palette.divider } }}
-                      InputLabelProps={{
-                        style: {
-                          color: theme.palette.text.primary
-                        }
-                      }}
-                      variant="outlined"
-                      id="email"
-                      name="email"
-                      label="Email"></TextField>
-                    <TextField
-                      sx={{ fieldset: { borderColor: theme.palette.divider } }}
-                      InputLabelProps={{
-                        style: {
-                          color: theme.palette.text.primary
-                        }
-                      }}
-                      variant="outlined"
-                      id="password"
-                      name="password"
-                      label="Password"
-                      type="password"></TextField>
-                    <Button color="primary" variant="contained" type="submit">
-                      Login
-                    </Button>
-                    {isLoading && <CircularProgress color="secondary" />}
-                  </LoginForm>
-                  <Typography>
-                    No account?{' '}
-                    <Link
-                      sx={{ color: theme.palette.text.primary }}
-                      href="/register"
-                      underline="none"
-                      variant="body2">
-                      Register here
-                    </Link>
-                  </Typography>
-                </>
-              </Popup>
-            </>
-          </Modal>
 
           {/* Login/Register buttons */}
           <Stack direction="row" spacing={2}>
@@ -140,7 +97,58 @@ export default function Home(props) {
             </Button>
           </Stack>
         </Stack>
+
       </HomeContainer>
+        <Gallery />
+
+      {/* popup form for login */}
+      <Modal open={open} onClose={handleClose}>
+        <>
+          <Popup gap={2}>
+            <>
+              <LoginForm id="login-form" onSubmit={postLogin}>
+                <TextField
+                  sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                  InputLabelProps={{
+                    style: {
+                      color: theme.palette.text.primary
+                    }
+                  }}
+                  variant="outlined"
+                  id="email"
+                  name="email"
+                  label="Email"></TextField>
+                <TextField
+                  sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                  InputLabelProps={{
+                    style: {
+                      color: theme.palette.text.primary
+                    }
+                  }}
+                  variant="outlined"
+                  id="password"
+                  name="password"
+                  label="Password"
+                  type="password"></TextField>
+                <Button color="primary" variant="contained" type="submit">
+                  Login
+                </Button>
+                {isLoading && <CircularProgress color="secondary" />}
+              </LoginForm>
+              <Typography>
+                No account?{' '}
+                <Link
+                  sx={{ color: theme.palette.text.primary }}
+                  href="/register"
+                  underline="none"
+                  variant="body2">
+                  Register here
+                </Link>
+              </Typography>
+            </>
+          </Popup>
+        </>
+      </Modal>
     </div>
   );
 }
