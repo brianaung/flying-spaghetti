@@ -1,4 +1,4 @@
-import React, { useState, useEffect }from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers, banUser } from '../actions/users';
 
@@ -20,36 +20,32 @@ const Container = styled(Box)(({ theme }) => ({
 }));
 
 const columns = [
-  { field: 'id', 
-    headerName: 'ID', 
-    width: 300,
-    editable: true,
-  },
+  { field: 'id', headerName: 'ID', width: 300, editable: true },
   {
     field: 'firstName',
     headerName: 'First Name',
     width: 180,
-    editable: false,
+    editable: false
   },
   {
     field: 'lastName',
     headerName: 'Last Name',
     width: 180,
-    editable: false,
+    editable: false
   },
   {
     field: 'role',
     headerName: 'Role',
     width: 120,
-    editable: false,
+    editable: false
   },
   {
     field: 'capacity',
     headerName: 'Capacity',
     type: 'number',
     width: 100,
-    editable: false,
-  },
+    editable: false
+  }
 ];
 
 export default function UsersList() {
@@ -63,9 +59,9 @@ export default function UsersList() {
   const { users } = useSelector((state) => state.users);
 
   let rows = [];
- 
+
   if (users) {
-    users.map(user => {
+    users.map((user) => {
       rows.push(user);
     });
   }
@@ -75,15 +71,15 @@ export default function UsersList() {
   const [selectionModel, setSelectionModel] = useState([]);
 
   const handleBan = () => {
-    selectionModel.map(id => {
-      users.map(user => {
+    selectionModel.map((id) => {
+      users.map((user) => {
         if (id === user.id) {
-          ret.push({id: user.id, sk: user.secretKey});
+          ret.push({ id: user.id, sk: user.secretKey });
         }
       });
     });
 
-    dispatch(banUser({data: ret}));
+    dispatch(banUser({ data: ret }));
 
     // TODO: should consider a case for fail ban
     // show an ban event alert
@@ -94,7 +90,7 @@ export default function UsersList() {
 
     // clear selection
     setSelectionModel([]);
-  }
+  };
 
   return (
     <Container>
@@ -112,10 +108,10 @@ export default function UsersList() {
         selectionModel={selectionModel}
         pageSize={9}
       />
-      <Button color="error" variant="contained" onClick={handleBan}>Ban</Button>
-      {alert &&
-        <Alert severity="success">You have successfully banned the user.</Alert>
-      }
+      <Button color="error" variant="contained" onClick={handleBan}>
+        Ban
+      </Button>
+      {alert && <Alert severity="success">You have successfully banned the user.</Alert>}
     </Container>
   );
 }

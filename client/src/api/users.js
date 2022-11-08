@@ -6,4 +6,4 @@ const url =
     : 'http://localhost:9000';
 
 export const getAllUsers = () => axios.get(`${url}/dashboard/users`);
-export const banUser = (userList) => axios.post(`${url}/adminban`, userList); 
+export const banUser = (userList) => axios.post(`${url}/adminban`, userList);

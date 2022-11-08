@@ -114,6 +114,8 @@ export default function Feed(props) {
       formData.set('isPrivate', true);
     }
 
+    console.log(e.target.folder.value);
+
     const API =
       process.env.NODE_ENV === 'production'
         ? `https://photoshare-fs-server.herokuapp.com/folder/${e.target.folder.value}`
@@ -143,7 +145,7 @@ export default function Feed(props) {
 
     axios
       .post(API, {
-        folderName: e.target.folderName.value,
+        folderName: e.target.folderName.value
       })
       .then((res) => {
         dispatch({ type: 'CREATE_FOLDER', payload: res.data });
@@ -158,20 +160,12 @@ export default function Feed(props) {
   return (
     <FeedContainer>
       {/* event notis */}
-      <Snackbar
-        open={photoAlert}
-        autoHideDuration={6000}
-        onClose={() => setPhotoAlert(false)}
-      >
+      <Snackbar open={photoAlert} autoHideDuration={6000} onClose={() => setPhotoAlert(false)}>
         <Alert onClose={() => setPhotoAlert(false)} severity="success" sx={{ width: '100%' }}>
           Photo successfully uploaded.
         </Alert>
       </Snackbar>
-      <Snackbar
-        open={folderAlert}
-        autoHideDuration={6000}
-        onClose={() => setFolderAlert(false)}
-      >
+      <Snackbar open={folderAlert} autoHideDuration={6000} onClose={() => setFolderAlert(false)}>
         <Alert onClose={() => setFolderAlert(false)} severity="success" sx={{ width: '100%' }}>
           Folder successfully created.
         </Alert>
@@ -189,7 +183,7 @@ export default function Feed(props) {
           Upload Photo
         </Fab>
         {/* only allow folder creation in root folder in my photos tab */}
-        {props.pageID === 'folders' &&
+        {props.pageID === 'folders' && (
           <Fab
             sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
             color="error"
@@ -200,35 +194,31 @@ export default function Feed(props) {
             <CreateNewFolderOutlinedIcon sx={{ mr: 1 }} />
             New Folder
           </Fab>
-        }
+        )}
       </Box>
 
       {/* create new folder form */}
-      <Modal
-        open={openF}
-        onClose={handleCloseF}
-      >
+      <Modal open={openF} onClose={handleCloseF}>
         <>
-        <Popup>
-          <UploadForm id="newfolder-form" onSubmit={handleNewFolder}>
-            Enter the folder name:
-            <TextField
-              sx={{ fieldset: { borderColor: theme.palette.divider } }}
-              InputLabelProps={{
-                style: {
-                  color: theme.palette.text.primary
-                }
-              }}
-              variant="outlined"
-              name="folderName"
-              label="Folder Name"
-              fullWidth></TextField>
-
+          <Popup>
+            <UploadForm id="newfolder-form" onSubmit={handleNewFolder}>
+              Enter the folder name:
+              <TextField
+                sx={{ fieldset: { borderColor: theme.palette.divider } }}
+                InputLabelProps={{
+                  style: {
+                    color: theme.palette.text.primary
+                  }
+                }}
+                variant="outlined"
+                name="folderName"
+                label="Folder Name"
+                fullWidth></TextField>
               <Button color="secondary" variant="contained" type="submit">
                 Create
               </Button>
-          </UploadForm>
-        </Popup>
+            </UploadForm>
+          </Popup>
         </>
       </Modal>
 
@@ -281,8 +271,10 @@ export default function Feed(props) {
                   sx={{ width: 200, fieldset: { borderColor: theme.palette.divider } }}
                   disablePortal
                   id="combo-box-demo"
-                  options={[`${(props.pageID === 'folders') ? 'root' : props.pageID}`].concat(folders)}
-                  defaultValue={`${(props.pageID === 'folders') ? 'root' : props.pageID}`}
+                  options={[`${props.pageID === 'folders' ? 'root' : props.pageID}`].concat(
+                    folders
+                  )}
+                  defaultValue={`${props.pageID === 'folders' ? 'root' : props.pageID}`}
                   renderInput={(params) => <TextField name="folder" {...params} />}
                 />
 
