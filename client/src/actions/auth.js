@@ -7,24 +7,6 @@ export const userLogin = (email, password) => async (dispatch) => {
     const { data } = await api.userLogin({ email, password });
     dispatch({ type: LOGIN, payload: data });
     dispatch({ type: END_LOADING });
-    /*
-    switch (data.role) {
-      case 'user':
-        navigate('/dashboard/folders');
-        break;
-      case 'admin':
-        navigate('/dashboard/folders');
-        break;
-      case 'pending':
-        alert('Please wait for the admin to approve your registration');
-        localStorage.clear();
-        break;
-      case 'banned':
-        alert('You have been banned from using this service');
-        localStorage.clear();
-        break;
-    }
-    */
   } catch (error) {
     console.log(error.message);
   }

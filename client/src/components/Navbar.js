@@ -110,7 +110,7 @@ export default function Navbar(props) {
                   variant="contained"
                   color="error"
                   onClick={() => {
-                    localStorage.clear();
+                    localStorage.removeItem('user');
                     navigate('/');
                   }}>
                   Yes

@@ -70,31 +70,6 @@ export default function App() {
     localStorage.setItem('colorMode', mode);
   }, [mode]);
 
-  /*
-  // navigate user after loggin in
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (user) {
-      switch (user.role) {
-        case 'user':
-          navigate('/dashboard/folders');
-          break;
-        case 'admin':
-          navigate('/dashboard/folders');
-          break;
-        case 'pending':
-          alert('Please wait for the admin to approve your registration');
-          localStorage.clear();
-          break;
-        case 'banned':
-          alert('You have been banned from using this service');
-          localStorage.clear();
-          break;
-      }
-    }
-  }, []);
-  */
-
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
