@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   useTheme,
   styled,
+  Alert,
   Button,
   Box,
   Modal,
@@ -14,6 +15,7 @@ import {
   Typography,
   Stack,
   Switch,
+  Snackbar,
   Fab,
   FormGroup,
   FormControlLabel,
@@ -21,8 +23,6 @@ import {
   Skeleton
 } from '@mui/material';
 // mui icons
-// import FolderIcon from '@mui/icons-material/Folder';
-// import AddIcon from '@mui/icons-material/Add';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import CreateNewFolderOutlinedIcon from '@mui/icons-material/CreateNewFolderOutlined';
 // my components
@@ -30,7 +30,6 @@ import PhotoFrame from '../components/PhotoFrame';
 import FolderFrame from '../components/FolderFrame';
 import Directory from '../components/Directory';
 import Popup from '../components/Popup';
-//import FoldersPage from '../pages/FoldersPage';
 
 const FeedContainer = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.background.main,
@@ -76,11 +75,15 @@ export default function Feed(props) {
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  const [photoAlert, setPhotoAlert] = useState(false);
+  const [folderAlert, setFolderAlert] = useState(false);
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+
+  // handle the modals open states
   const [open, setOpen] = useState(false);
   const [openF, setOpenF] = useState(false);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -88,9 +91,7 @@ export default function Feed(props) {
     setSelectedImage(null);
   };
   const handleOpenF = () => setOpenF(true);
-  const handleCloseF = () => {
-    setOpenF(false);
-  }
+  const handleCloseF = () => setOpenF(false);
 
   const { folders, photos, isLoading } = useSelector((state) => state.photos);
 
@@ -123,7 +124,8 @@ export default function Feed(props) {
       .post(API, formData)
       .then((res) => {
         dispatch({ type: 'UPLOAD_PHOTO', payload: res.data });
-        console.log(res);
+        // show success popup (set state)
+        setPhotoAlert(true);
       })
       .catch((err) => {
         console.log(err);
@@ -144,8 +146,9 @@ export default function Feed(props) {
         folderName: e.target.folderName.value,
       })
       .then((res) => {
-        console.log(res.data);
         dispatch({ type: 'CREATE_FOLDER', payload: res.data });
+        // show success popup (set state)
+        setFolderAlert(true);
       })
       .catch((err) => {
         console.log(err);
@@ -154,6 +157,26 @@ export default function Feed(props) {
 
   return (
     <FeedContainer>
+      {/* event notis */}
+      <Snackbar
+        open={photoAlert}
+        autoHideDuration={6000}
+        onClose={() => setPhotoAlert(false)}
+      >
+        <Alert onClose={() => setPhotoAlert(false)} severity="success" sx={{ width: '100%' }}>
+          Photo successfully uploaded.
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={folderAlert}
+        autoHideDuration={6000}
+        onClose={() => setFolderAlert(false)}
+      >
+        <Alert onClose={() => setFolderAlert(false)} severity="success" sx={{ width: '100%' }}>
+          Folder successfully created.
+        </Alert>
+      </Snackbar>
+
       <Box sx={{ '& > :not(style)': { m: 1 } }}>
         <Fab
           sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
