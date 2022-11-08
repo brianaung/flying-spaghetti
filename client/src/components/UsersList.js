@@ -81,7 +81,6 @@ export default function UsersList() {
 
     dispatch(banUser({ data: ret }));
 
-    // TODO: should consider a case for fail ban
     // show an ban event alert
     setAlert(true);
     setTimeout(() => {

@@ -6,7 +6,6 @@ import { useTheme, styled, Toolbar, Button, TextField } from '@mui/material';
 // my components
 import ColorModeToggle from '../components/ColorModeToggle';
 
-// TODO: make it a seperate component
 function Logo() {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -43,7 +42,6 @@ const RegisterForm = styled('form')({
   gap: '10px'
 });
 
-// TODO: style it
 export default function Register() {
   const theme = useTheme();
 

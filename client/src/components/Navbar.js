@@ -20,7 +20,6 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 const MenuBtn = styled(Button)(({ theme }) => ({
-  // todo: use the text palette in theme
   color: theme.palette.text.primary,
   transition: 'transform 200ms ease 0s, background 200ms ease 0s',
   '&:hover': {
@@ -71,7 +70,6 @@ function stringAvatar(name) {
   };
 }
 
-// TODO: replace username with prop.username
 export default function Navbar(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);

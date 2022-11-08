@@ -70,7 +70,6 @@ const FeedSkeleton = () => {
   );
 };
 
-// TODO: add current directory
 export default function Feed(props) {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -172,7 +171,7 @@ export default function Feed(props) {
       </Snackbar>
 
       <Box sx={{ '& > :not(style)': { m: 1 } }}>
-        {props.pageID !== 'shared' && props.pageID !== 'liked' && 
+        {props.pageID !== 'shared' && props.pageID !== 'liked' && (
           <Fab
             sx={{ border: 'solid 1px black', color: theme.palette.background.main }}
             color="info"
@@ -183,7 +182,7 @@ export default function Feed(props) {
             <CloudUploadOutlinedIcon sx={{ mr: 1 }} />
             Upload Photo
           </Fab>
-        }
+        )}
         {/* only allow folder creation in root folder in my photos tab */}
         {props.pageID === 'folders' && (
           <Fab
