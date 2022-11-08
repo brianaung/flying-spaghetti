@@ -4,7 +4,6 @@ import {
   updateDoc,
   doc,
   getDoc,
-  Timestamp,
   collection,
   orderBy,
   increment
@@ -15,46 +14,45 @@ import { createTransport } from 'nodemailer';
 
 const banneSpecUser = async (userID, sKey) => {
   const userSnap = await getDoc(doc(db, 'users', userID));
-    if (!userSnap.exists() || sKey !== userSnap.data().secretKey) {
-      return null;
+  if (!userSnap.exists() || sKey !== userSnap.data().secretKey) {
+    return null;
+  }
+  // Ban user and generate new key
+  await updateDoc(doc(db, 'users', userID), {
+    role: 'banned',
+    secretKey: v4()
+  });
+
+  // Inform user they got rejected and banned, provide admin's email to appeal
+  // Email user they got accepted and account is activated
+  const mailTransport = createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'admn1flying@gmail.com',
+      pass: 'pgxzirsraggfdxvh'
     }
-    // Ban user and generate new key
-    await updateDoc(doc(db, 'users', userID), {
-      role: 'banned',
-      secretKey: v4()
-    });
+  });
 
-    // Inform user they got rejected and banned, provide admin's email to appeal
-    // Email user they got accepted and account is activated
-    const mailTransport = createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'admn1flying@gmail.com',
-        pass: 'pgxzirsraggfdxvh'
-      }
-    });
-
-    const emailText = `
+  const emailText = `
       Hi ${userSnap.data().firstName},\n\n
       Your current account has been baned by the admin\n
       Dev Team
       `;
 
-    const content = {
-      from: 'admn1flying@gmail.com',
-      to: 'admn1flying@gmail.com',
-      subject: 'Your account has been baned!',
-      text: emailText
-    };
+  const content = {
+    from: 'admn1flying@gmail.com',
+    to: 'admn1flying@gmail.com',
+    subject: 'Your account has been baned!',
+    text: emailText
+  };
 
-    mailTransport.sendMail(content, (err) => {
-      if (err) {
-        //console.log('Unable to send email', err);
-      } else {
-        //console.log('send email to admin');
-      }
-    });
-
+  mailTransport.sendMail(content, (err) => {
+    if (err) {
+      // console.log('Unable to send email', err);
+    } else {
+      // console.log('send email to admin');
+    }
+  });
 };
 
 const banAllSpecUser = async (req, res, next) => {
@@ -64,11 +62,10 @@ const banAllSpecUser = async (req, res, next) => {
       banneSpecUser(doc.id, doc.sk);
     });
     res.sendStatus(200);
-
   } catch (err) {
     next(err);
   }
-}
+};
 
 const banUser = async (req, res, next) => {
   try {
@@ -108,9 +105,9 @@ const banUser = async (req, res, next) => {
 
     mailTransport.sendMail(content, (err) => {
       if (err) {
-        //console.log('Unable to send email', err);
+        // console.log('Unable to send email', err);
       } else {
-        //console.log('send email to admin');
+        // console.log('send email to admin');
       }
     });
   } catch (err) {
@@ -134,10 +131,10 @@ const acceptUser = async (req, res, next) => {
     const user = {
       role: 'user',
       secretKey: v4()
-    }
+    };
     await updateDoc(doc(db, 'users', req.params.uid), user);
     res.sendStatus(200);
-    //.json(user);
+    // .json(user);
     // Email user they got accepted and account is activated
     const mailTransport = createTransport({
       service: 'gmail',
@@ -163,13 +160,11 @@ const acceptUser = async (req, res, next) => {
 
     mailTransport.sendMail(content, (err) => {
       if (err) {
-        //console.log('Unable to send email', err);
+        // console.log('Unable to send email', err);
       } else {
-        //console.log('send email to admin');
+        // console.log('send email to admin');
       }
     });
-
-    
   } catch (err) {
     next(err);
   }
@@ -204,19 +199,18 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const addCapacity = async (req, res, next) => {
-  //check if current user is admin
+  // check if current user is admin
   if (!auth.currentUser) {
     return res.sendStatus(401);
   }
-  //add capacity to the user
+  // add capacity to the user
   const usersRef = doc(db, 'users', req.body.userID);
   await updateDoc(usersRef, {
     capacity: increment(100)
   }).then(() => {
     console.log('update capacity');
   });
-
-}
+};
 
 export default {
   banUser,

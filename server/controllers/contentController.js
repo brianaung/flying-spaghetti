@@ -148,7 +148,7 @@ const getSharedContent = async (req, res, next) => {
     const photoSnap = await getDocs(
       query(collection(db, 'photos'), where('owner', '!=', userID), where('folder', '==', 'root'))
     );
-    let otherFolders = [];
+    const otherFolders = [];
     let otherPhotos = [];
 
     folderSnap.forEach((doc) => {
@@ -362,7 +362,7 @@ const uploadPhoto = async (req, res, next) => {
       folder: req.params.folder,
       isPrivate,
       likes: [],
-      //link: imageUrl,
+      // link: imageUrl,
       owner: userID
     };
 
@@ -374,36 +374,35 @@ const uploadPhoto = async (req, res, next) => {
       const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
       await uploadBytes(imageRef, req.file.buffer, metatype);
 
-      const imageData =  await getMetadata(imageRef);
+      const imageData = await getMetadata(imageRef);
       console.log(imageData.size);
 
       const imageUrl = await getDownloadURL(imageRef);
       const photoRef = doc(db, 'photos', docRef.id);
-      
-      const userRef = doc(db, "users", userID);
+
+      const userRef = doc(db, 'users', userID);
       const userSnap = await getDoc(userRef);
       const used = await userSnap.get('used');
       const capacity = await userSnap.get('capacity');
-      const currCap = capacity-used;
-      //if capacity is less then 0, delete all updates
-      
-      if (currCap<(imageData.size/1000000)) {
-        console.log("there is no enough capacity");
-        
-        //delete photo in photos
-        await deleteDoc(photoRef).then(()=> {
+      const currCap = capacity - used;
+      // if capacity is less then 0, delete all updates
+
+      if (currCap < imageData.size / 1000000) {
+        console.log('there is no enough capacity');
+
+        // delete photo in photos
+        await deleteDoc(photoRef).then(() => {
           console.log('delete update in photos');
-    
-        // delete photo in storage.
-        deleteObject(imageRef)
-          .then(() => {
-            console.log('delete update in storage');
-          })
-          .catch((err) => {
-            console.log('There is an error, cannot delete photo');
-          });
+
+          // delete photo in storage.
+          deleteObject(imageRef)
+            .then(() => {
+              console.log('delete update in storage');
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         });
-      
       } else {
         await updateDoc(photoRef, {
           link: imageUrl
@@ -413,7 +412,7 @@ const uploadPhoto = async (req, res, next) => {
         await updateDoc(doc(db, 'users', userID), {
           photos: arrayUnion(docRef.id),
           // update capacity
-          used: increment((imageData.size/1000000))
+          used: increment(imageData.size / 1000000)
         });
 
         // update folder
@@ -423,14 +422,9 @@ const uploadPhoto = async (req, res, next) => {
           });
         }
 
-        res.send({...photo, id: docRef.id});
-    
+        res.send({ ...photo, id: docRef.id });
       }
     }
-
-    
-
-    
   } catch (err) {
     next(err);
   }
@@ -450,10 +444,10 @@ const moveToBin = async (req, res, next) => {
         console.log('Photo deleted successfully');
       })
       .catch((err) => {
-        console.log('There is an error, cannot delete photo');
+        console.log(err);
       });
 
-    const imageData =  await getMetadata(imageRef);
+    const imageData = await getMetadata(imageRef);
     const usersRef = doc(db, 'users', userID);
     // // add photo id into bin array
     // await updateDoc(usersRef, {
@@ -465,7 +459,7 @@ const moveToBin = async (req, res, next) => {
     // delete photo id in photo array
     await updateDoc(usersRef, {
       photos: arrayRemove(req.params.id),
-      used: increment(-(imageData.size/1000000))
+      used: increment(-(imageData.size / 1000000))
     }).then(() => {
       console.log('delete photo from user photos');
     });
@@ -479,13 +473,12 @@ const moveToBin = async (req, res, next) => {
       console.log('delete photo from folder');
     });
 
-    //delete photo from photos collection
+    // delete photo from photos collection
     const photoRef = doc(db, 'photos', req.params.id);
 
-    await deleteDoc(photoRef).then(()=> {
+    await deleteDoc(photoRef).then(() => {
       console.log('delete photo from photo collection');
     });
-
 
     res.send({ id: req.params.id });
   } catch (error) {
@@ -595,7 +588,6 @@ const moveToDifferentFolder = async (req, res, next) => {
   }
 };
 
-
 export default {
   getRecentPhotos,
   getLikedPhotos,
@@ -617,5 +609,4 @@ export default {
   getPhotoPage,
   getNumLikes,
   getCurrUserID
-  
 };

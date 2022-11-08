@@ -1,6 +1,6 @@
 import { app } from '../app.js';
 import supertest from 'supertest';
-import { jest, describe, test, beforeEach, afterAll } from '@jest/globals';
+import { expect, /* jest, */ describe, test, beforeEach /* , afterAll */ } from '@jest/globals';
 
 // import { mockFirebase, exposeMockFirebaseApp } from 'mock-firebase-ts';
 
@@ -24,99 +24,99 @@ const req = supertest(app);
 // });
 
 beforeEach(async () => {
-    await req.post('/logout');
-})
+  await req.post('/logout');
+});
 
 describe('GET /photo/:id (getPhotoPage)', () => {
-    test('view unavailable photo - logged in', async () => {
-        await req.post('/login').send({
-            email: 'admin@gmail.com',
-            password: 'password'
-        })
-        const res = await req.get(`/photo/idk`);
-        expect(res.status).toBe(404);
-        expect(res.body).toEqual({});
-    })
+  test('view unavailable photo - logged in', async () => {
+    await req.post('/login').send({
+      email: 'admin@gmail.com',
+      password: 'password'
+    });
+    const res = await req.get(`/photo/idk`);
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({});
+  });
 
-    test('view public photo - not logged in', async () => {
-        const photoID = 'xz1SXB8UtYeIscZs2Qrl';
-        const res = await req.get(`/photo/${photoID}`);
-        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
-        expect(res.status).toBe(200);
-        expect(res.body.id).toBe(photoID);
-    })
+  test('view public photo - not logged in', async () => {
+    const photoID = 'xz1SXB8UtYeIscZs2Qrl';
+    const res = await req.get(`/photo/${photoID}`);
+    expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+    expect(res.status).toBe(200);
+    expect(res.body.id).toBe(photoID);
+  });
 
-    test('view private photo - owner', async () => {
-        await req.post('/login').send({
-          email: 'user3@gmail.com',
-          password: 'password'
-        })
-        const privateID = 'vB4IlkKhesCWJbKX2SHQ'
-        const res = await req.get(`/photo/${privateID}`);
-        expect(res.status).toBe(200);
-        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
-        expect(res.body.id).toBe(privateID);
-    })
+  test('view private photo - owner', async () => {
+    await req.post('/login').send({
+      email: 'user3@gmail.com',
+      password: 'password'
+    });
+    const privateID = 'vB4IlkKhesCWJbKX2SHQ';
+    const res = await req.get(`/photo/${privateID}`);
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+    expect(res.body.id).toBe(privateID);
+  });
 
-    test('view private photo - other user', async () => {
-        await req.post('/login').send({
-            email: 'user3@gmail.com',
-            password: 'password'
-        })
-        const privateID = 'jDcE1FrQcfXss93GZkTR'
-        const res = await req.get(`/photo/${privateID}`);
-        expect(res.status).toBe(404);
-        expect(res.body).toEqual({});
-    })
+  test('view private photo - other user', async () => {
+    await req.post('/login').send({
+      email: 'user3@gmail.com',
+      password: 'password'
+    });
+    const privateID = 'jDcE1FrQcfXss93GZkTR';
+    const res = await req.get(`/photo/${privateID}`);
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({});
+  });
 
-    test('view private photo - admin', async () => {
-        await req.post('/login').send({
-            email: 'admin@gmail.com',
-            password: 'password'
-        })
-        const privateID = 'vB4IlkKhesCWJbKX2SHQ'
-        const res = await req.get(`/photo/${privateID}`);
-        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
-        expect(res.status).toBe(200);
-        expect(res.body.id).toBe(privateID);
-    })
+  test('view private photo - admin', async () => {
+    await req.post('/login').send({
+      email: 'admin@gmail.com',
+      password: 'password'
+    });
+    const privateID = 'vB4IlkKhesCWJbKX2SHQ';
+    const res = await req.get(`/photo/${privateID}`);
+    expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+    expect(res.status).toBe(200);
+    expect(res.body.id).toBe(privateID);
+  });
 
-    test('view private photo - not logged in', async () => {
-        const privateID = 'vB4IlkKhesCWJbKX2SHQ'
-        const res = await req.get(`/photo/${privateID}`);
-        expect(res.status).toBe(404);
-        expect(res.body).toEqual({});
-    })
-})
+  test('view private photo - not logged in', async () => {
+    const privateID = 'vB4IlkKhesCWJbKX2SHQ';
+    const res = await req.get(`/photo/${privateID}`);
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({});
+  });
+});
 
 describe('GET /dashboard/folders (getOwnContent)', () => {
-    test('view personal dashboard - logged in', async () => {
-        await req.post('/login').send({
-            email: 'user3@gmail.com',
-            password: 'password'
-        })
-        const res = await req.get(`/dashboard/folders`);
+  test('view personal dashboard - logged in', async () => {
+    await req.post('/login').send({
+      email: 'user3@gmail.com',
+      password: 'password'
+    });
+    const res = await req.get(`/dashboard/folders`);
 
-        const testFolder = 'user3folder';
-        const testPhoto = 'aqXevPREVXLz4Ug8gWaB';
+    const testFolder = 'user3folder';
+    const testPhoto = 'aqXevPREVXLz4Ug8gWaB';
 
-        const userFolders = res.body.folders;
-        const userPhotos = res.body.photos;
+    const userFolders = res.body.folders;
+    const userPhotos = res.body.photos;
 
-        expect(res.status).toBe(200);
-        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
-        expect(userFolders.length).toBeGreaterThan(0);
-        expect(userFolders.includes(testFolder)).toBeTruthy();
-        expect(userPhotos.length).toBeGreaterThan(0);
-        expect(userPhotos.find(photo => photo.id === testPhoto)).toBeTruthy();
-    })
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+    expect(userFolders.length).toBeGreaterThan(0);
+    expect(userFolders.includes(testFolder)).toBeTruthy();
+    expect(userPhotos.length).toBeGreaterThan(0);
+    expect(userPhotos.find((photo) => photo.id === testPhoto)).toBeTruthy();
+  });
 
-    test('view personal dashboard - not logged in', async () => {
-        const res = await req.get(`/dashboard/folders`);
-        expect(res.status).toBe(404);
-        expect(res.body).toEqual({});
-    })
-})
+  test('view personal dashboard - not logged in', async () => {
+    const res = await req.get(`/dashboard/folders`);
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({});
+  });
+});
 
 // unused route
 // describe('GET /dashboard/user (getUserContent)', () => {
@@ -150,33 +150,33 @@ describe('GET /dashboard/folders (getOwnContent)', () => {
 // })
 
 describe('GET /dashboard/shared (getSharedContent)', () => {
-    test('view shared dashboard - logged in', async () => {
-        await req.post('/login').send({
-            email: 'admin@gmail.com',
-            password: 'password'
-        })
-        const res = await req.get(`/dashboard/shared`);
+  test('view shared dashboard - logged in', async () => {
+    await req.post('/login').send({
+      email: 'admin@gmail.com',
+      password: 'password'
+    });
+    const res = await req.get(`/dashboard/shared`);
 
-        const testFolder = 'user3folder';
-        const testPhoto = 'aqXevPREVXLz4Ug8gWaB';
+    const testFolder = 'user3folder';
+    const testPhoto = 'aqXevPREVXLz4Ug8gWaB';
 
-        const otherFolders = res.body.folders;
-        const otherPhotos = res.body.photos;
+    const otherFolders = res.body.folders;
+    const otherPhotos = res.body.photos;
 
-        expect(res.status).toBe(200);
-        expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
-        expect(otherFolders.length).toBeGreaterThan(0);
-        expect(otherFolders.includes(testFolder)).toBeTruthy();
-        expect(otherPhotos.length).toBeGreaterThan(0);
-        expect(otherPhotos.find(photo => photo.id === testPhoto)).toBeTruthy();
-    })
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
+    expect(otherFolders.length).toBeGreaterThan(0);
+    expect(otherFolders.includes(testFolder)).toBeTruthy();
+    expect(otherPhotos.length).toBeGreaterThan(0);
+    expect(otherPhotos.find((photo) => photo.id === testPhoto)).toBeTruthy();
+  });
 
-    test('view shared dashboard - not logged in', async () => {
-        const res = await req.get(`/dashboard/shared`);
-        expect(res.status).toBe(404);
-        expect(res.body).toEqual({});
-    })
-})
+  test('view shared dashboard - not logged in', async () => {
+    const res = await req.get(`/dashboard/shared`);
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({});
+  });
+});
 
 //     // getPhotosInFolder
 //     test('should send the correct photos given a folder directory', () => {
@@ -184,7 +184,6 @@ describe('GET /dashboard/shared (getSharedContent)', () => {
 //             .get('/photo/')
 //             .expect()
 //     })
-
 
 // getPhotoComments
 
@@ -198,7 +197,6 @@ describe('GET /dashboard/shared (getSharedContent)', () => {
 //             .expect()
 //     })
 
-
 // })
 
 // describe('folders', () => {
@@ -208,7 +206,6 @@ describe('GET /dashboard/shared (getSharedContent)', () => {
 //             .get('/folder/')
 //             .expect()
 //     })
-
 
 // })
 

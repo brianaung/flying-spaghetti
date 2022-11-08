@@ -63,11 +63,10 @@ const registerUser = async (req, res, next) => {
 
     mailTransport.sendMail(content, (err) => {
       if (err) {
-        return res.status(404)//console.log('Unable to send email', err);
+        return res.status(404); // console.log('Unable to send email', err);
       } else {
-        //console.log('Email sent to admin.');
+        // console.log('Email sent to admin.');
       }
-    
     });
     return res.status(200);
   } catch (err) {
@@ -97,9 +96,9 @@ const signInUser = async (req, res, next) => {
         // console.log('Please wait until an admin approves your account.');
       }
 
-      await signOut(auth)
+      await signOut(auth);
 
-      return res.status(200).send(null)
+      return res.status(200).send(null);
     }
     return res.status(200).json(user.data());
   } catch (error) {
