@@ -130,7 +130,7 @@ export default function Photo(props) {
             onChange={handleLike}
           />
 
-          <IconButton sx={{ color: theme.palette.text.primary }} size="small" onClick={() => {}}>
+          <IconButton sx={{ color: theme.palette.text.primary }} size="small" onClick={openPhoto}>
             <Comment size="30" />
           </IconButton>
 
