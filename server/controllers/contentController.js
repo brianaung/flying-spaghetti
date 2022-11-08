@@ -437,8 +437,11 @@ const moveToBin = async (req, res, next) => {
       res.sendStatus(404);
     }
 
+    
+
     // delete photo in storage.
     const imageRef = ref(storage, `images/${req.params.id}`);
+    const imageData = await getMetadata(imageRef);
     deleteObject(imageRef)
       .then(() => {
         console.log('Photo deleted successfully');
@@ -447,7 +450,7 @@ const moveToBin = async (req, res, next) => {
         console.log(err);
       });
 
-    const imageData = await getMetadata(imageRef);
+    
     const usersRef = doc(db, 'users', userID);
     // // add photo id into bin array
     // await updateDoc(usersRef, {
