@@ -48,10 +48,10 @@ describe('authentication', () => {
     await req.post('/logout');
   });
 
-  // DONT CHANGE THE BANNED STATUS OF USER 2!!!
+  // DONT CHANGE THE BANNED STATUS OF USER 1!!!
   test('POST /login - ban role (signInUser)', async () => {
     const loginRes = await req.post('/login').send({
-      email: 'user2@gmail.com',
+      email: 'user1@gmail.com',
       password: 'password'
     });
     // check if login was succesful

@@ -39,7 +39,7 @@ describe('GET /photo/:id (getPhotoPage)', () => {
   });
 
   test('view public photo - not logged in', async () => {
-    const photoID = 'xz1SXB8UtYeIscZs2Qrl';
+    const photoID = 'h71Vl8hVPzWAj0Fb4Uh2';
     const res = await req.get(`/photo/${photoID}`);
     expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
     expect(res.status).toBe(200);
@@ -51,7 +51,7 @@ describe('GET /photo/:id (getPhotoPage)', () => {
       email: 'user3@gmail.com',
       password: 'password'
     });
-    const privateID = 'vB4IlkKhesCWJbKX2SHQ';
+    const privateID = 'O2sBD0FMZCvJr9hdfogA';
     const res = await req.get(`/photo/${privateID}`);
     expect(res.status).toBe(200);
     expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
@@ -63,7 +63,7 @@ describe('GET /photo/:id (getPhotoPage)', () => {
       email: 'user3@gmail.com',
       password: 'password'
     });
-    const privateID = 'jDcE1FrQcfXss93GZkTR';
+    const privateID = '5GBJ5SaAlwqKInv5k1Vc';
     const res = await req.get(`/photo/${privateID}`);
     expect(res.status).toBe(404);
     expect(res.body).toEqual({});
@@ -74,7 +74,7 @@ describe('GET /photo/:id (getPhotoPage)', () => {
       email: 'admin@gmail.com',
       password: 'password'
     });
-    const privateID = 'vB4IlkKhesCWJbKX2SHQ';
+    const privateID = 'O2sBD0FMZCvJr9hdfogA';
     const res = await req.get(`/photo/${privateID}`);
     expect(res.headers['content-type']).toEqual(expect.stringContaining('json'));
     expect(res.status).toBe(200);
@@ -82,7 +82,7 @@ describe('GET /photo/:id (getPhotoPage)', () => {
   });
 
   test('view private photo - not logged in', async () => {
-    const privateID = 'vB4IlkKhesCWJbKX2SHQ';
+    const privateID = 'O2sBD0FMZCvJr9hdfogA';
     const res = await req.get(`/photo/${privateID}`);
     expect(res.status).toBe(404);
     expect(res.body).toEqual({});
@@ -97,8 +97,8 @@ describe('GET /dashboard/folders (getOwnContent)', () => {
     });
     const res = await req.get(`/dashboard/folders`);
 
-    const testFolder = 'user3folder';
-    const testPhoto = 'aqXevPREVXLz4Ug8gWaB';
+    const testFolder = 'TESTFOLDER';
+    const testPhoto = 'h71Vl8hVPzWAj0Fb4Uh2';
 
     const userFolders = res.body.folders;
     const userPhotos = res.body.photos;
@@ -157,8 +157,8 @@ describe('GET /dashboard/shared (getSharedContent)', () => {
     });
     const res = await req.get(`/dashboard/shared`);
 
-    const testFolder = 'user3folder';
-    const testPhoto = 'aqXevPREVXLz4Ug8gWaB';
+    const testFolder = 'TESTFOLDER';
+    const testPhoto = 'h71Vl8hVPzWAj0Fb4Uh2';
 
     const otherFolders = res.body.folders;
     const otherPhotos = res.body.photos;
