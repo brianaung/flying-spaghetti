@@ -368,7 +368,7 @@ const uploadPhoto = async (req, res, next) => {
 
     const docRef = await addDoc(collection(db, 'photos'), photo);
 
-    //if (docRef) {
+    if (docRef) {
       // upload photo into storage
       const imageRef = ref(storage, `images/${docRef.id}`);
       const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
@@ -424,7 +424,9 @@ const uploadPhoto = async (req, res, next) => {
 
         res.send({ ...photo, id: docRef.id });
       }
-    //}
+    } else {
+      console.log("could not find the doc ref");
+    }
   } catch (err) {
     next(err);
   }
