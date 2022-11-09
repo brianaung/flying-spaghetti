@@ -4,6 +4,8 @@ import {
   // useTheme,
   // styled,
   Typography,
+  ImageList,
+  ImageListItem,
 } from '@mui/material';
 // api
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,15 +23,27 @@ export default function Gallery() {
 
   return (
     <div style={{ 
-      alignSelf: 'center', 
-      border: 'solid 2px red',
+      alignSelf: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '50px',
+      margin: '100px',
     }}>
-      <Typography variant="h3">Check out what other people have been sharing!</Typography>
+      <Typography align="center" variant="h2">Check out what other people have been sharing!</Typography>
 
-      {photos.map((aPhoto) => {
-        console.log(aPhoto);
-        return <img style={{height: '200px', width: '200px' }} key={aPhoto.id} src={aPhoto.link} alt={aPhoto.name} />;
-      })}
+      <ImageList variant="masonry" cols={2} gap={8}>
+        {photos.map((aPhoto) => (
+          <ImageListItem sx={{ border: 'solid 1px black', borderRadius: '5px' }} key={aPhoto.id}>
+            <img
+              src={aPhoto.link}
+              alt={aPhoto.name}
+              loading="lazy"
+            />
+          </ImageListItem>
+        ))}
+      </ImageList>
     </div>
   )
 }
