@@ -114,7 +114,7 @@ export default function Photo(props) {
           <Typography variant="body1" sx={{ textTransform: 'uppercase' }}>
             {props.aPhoto.name}
           </Typography>
-          <Typography variant="body2" sx={{ textTransform: 'lowercase' }}>
+          <Typography variant="body2" sx={{ width: '220px', textTransform: 'lowercase' }}>
             {props.aPhoto.caption}
           </Typography>
         </Box>
