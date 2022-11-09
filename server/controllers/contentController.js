@@ -370,12 +370,12 @@ const uploadPhoto = async (req, res, next) => {
 
     if (docRef) {
       // upload photo into storage
-      const storage = getStorage();
-      const imageRef = ref(storage, `images/${docRef.id}`);
-      await uploadBytes(imageRef, req.file.buffer);
+      // const storage = getStorage();
       // const imageRef = ref(storage, `images/${docRef.id}`);
-      // const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-      // await uploadBytes(imageRef, req.file.buffer, metatype);
+      // await uploadBytes(imageRef, req.file.buffer);
+      const imageRef = ref(storage, `images/${docRef.id}`);
+      const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+      await uploadBytes(imageRef, req.file.buffer, metatype);
 
       const imageData = await getMetadata(imageRef);
       console.log(imageData.size);
