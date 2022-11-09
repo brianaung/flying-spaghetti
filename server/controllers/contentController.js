@@ -89,7 +89,7 @@ const getContentByUID = async (userID) => {
 
   for (const photoID of userData.photos) {
     const photoSnap = await getDoc(doc(db, 'photos', photoID));
-    if (photoSnap.data().folder === 'root') {
+    if (photoSnap.data() && photoSnap.data().folder === 'root') {
       const photo = await getPhotoByID(photoID);
       userPhotos.push(photo);
     }
