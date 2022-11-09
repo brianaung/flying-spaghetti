@@ -16,7 +16,7 @@ import {
   increment
 } from 'firebase/firestore';
 import { db, storage, auth } from '../config/firebase.js';
-import { ref, uploadBytes, getDownloadURL, deleteObject, getMetadata } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL, deleteObject, getMetadata, getStorage } from 'firebase/storage';
 
 // Helper functions
 const getCurrUserID = () => {
@@ -370,9 +370,12 @@ const uploadPhoto = async (req, res, next) => {
 
     if (docRef) {
       // upload photo into storage
+      const storage = getStorage();
       const imageRef = ref(storage, `images/${docRef.id}`);
-      const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-      await uploadBytes(imageRef, req.file.buffer, metatype);
+      await uploadBytes(imageRef, req.file.buffer);
+      // const imageRef = ref(storage, `images/${docRef.id}`);
+      // const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
+      // await uploadBytes(imageRef, req.file.buffer, metatype);
 
       const imageData = await getMetadata(imageRef);
       console.log(imageData.size);
