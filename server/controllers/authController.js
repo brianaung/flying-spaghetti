@@ -28,7 +28,8 @@ const registerUser = async (req, res, next) => {
       folders: [],
       photos: [],
       liked: [],
-      secretKey: v4()
+      secretKey: v4(),
+      email: req.body.email
     };
     await setDoc(doc(db, 'users', userCredential.user.uid), newUser);
 

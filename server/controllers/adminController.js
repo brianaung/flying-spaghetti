@@ -39,9 +39,12 @@ const banneSpecUser = async (userID, sKey) => {
       Dev Team
       `;
 
+  const userEmail = userSnap.data().email;
+  console.log(userEmail);
   const content = {
     from: 'admn1flying@gmail.com',
-    to: 'admn1flying@gmail.com',
+    //to: 'admn1flying@gmail.com',
+    to: userEmail,
     subject: 'Your account has been baned!',
     text: emailText
   };
@@ -96,9 +99,12 @@ const banUser = async (req, res, next) => {
       Dev Team
       `;
 
+    const userEmail = userSnap.data().email;
+    console.log(userEmail);
     const content = {
       from: 'admn1flying@gmail.com',
-      to: 'admn1flying@gmail.com',
+      //to: 'admn1flying@gmail.com',
+      to: userEmail,
       subject: 'Your account has been baned!',
       text: emailText
     };
@@ -151,9 +157,12 @@ const acceptUser = async (req, res, next) => {
       Dev Team
       `;
 
+    const userEmail = userSnap.data().email;
+    console.log(userEmail);
     const content = {
       from: 'admn1flying@gmail.com',
-      to: 'admn1flying@gmail.com',
+      //to: 'admn1flying@gmail.com',
+      to: userEmail,
       subject: 'Your account has been activated!',
       text: emailText
     };
