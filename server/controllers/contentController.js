@@ -16,7 +16,7 @@ import {
   increment
 } from 'firebase/firestore';
 import { db, storage, auth } from '../config/firebase.js';
-import { ref, uploadBytes, getDownloadURL, deleteObject, getMetadata, getStorage } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL, deleteObject, getMetadata } from 'firebase/storage';
 
 // Helper functions
 const getCurrUserID = () => {
@@ -330,19 +330,55 @@ const getUserFolders = async (req, res, next) => {
   }
 };
 
+// helper function to send image to the storage
+// returns a promise if upload succeed
+// also show more meaningful upload info in console
+const getImgUrl = async (imageRef, buffer, metatype) => {
+  return new Promise((resolve, reject) => {
+      const uploadTask = uploadBytesResumable(imageRef, buffer, metatype);
+      uploadTask.on('state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+          }
+        },
+        (error) => {
+          // A full list of error codes is available at
+          // https://firebase.google.com/docs/storage/web/handle-errors
+          console.log("UPLOAD ERROR: " + error.code);
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+
+            // ...
+
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        },
+        async () => {
+          // Upload completed successfully, now we can get the download URL
+          const imgUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(imgUrl);
+        }
+      );
+  });
+}
+
 const uploadPhoto = async (req, res, next) => {
   try {
-    console.log(req.body.name);
-    console.log(req.body.description);
-    console.log(req.file);
-
-    // upload photo into storage
-    // const imageRef = ref(storage, `images/${req.body.name}`);
-    // const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-    // await uploadBytes(imageRef, req.file.buffer, metatype);
-
-    // const imageUrl = await getDownloadURL(imageRef);
-
     // add a new photo in the photos collection of firestore
     const userID = getCurrUserID();
     if (userID == null) {
@@ -369,18 +405,15 @@ const uploadPhoto = async (req, res, next) => {
     const docRef = await addDoc(collection(db, 'photos'), photo);
 
     if (docRef) {
-      // upload photo into storage
-      // const storage = getStorage();
-      // const imageRef = ref(storage, `images/${docRef.id}`);
-      // await uploadBytes(imageRef, req.file.buffer);
       const imageRef = ref(storage, `images/${docRef.id}`);
       const metatype = { contentType: req.file.mimetype, name: req.file.originalname };
-      await uploadBytes(imageRef, req.file.buffer, metatype);
+
+      // get the image url after storing in the firebase storage
+      const imageUrl = await getImgUrl(imageRef, req.file.buffer, metatype);
 
       const imageData = await getMetadata(imageRef);
-      console.log(imageData.size);
 
-      const imageUrl = await getDownloadURL(imageRef);
+      // const imageUrl = await getDownloadURL(imageRef);
       const photoRef = doc(db, 'photos', docRef.id);
 
       const userRef = doc(db, 'users', userID);
