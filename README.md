@@ -10,12 +10,16 @@ First clone the repository.
 
 ### Install dependencies:
 
-```cd flying-spaghetti && npm install && cd client && npm install && cd ../server && npm install && cd ..```
+```
+cd flying-spaghetti && npm install && cd client && npm install && cd ../server && npm install && cd ..
+```
 
 ### Run the app:
 inside the project root folder run
 
-```npm run dev```
+```
+npm run dev
+```
 
 ## Features
 *Admin*
